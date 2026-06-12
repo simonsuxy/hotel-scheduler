@@ -1,0 +1,27 @@
+# Build output
+bin/
+obj/
+
+# VS Code
+.vscode/
+*.user
+
+# Database 
+*.sqlite
+*.sqlite-shm
+*.sqlite-wal
+
+# .NET secrets
+appsettings.Development.json
+secrets.json
+
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# MAUI / Android / iOS 
+*.keystore
+*.jks
+platforms/android/
+platforms/ios/

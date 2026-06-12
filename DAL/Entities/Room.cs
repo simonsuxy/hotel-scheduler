@@ -1,0 +1,18 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Text;
+
+namespace DAL.Entities
+{
+    public class Room
+    {
+        public int Id { get; set; }
+        public string Name { get; set; } = "";
+        public string Description { get; set; } = "";
+        public RoomType Type { get; set; }
+        public RoomStatus Status { get; set; } = RoomStatus.Active;
+        public decimal PricePerNight { get; set; }
+        public string Notes { get; set; } = "";
+        public List<Reservations> Reservations { get; set; } = [];
+    } 
+}

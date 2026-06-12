@@ -1,0 +1,150 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{559FD03C-4DA4-4E7B-B944-FA7F817A77A7}|..\\DAL\\DAL.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\dal\\hotelschedulerdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{559FD03C-4DA4-4E7B-B944-FA7F817A77A7}|..\\DAL\\DAL.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\dal\\entities\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{559FD03C-4DA4-4E7B-B944-FA7F817A77A7}|..\\DAL\\DAL.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\dal\\entities\\guest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{559FD03C-4DA4-4E7B-B944-FA7F817A77A7}|..\\DAL\\DAL.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\dal\\entities\\reservations.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{559FD03C-4DA4-4E7B-B944-FA7F817A77A7}|..\\DAL\\DAL.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\dal\\entities\\room.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{559FD03C-4DA4-4E7B-B944-FA7F817A77A7}|..\\DAL\\DAL.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\dal\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{559FD03C-4DA4-4E7B-B944-FA7F817A77A7}|..\\DAL\\DAL.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\dal\\entities\\enums.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{1EEA849F-F7F0-48D7-A4A1-CB72068F281A}|hotel scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\dal\\entities\\userrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{1EEA849F-F7F0-48D7-A4A1-CB72068F281A}|hotel scheduler.csproj|solutionrelative:dal\\entities\\userrole.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 876,
+          "SelectedChildIndex": 7,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\User.cs",
+              "RelativeDocumentMoniker": "..\\DAL\\Entities\\User.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\User.cs",
+              "RelativeToolTip": "..\\DAL\\Entities\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-12T23:08:01.076Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "UserRole.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\DAL\\Entities\\UserRole.cs",
+              "RelativeDocumentMoniker": "DAL\\Entities\\UserRole.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\DAL\\Entities\\UserRole.cs",
+              "RelativeToolTip": "DAL\\Entities\\UserRole.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-12T23:35:43.86Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "Settings.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Settings.cs",
+              "RelativeDocumentMoniker": "..\\DAL\\Entities\\Settings.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Settings.cs",
+              "RelativeToolTip": "..\\DAL\\Entities\\Settings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-12T23:31:08.42Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Guest.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Guest.cs",
+              "RelativeDocumentMoniker": "..\\DAL\\Entities\\Guest.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Guest.cs",
+              "RelativeToolTip": "..\\DAL\\Entities\\Guest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-12T23:27:05.436Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Reservations.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Reservations.cs",
+              "RelativeDocumentMoniker": "..\\DAL\\Entities\\Reservations.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Reservations.cs",
+              "RelativeToolTip": "..\\DAL\\Entities\\Reservations.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAABYAAAAFAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-12T23:22:17.865Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "Room.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Room.cs",
+              "RelativeDocumentMoniker": "..\\DAL\\Entities\\Room.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Room.cs",
+              "RelativeToolTip": "..\\DAL\\Entities\\Room.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAAGAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-12T23:18:03.834Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "Enums.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Enums.cs",
+              "RelativeDocumentMoniker": "..\\DAL\\Entities\\Enums.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Enums.cs",
+              "RelativeToolTip": "..\\DAL\\Entities\\Enums.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-12T23:14:02.938Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "HotelSchedulerDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\HotelSchedulerDbContext.cs",
+              "RelativeDocumentMoniker": "..\\DAL\\HotelSchedulerDbContext.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\HotelSchedulerDbContext.cs",
+              "RelativeToolTip": "..\\DAL\\HotelSchedulerDbContext.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-06-12T23:04:51.853Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

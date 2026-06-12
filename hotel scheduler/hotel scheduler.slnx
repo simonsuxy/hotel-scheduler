@@ -1,0 +1,6 @@
+<Solution>
+  <Project Path="../DAL/DAL.csproj" />
+  <Project Path="Hotel Scheduler.csproj">
+    <Deploy Solution="Debug|*" />
+  </Project>
+</Solution>
