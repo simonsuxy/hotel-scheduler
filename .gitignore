@@ -2,11 +2,20 @@
 bin/
 obj/
 
+# Visual Studio
+.vs/
+/hotel scheduler/.vs
+*.suo
+*.user
+*.slnx
+*.dtbcache.v2
+*.vsidx
+DocumentLayout.backup.json
+
 # VS Code
 .vscode/
-*.user
 
-# Database 
+# Database
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
@@ -20,7 +29,7 @@ secrets.json
 Thumbs.db
 desktop.ini
 
-# MAUI / Android / iOS 
+# MAUI / Android / iOS
 *.keystore
 *.jks
 platforms/android/

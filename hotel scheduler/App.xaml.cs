@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using hotel_scheduler.Views;
 
 namespace hotel_scheduler
 {

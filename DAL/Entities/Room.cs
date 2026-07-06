@@ -12,7 +12,8 @@ namespace DAL.Entities
         public RoomType Type { get; set; }
         public RoomStatus Status { get; set; } = RoomStatus.Active;
         public decimal PricePerNight { get; set; }
+        public int Capacity { get; set; }
         public string Notes { get; set; } = "";
-        public List<Reservations> Reservations { get; set; } = [];
+        public List<Reservation> Reservations { get; set; } = [];
     } 
 }
