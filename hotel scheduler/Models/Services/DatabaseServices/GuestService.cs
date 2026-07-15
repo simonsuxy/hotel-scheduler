@@ -3,34 +3,28 @@ using DAL.Entities;
 using hotel_scheduler.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace hotel_scheduler.Services.DatabaseServices
+namespace hotel_scheduler.Models.Services.DatabaseServices
 {
     // Handles all database operations for Guests.
-    public class GuestService
+    public class GuestService(HotelSchedulerDbContext db)
     {
-        private readonly HotelSchedulerDbContext _db;
-
-        public GuestService(HotelSchedulerDbContext db)
+        private readonly HotelSchedulerDbContext _db = db;
+        private static GuestDTO MapToDTO(Guest guest) => new()
         {
-            _db = db;
-        }
-
+            Id = guest.Id,
+            FirstName = guest.FirstName,
+            LastName = guest.LastName,
+            Email = guest.Email,
+            Phone = guest.Phone,
+            Address = guest.Address,
+            Notes = guest.Notes
+        };
+        
         public async Task<List<GuestDTO>> GetAllGuestsAsync()
         {
             var guests = await _db.Guests
                 .ToListAsync();
-
-            return guests.Select(g => new GuestDTO
-            {
-                Id = g.Id,
-                FirstName = g.FirstName,
-                LastName = g.LastName,
-                Email = g.Email,
-                Phone = g.Phone,
-                IdNumber = g.IdNumber,
-                Address = g.Address,
-                Notes = g.Notes
-            }).ToList();
+            return [.. guests.Select(MapToDTO)];
         }
 
         public async Task<GuestDTO?> GetGuestByIdAsync(int id)
@@ -39,18 +33,7 @@ namespace hotel_scheduler.Services.DatabaseServices
                 .FirstOrDefaultAsync(g => g.Id == id);
 
             if (g == null) return null;
-
-            return new GuestDTO
-            {
-                Id = g.Id,
-                FirstName = g.FirstName,
-                LastName = g.LastName,
-                Email = g.Email,
-                Phone = g.Phone,
-                IdNumber = g.IdNumber,
-                Address = g.Address,
-                Notes = g.Notes
-            };
+            return MapToDTO(g);
         }
 
         // Searches guests by name, email, or phone
@@ -66,18 +49,7 @@ namespace hotel_scheduler.Services.DatabaseServices
                 .OrderBy(g => g.LastName)
                 .ThenBy(g => g.FirstName)
                 .ToListAsync();
-
-            return guests.Select(g => new GuestDTO
-            {
-                Id = g.Id,
-                FirstName = g.FirstName,
-                LastName = g.LastName,
-                Email = g.Email,
-                Phone = g.Phone,
-                IdNumber = g.IdNumber,
-                Address = g.Address,
-                Notes = g.Notes
-            }).ToList();
+            return [.. guests.Select(MapToDTO)];
         }
 
         public async Task<GuestDTO> CreateAsync(string firstName, string lastName,
@@ -98,18 +70,7 @@ namespace hotel_scheduler.Services.DatabaseServices
 
             _db.Guests.Add(guest);
             await _db.SaveChangesAsync();
-
-            return new GuestDTO
-            {
-                Id = guest.Id,
-                FirstName = guest.FirstName,
-                LastName = guest.LastName,
-                Email = guest.Email,
-                Phone = guest.Phone,
-                IdNumber = guest.IdNumber,
-                Address = guest.Address,
-                Notes = guest.Notes
-            };
+            return MapToDTO(guest);
         }
 
         public async Task UpdateAsync(int id, string firstName, string lastName,
@@ -127,7 +88,6 @@ namespace hotel_scheduler.Services.DatabaseServices
             guest.IdNumber = idNumber?.Trim();
             guest.Address = address?.Trim();
             guest.Notes = notes.Trim();
-
             await _db.SaveChangesAsync();
         }
 
@@ -140,10 +100,9 @@ namespace hotel_scheduler.Services.DatabaseServices
                 .FirstOrDefaultAsync(g => g.Id == id)
                 ?? throw new InvalidOperationException("Guest not found.");
 
-            if (guest.Reservations.Any())
+            if (guest.Reservations.Count != 0)
                 throw new InvalidOperationException(
                     "Cannot delete a guest with existing reservations. Remove the reservations first.");
-
             _db.Guests.Remove(guest);
             await _db.SaveChangesAsync();
         }

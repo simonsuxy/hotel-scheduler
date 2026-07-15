@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:hotel_scheduler.ViewModels"
+             x:Class="hotel_scheduler.Views.LoginView"
+             BackgroundColor="#F0F0F0">
+
+    <Grid VerticalOptions="Center" HorizontalOptions="Center">
+        <Border WidthRequest="400"
+               Padding="40"
+               StrokeShape="RoundRectangle 12"
+               BackgroundColor="White"
+               Stroke="Transparent">
+            <Border.Shadow>
+                <Shadow Brush="#000000" Opacity="0.08" Radius="8" Offset="0,2" />
+            </Border.Shadow>
+            <VerticalStackLayout Spacing="16">
+
+                <!-- Title -->
+                <VerticalStackLayout Spacing="4">
+                    <Label Text="Login"
+                           FontSize="26"
+                           FontAttributes="Bold"
+                           TextColor="#1A1A1A"/>
+                    <Label Text="to get started"
+                           FontSize="14"
+                           TextColor="#888888"/>
+                </VerticalStackLayout>
+
+                <!-- Error message -->
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="#E53935"
+                       FontSize="13"
+                       IsVisible="{Binding HasError}"/>
+
+                <!-- Username -->
+                <Entry  Placeholder="Username"
+                        PlaceholderColor="Gray"
+                        Text="{Binding Username}"
+                        HeightRequest="48"
+                        VerticalOptions="Center" />
+
+                <!-- Password -->
+                <Entry  Placeholder="Password"
+                        PlaceholderColor="Gray"
+                        Text="{Binding Password}"
+                        IsPassword="True"                      
+                        HeightRequest="48"
+                        VerticalOptions="Center" />
+
+                <!-- Login button -->
+                <Button Text="Continue"
+                        Command="{Binding LoginCommand}"
+                        BackgroundColor="#4C4EE7"
+                        TextColor="White"
+                        CornerRadius="8"
+                        HeightRequest="48"
+                        FontAttributes="Bold"/>
+
+                <!-- Register link -->
+                <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
+                    <Label Text="New user?"
+                           TextColor="#888888"
+                           FontSize="13"
+                           VerticalOptions="Center"/>
+                    <Label Text="Register"
+                           TextColor="#4C4EE7"
+                           FontSize="13"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center">
+                        <Label.GestureRecognizers>
+                            <TapGestureRecognizer Command="{Binding GoToRegisterCommand}"/>
+                        </Label.GestureRecognizers>
+                    </Label>
+                </HorizontalStackLayout>
+
+            </VerticalStackLayout>
+        </Border>
+    </Grid>
+</ContentPage>

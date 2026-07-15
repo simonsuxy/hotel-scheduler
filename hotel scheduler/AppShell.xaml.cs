@@ -1,4 +1,6 @@
-﻿namespace hotel_scheduler
+﻿using hotel_scheduler.Views;
+
+namespace hotel_scheduler
 {
     public partial class AppShell : Shell
     {

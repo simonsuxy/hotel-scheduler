@@ -7,46 +7,48 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
 {
     // Handles all database operations for Users.
 
-    public class UserService
+    public class UserService(HotelSchedulerDbContext db)
     {
-        private readonly HotelSchedulerDbContext _db;
-        public UserService(HotelSchedulerDbContext db)
+        private readonly HotelSchedulerDbContext _db = db;
+
+        private static UserDTO MapToDTO(User user) => new()
         {
-            _db = db;
-        }
+            Id = user.Id,
+            Username = user.Username,
+            Role = user.Role,
+            IsActive = user.IsActive,
+            CreatedAt = user.CreatedAt
+        };
 
         public async Task<List<UserDTO>> GetAllUsersAsync()
         {
             var users = await _db.Users
                 .ToListAsync();
-            return users.Select(u => new UserDTO
-            {
-                Id = u.Id,
-                Username = u.Username,
-                Role = u.Role,
-                IsActive = u.IsActive,
-                CreatedAt = u.CreatedAt
-            }).ToList();
+            return [.. users.Select(MapToDTO)];
         }
 
         public async Task<UserDTO?> GetUserByIdAsync(int id)
         {
             var u = await _db.Users.FindAsync(id);
             if (u == null) return null;
-            return new UserDTO
-            {
-                Id = u.Id,
-                Username = u.Username,
-                Role = u.Role,
-                IsActive = u.IsActive,
-                CreatedAt = u.CreatedAt
-            };
+            return MapToDTO(u);
         }
 
         public async Task<bool> IsUsernameTakenAsync(string username)
             => await _db.Users.AnyAsync(u => u.Username == username.Trim().ToLower());
 
-        public async Task CreateUserAsync(string username, string password, UserRole role)
+        public async Task<UserDTO?> LoginAsync(string username,  string password)
+        {
+            var user = await _db.Users
+                .FirstOrDefaultAsync(u => u.Username == username.Trim().ToLower() && u.IsActive);
+            if (user  == null)
+                throw new InvalidOperationException("Incorrect username.");
+            if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
+                throw new InvalidOperationException("Incorrect password.");
+            return MapToDTO(user);
+        }
+
+        public async Task<UserDTO?> RegisterAsync(string username, string password, UserRole role)
         {
             if (await IsUsernameTakenAsync(username))
                 throw new InvalidOperationException($"Username '{username}' is already taken.");
@@ -60,6 +62,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             };
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
+            return MapToDTO(user);
         }
 
         public async Task UpdateUserAsync(int id, string username, UserRole role)
