@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:hotel_scheduler.ViewModels"
+             x:Class="hotel_scheduler.Views.CalendarView"
+             BackgroundColor="#F5F5F5">
+
+    <Grid RowDefinitions="Auto,*">
+
+        <!-- Top bar -->
+        <Grid Grid.Row="0"
+              ColumnDefinitions="Auto,*,Auto"
+              Padding="16,12"
+              BackgroundColor="White">
+
+            <!-- Date range picker button -->
+            <Button Grid.Column="0"
+                    x:Name="DateRangeButton"
+                    Text="{Binding DateRangeLabel}"
+                    BackgroundColor="White"
+                    TextColor="#1A1A1A"
+                    BorderColor="#E0E0E0"
+                    BorderWidth="1"
+                    CornerRadius="20"
+                    FontSize="14"
+                    Padding="16,8"
+                    Command="{Binding OpenDatePickerCommand}"/>
+
+            <!-- New reservation button -->
+            <Button Grid.Column="2"
+                    Text="New reservation"
+                    BackgroundColor="White"
+                    TextColor="#1A1A1A"
+                    BorderColor="#E0E0E0"
+                    BorderWidth="1"
+                    CornerRadius="20"
+                    FontSize="14"
+                    Padding="16,8"
+                    Command="{Binding OpenNewReservationCommand}"/>
+        </Grid>
+
+        <!-- Calendar grid — built dynamically in code-behind -->
+        <ScrollView Grid.Row="1" Orientation="Both">
+            <Grid x:Name="CalendarGrid"
+                  BackgroundColor="White"
+                  Margin="16"
+                  HorizontalOptions="Fill"
+                  VerticalOptions="Start"/>
+        </ScrollView>
+
+    </Grid>
+</ContentView>

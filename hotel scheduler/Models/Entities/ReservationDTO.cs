@@ -21,7 +21,6 @@ namespace hotel_scheduler.Models.Entities
         public DateTime CreatedAt { get; set; }
         public int Nights => (CheckOut - CheckIn).Days;
         public decimal TotalPrice { get; set; }
-
-       
+        public string Color { get; set; } = "#4C9BE8";
     }
 }

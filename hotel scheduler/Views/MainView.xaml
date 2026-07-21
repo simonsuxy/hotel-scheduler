@@ -1,13 +1,179 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:hotel_scheduler.ViewModels"
              x:Class="hotel_scheduler.Views.MainView"
-             Title="NewPage1">
-    <VerticalStackLayout>
-        <Label 
-            Text="Welcome to .NET MAUI!"
-            TextColor="Black"
-            VerticalOptions="Center" 
-            HorizontalOptions="Center" />
-    </VerticalStackLayout>
+             BackgroundColor="#F5F5F5">
+
+    <Grid ColumnDefinitions="200,*">
+        <Grid Grid.Column="0"
+              RowDefinitions="Auto,*,Auto"
+              BackgroundColor="White">
+
+            <Label Grid.Row="0"
+                   Text="{Binding HotelName}"
+                   FontSize="16"
+                   FontAttributes="Bold"
+                   TextColor="#1A1A1A"
+                   Margin="20,24,20,24"/>
+
+            <!-- Nav items -->
+            <VerticalStackLayout Grid.Row="1"
+                                 Spacing="4"
+                                 Margin="8,0">
+
+                <!-- Calendar -->
+                <Grid x:Name="CalendarNav"
+                      ColumnDefinitions="32,*"
+                      Padding="12,10"
+                      BackgroundColor="{Binding ActivePage,
+                          Converter={StaticResource ActivePageColorConverter},
+                          ConverterParameter=Calendar}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToCommand}"
+                            CommandParameter="Calendar"/>
+                    </Grid.GestureRecognizers>
+                    <Image Grid.Column="0"
+                           Source="icon_calendar.png"
+                           HeightRequest="20"
+                           WidthRequest="20"/>
+                    <Label Grid.Column="1"
+                           Text="Calendar"
+                           FontSize="14"
+                           VerticalOptions="Center"
+                           TextColor="{Binding ActivePage,
+                               Converter={StaticResource ActivePageTextColorConverter},
+                               ConverterParameter=Calendar}"/>
+                </Grid>
+
+                <!-- Guests -->
+                <Grid ColumnDefinitions="32,*"
+                      Padding="12,10"
+                      BackgroundColor="{Binding ActivePage,
+                          Converter={StaticResource ActivePageColorConverter},
+                          ConverterParameter=Guests}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToCommand}"
+                            CommandParameter="Guests"/>
+                    </Grid.GestureRecognizers>
+                    <Image Grid.Column="0"
+                           Source="icon_guests.png"
+                           HeightRequest="20"
+                           WidthRequest="20"/>
+                    <Label Grid.Column="1"
+                           Text="Guests"
+                           FontSize="14"
+                           VerticalOptions="Center"
+                           TextColor="{Binding ActivePage,
+                               Converter={StaticResource ActivePageTextColorConverter},
+                               ConverterParameter=Guests}"/>
+                </Grid>
+
+                <!-- Income -->
+                <Grid ColumnDefinitions="32,*"
+                      Padding="12,10"
+                      BackgroundColor="{Binding ActivePage,
+                          Converter={StaticResource ActivePageColorConverter},
+                          ConverterParameter=Income}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToCommand}"
+                            CommandParameter="Income"/>
+                    </Grid.GestureRecognizers>
+                    <Image Grid.Column="0"
+                           Source="icon_income.png"
+                           HeightRequest="20"
+                           WidthRequest="20"/>
+                    <Label Grid.Column="1"
+                           Text="Income"
+                           FontSize="14"
+                           VerticalOptions="Center"
+                           TextColor="{Binding ActivePage,
+                               Converter={StaticResource ActivePageTextColorConverter},
+                               ConverterParameter=Income}"/>
+                </Grid>
+
+                <!-- Users — admin only -->
+                <Grid ColumnDefinitions="32,*"
+                      Padding="12,10"
+                      IsVisible="{Binding IsAdmin}"
+                      BackgroundColor="{Binding ActivePage,
+                          Converter={StaticResource ActivePageColorConverter},
+                          ConverterParameter=Users}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToCommand}"
+                            CommandParameter="Users"/>
+                    </Grid.GestureRecognizers>
+                    <Image Grid.Column="0"
+                           Source="icon_users.png"
+                           HeightRequest="20"
+                           WidthRequest="20"/>
+                    <Label Grid.Column="1"
+                           Text="Users"
+                           FontSize="14"
+                           VerticalOptions="Center"
+                           TextColor="{Binding ActivePage,
+                               Converter={StaticResource ActivePageTextColorConverter},
+                               ConverterParameter=Users}"/>
+                </Grid>
+
+            </VerticalStackLayout>
+
+            <!-- Bottom — Settings + Logout -->
+            <VerticalStackLayout Grid.Row="2"
+                                 Spacing="4"
+                                 Margin="8,0,8,16">
+
+                <!-- Settings -->
+                <Grid ColumnDefinitions="32,*"
+                      Padding="12,10"
+                      BackgroundColor="{Binding ActivePage,
+                          Converter={StaticResource ActivePageColorConverter},
+                          ConverterParameter=Settings}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer
+                            Command="{Binding NavigateToCommand}"
+                            CommandParameter="Settings"/>
+                    </Grid.GestureRecognizers>
+                    <Image Grid.Column="0"
+                           Source="icon_settings.png"
+                           HeightRequest="20"
+                           WidthRequest="20"/>
+                    <Label Grid.Column="1"
+                           Text="Settings"
+                           FontSize="14"
+                           VerticalOptions="Center"
+                           TextColor="{Binding ActivePage,
+                               Converter={StaticResource ActivePageTextColorConverter},
+                               ConverterParameter=Settings}"/>
+                </Grid>
+
+                <!-- Logout -->
+                <Grid ColumnDefinitions="32,*"
+                      Padding="12,10">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding LogoutCommand}"/>
+                    </Grid.GestureRecognizers>
+                    <Image Grid.Column="0"
+                           Source="icon_logout.png"
+                           HeightRequest="20"
+                           WidthRequest="20"/>
+                    <Label Grid.Column="1"
+                           Text="Log out"
+                           FontSize="14"
+                           TextColor="#888888"
+                           VerticalOptions="Center"/>
+                </Grid>
+
+            </VerticalStackLayout>
+
+        </Grid>
+
+        <!-- Main content area — switches based on active page -->
+        <ContentView Grid.Column="1"
+                     Content="{Binding CurrentView}"/>
+    </Grid>
 </ContentPage>

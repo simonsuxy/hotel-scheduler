@@ -1,9 +1,22 @@
-namespace hotel_scheduler.Views;
+using hotel_scheduler.ViewModels;
 
-public partial class MainView : ContentPage
+namespace hotel_scheduler.Views
 {
-	public MainView()
-	{
-		InitializeComponent();
-	}
+    public partial class MainView : ContentPage
+    {
+        private readonly MainViewModel _viewModel;
+
+        public MainView(MainViewModel viewModel)
+        {
+            InitializeComponent();
+            _viewModel = viewModel;
+            BindingContext = viewModel;
+        }
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+            _viewModel.Initialize();
+        }
+    }
 }

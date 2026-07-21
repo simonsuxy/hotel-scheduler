@@ -7,6 +7,8 @@
     Title="hotel_scheduler">
     <ShellContent ContentTemplate="{DataTemplate views:LoginView}" Route="login"/>
     <ShellContent ContentTemplate="{DataTemplate views:RegisterView}" Route="register"/>
+    <ShellContent ContentTemplate="{DataTemplate views:CalendarView}" Route="calendar"/>
+
     <ShellContent ContentTemplate="{DataTemplate views:MainView}" Route="temp"/>
 
 

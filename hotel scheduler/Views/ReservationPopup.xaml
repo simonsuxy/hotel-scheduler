@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    xmlns:local="clr-namespace:hotel_scheduler.Models.Entities"
+    x:Class="hotel_scheduler.Views.ReservationPopup"
+    CanBeDismissedByTappingOutsideOfPopup="True"
+    HorizontalOptions="End"
+    VerticalOptions="Fill">
+
+    <Border WidthRequest="400"
+            BackgroundColor="White"
+            StrokeThickness="0"
+            VerticalOptions="Fill">
+        <ScrollView>
+            <VerticalStackLayout Padding="24" Spacing="14">
+
+                <!-- Header -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0"
+                           Text="Reservation"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#1A1A1A"
+                           VerticalOptions="Center"/>
+                    <Button Grid.Column="1"
+                            Text="X"
+                            BackgroundColor="Transparent"
+                            TextColor="#888888"
+                            FontSize="16"
+                            WidthRequest="36"
+                            HeightRequest="36"
+                            Padding="0"
+                            Clicked="OnCloseClicked"/>
+                </Grid>
+
+                <!-- Guest -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Guest" FontSize="12" TextColor="#888888"/>
+                    <Grid ColumnDefinitions="*,44" ColumnSpacing="8">
+
+                        <!-- Search entry -->
+                        <Entry Grid.Column="0"
+                               Placeholder="Search guest..."
+                               Text="{Binding GuestSearchQuery}"
+                               IsVisible="{Binding HasSelectedGuest,
+                                   Converter={StaticResource InverseBoolConverter}}"
+                               HeightRequest="44"
+                               FontSize="13"/>
+
+                        <!-- Selected guest chip -->
+                        <Border Grid.Column="0"
+                                IsVisible="{Binding HasSelectedGuest}"
+                                BackgroundColor="#F0F0FF"
+                                Stroke="#4C4EE7"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 8"
+                                Padding="10,0"
+                                HeightRequest="44">
+                            <Grid ColumnDefinitions="*,Auto">
+                                <Label Grid.Column="0"
+                                       Text="{Binding SelectedGuest.FullName}"
+                                       FontSize="13"
+                                       TextColor="#4C4EE7"
+                                       VerticalOptions="Center"/>
+                                <Label Grid.Column="1"
+                                       Text="✕"
+                                       FontSize="13"
+                                       TextColor="#4C4EE7"
+                                       VerticalOptions="Center">
+                                    <Label.GestureRecognizers>
+                                        <TapGestureRecognizer Command="{Binding ClearGuestCommand}"/>
+                                    </Label.GestureRecognizers>
+                                </Label>
+                            </Grid>
+                        </Border>
+
+                        <!-- + button -->
+                        <Border Grid.Column="1"
+                                Stroke="#E0E0E0"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 8"
+                                HeightRequest="44"
+                                WidthRequest="44">
+                            <Label Text="+"
+                                   FontSize="22"
+                                   HorizontalOptions="Center"
+                                   VerticalOptions="Center"
+                                   TextColor="#4C4EE7"/>
+                        </Border>
+                    </Grid>
+
+                    <!-- Search results -->
+                    <Border IsVisible="{Binding HasGuestResults}"
+                            Stroke="#E0E0E0"
+                            StrokeThickness="1"
+                            StrokeShape="RoundRectangle 8"
+                            BackgroundColor="White">
+                        <CollectionView ItemsSource="{Binding GuestSearchResults}"
+                                        HeightRequest="140"
+                                        SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="local:GuestDTO">
+                                    <Grid Padding="12,8">
+                                        <Grid.GestureRecognizers>
+                                            <TapGestureRecognizer
+                                                Command="{Binding Source={RelativeSource AncestorType={x:Type toolkit:Popup}},
+                                                          Path=BindingContext.SelectGuestCommand}"
+                                                CommandParameter="{Binding .}"/>
+                                        </Grid.GestureRecognizers>
+                                        <VerticalStackLayout Spacing="2">
+                                            <Label Text="{Binding FullName}"
+                                                   FontSize="13"
+                                                   TextColor="#1A1A1A"/>
+                                            <Label Text="{Binding Phone}"
+                                                   FontSize="11"
+                                                   TextColor="#888888"/>
+                                        </VerticalStackLayout>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                    </Border>
+                </VerticalStackLayout>
+
+                <!-- Room + Guest count -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <VerticalStackLayout Grid.Column="0" Spacing="5">
+                        <Label Text="Room" FontSize="12" TextColor="#888888"/>
+                        <Picker ItemsSource="{Binding Rooms}"
+                                ItemDisplayBinding="{Binding Name}"
+                                SelectedItem="{Binding SelectedRoom}"
+                                HeightRequest="44"
+                                FontSize="13"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="5">
+                        <Label Text="Guest count" FontSize="12" TextColor="#888888"/>
+                        <Entry Text="{Binding GuestCount}"
+                               Keyboard="Numeric"
+                               HeightRequest="44"
+                               FontSize="13"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Check-in + Check-out -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <VerticalStackLayout Grid.Column="0" Spacing="5">
+                        <Label Text="Check-in" FontSize="12" TextColor="#888888"/>
+                        <DatePicker Date="{Binding CheckInDate}"
+                                    HeightRequest="44"
+                                    FontSize="13"/>
+                        <Picker ItemsSource="{Binding TimeOptions}"
+                                SelectedItem="{Binding CheckInTime}"
+                                HeightRequest="40"
+                                FontSize="13"/>
+                    </VerticalStackLayout>
+
+                    <VerticalStackLayout Grid.Column="1" Spacing="5">
+                        <Label Text="Check-out" FontSize="12" TextColor="#888888"/>
+                        <DatePicker Date="{Binding CheckOutDate}"
+                                    HeightRequest="44"
+                                    FontSize="13"/>
+                        <Picker ItemsSource="{Binding TimeOptions}"
+                                SelectedItem="{Binding CheckOutTime}"
+                                HeightRequest="40"
+                                FontSize="13"/>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10" Margin="0,4,0,0">
+
+                    <!-- Reservation color -->
+                    <VerticalStackLayout Grid.Column="0" Spacing="5">
+                        <Label Text="Reservation color"
+                               FontSize="12"
+                               TextColor="#888888"/>
+                        <!-- Selected color button -->
+                        <Border Stroke="#E0E0E0"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 8"
+                                HeightRequest="44"
+                                Padding="10,0">
+                            <Border.GestureRecognizers>
+                                <TapGestureRecognizer Command="{Binding ToggleColorDropdownCommand}"/>
+                            </Border.GestureRecognizers>
+                            <Grid ColumnDefinitions="24,*,Auto">
+                                <!-- Color square -->
+                                <Border Grid.Column="0"
+                                        WidthRequest="20"
+                                        HeightRequest="20"
+                                        StrokeThickness="0"
+                                        StrokeShape="RoundRectangle 4"
+                                        BackgroundColor="{Binding SelectedColorOption.Hex}"
+                                        VerticalOptions="Center"/>
+                                <!-- Color name -->
+                                <Label Grid.Column="1"
+                                       Text="{Binding SelectedColorOption.Name}"
+                                       FontSize="13"
+                                       TextColor="#1A1A1A"
+                                       VerticalOptions="Center"
+                                       Margin="8,0,0,0"/>
+                                <!-- Chevron -->
+                                <Label Grid.Column="2"
+                                       Text="∨"
+                                       FontSize="12"
+                                       TextColor="#888888"
+                                       VerticalOptions="Center"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- Dropdown list -->
+                        <Border IsVisible="{Binding IsColorDropdownOpen}"
+                                Stroke="#E0E0E0"
+                                StrokeThickness="1"
+                                StrokeShape="RoundRectangle 8"
+                                BackgroundColor="White"
+                                ZIndex="99">
+                            <CollectionView ItemsSource="{Binding ReservationColorsOptions}"
+                                            HeightRequest="200"
+                                            SelectionMode="None">
+                                <CollectionView.ItemTemplate>
+                                    <DataTemplate x:DataType="local:ReservationColor">
+                                        <Grid Padding="10,8" ColumnDefinitions="24,*">
+                                            <Grid.GestureRecognizers>
+                                                <TapGestureRecognizer
+                                                    Command="{Binding Source={RelativeSource AncestorType={x:Type toolkit:Popup}},
+                                                              Path=BindingContext.SelectColorCommand}"
+                                                    CommandParameter="{Binding .}"/>
+                                            </Grid.GestureRecognizers>
+                                            <!-- Color square -->
+                                            <Border Grid.Column="0"
+                                                    WidthRequest="20"
+                                                    HeightRequest="20"
+                                                    StrokeThickness="0"
+                                                    StrokeShape="RoundRectangle 4"
+                                                    BackgroundColor="{Binding Hex}"
+                                                    VerticalOptions="Center"/>
+                                            <!-- Name -->
+                                            <Label Grid.Column="1"
+                                                   Text="{Binding Name}"
+                                                   FontSize="13"
+                                                   TextColor="#1A1A1A"
+                                                   VerticalOptions="Center"
+                                                   Margin="8,0,0,0"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </CollectionView.ItemTemplate>
+                            </CollectionView>
+                        </Border>
+                    </VerticalStackLayout>
+
+                    <!-- Payment status -->
+                    <VerticalStackLayout Grid.Column="1" Spacing="8">
+                        <Label Text="Payment status"
+                               FontSize="12"
+                               TextColor="#888888"/>
+                        <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                            <!-- Color square — click to cycle -->
+                            <Border WidthRequest="36"
+                                    HeightRequest="36"
+                                    StrokeShape="RoundRectangle 8"
+                                    Stroke="Transparent"
+                                    BackgroundColor="{Binding PaymentStatusColor}">
+                                <Border.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CyclePaymentStatusCommand}"/>
+                                </Border.GestureRecognizers>
+                            </Border>
+                            <!-- Current status label -->
+                            <Label Text="{Binding PaymentStatusLabel}"
+                                   FontSize="13"
+                                   TextColor="#1A1A1A"
+                                   VerticalOptions="Center">
+                                <Label.GestureRecognizers>
+                                    <TapGestureRecognizer Command="{Binding CyclePaymentStatusCommand}"/>
+                                </Label.GestureRecognizers>
+                            </Label>
+                        </HorizontalStackLayout>
+                    </VerticalStackLayout>
+                </Grid>
+
+                <!-- Notes -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Notes" FontSize="12" TextColor="#888888"/>
+                    <Editor Text="{Binding Notes}"
+                            HeightRequest="80"
+                            FontSize="13"
+                            Placeholder="Optional notes..."/>
+                </VerticalStackLayout>
+
+                <!-- Error -->
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="#E53935"
+                       FontSize="12"
+                       IsVisible="{Binding HasError}"/>
+
+                <!-- Save + Discard -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Grid.Column="0"
+                            Text="Save"
+                            BackgroundColor="White"
+                            TextColor="#1A1A1A"
+                            BorderColor="#E0E0E0"
+                            BorderWidth="1"
+                            CornerRadius="20"
+                            HeightRequest="44"
+                            Command="{Binding SaveCommand}"/>
+                    <Button Grid.Column="1"
+                            Text="Discard"
+                            BackgroundColor="White"
+                            TextColor="#E53935"
+                            BorderColor="#E53935"
+                            BorderWidth="1"
+                            CornerRadius="20"
+                            HeightRequest="44"
+                            Command="{Binding CloseCommand}"/>
+                </Grid>
+
+                <!-- Delete — edit only -->
+                <Button Text="Delete reservation"
+                        BackgroundColor="Transparent"
+                        TextColor="#E53935"
+                        FontSize="12"
+                        IsVisible="{Binding IsEditing}"
+                        Command="{Binding DeleteCommand}"/>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Border>
+</toolkit:Popup>

@@ -1,0 +1,1 @@
+Requesting file contents for MainViewModel.cs and CalendarView.xaml.cs to analyze CS0029: cannot convert CalendarView to Microsoft.Maui.Controls.View.

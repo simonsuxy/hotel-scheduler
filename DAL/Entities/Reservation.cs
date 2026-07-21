@@ -18,6 +18,7 @@ namespace DAL.Entities
         public User? CreatedByUser { get; set; }
         public int? CreatedByUserId { get; set; }
         public int Nights => (CheckOut - CheckIn).Days;
+        public string Color { get; set; } = "#4C9BE8";
 
         //Token for future API
         public string ManageToken { get; set; }

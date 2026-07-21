@@ -5,10 +5,10 @@ using hotel_scheduler.Views;
 
 namespace hotel_scheduler.ViewModels
 {
-    public partial class LoginViewModel: ObservableObject
+    public partial class LoginViewModel(AuthService authService, IServiceProvider serviceProvider) : ObservableObject
     {
-        private readonly AuthService _authService;
-        private readonly IServiceProvider _serviceProvider;
+        private readonly AuthService _authService = authService;
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
 
         [ObservableProperty]
         public partial string Username { get; set; } = "";
@@ -18,12 +18,6 @@ namespace hotel_scheduler.ViewModels
         public partial string ErrorMessage { get; set; } = "";
         [ObservableProperty]
         public partial bool HasError { get; set; } = false;
-
-        public LoginViewModel(AuthService authService, IServiceProvider serviceProvider)
-        {
-            _authService = authService;
-            _serviceProvider = serviceProvider;
-        }
 
         [RelayCommand]
         private async Task LoginAsync()
@@ -46,13 +40,13 @@ namespace hotel_scheduler.ViewModels
                 HasError = true;
                 return;
             }
-            await Shell.Current.GoToAsync("//temp");
+            Application.Current!.MainPage = _serviceProvider.GetRequiredService<MainView>();
         }
 
         [RelayCommand]
         private async Task GoToRegister()
         {
-            await Shell.Current.GoToAsync("//register");
+            Application.Current!.MainPage = _serviceProvider.GetRequiredService<RegisterView>();
         }
     }
 }
