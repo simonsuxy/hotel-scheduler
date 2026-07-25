@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="hotel_scheduler.Views.GuestPopup">
+    <Border WidthRequest="320"
+            BackgroundColor="White"
+            StrokeThickness="0"
+            VerticalOptions="Fill">
+        <ScrollView>
+            <VerticalStackLayout Padding="24" Spacing="16">
+
+                <!-- Header -->
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0"
+                           Text="New guest"
+                           FontSize="20"
+                           FontAttributes="Bold"
+                           TextColor="#1A1A1A"
+                           VerticalOptions="Center"/>
+                    <Button Grid.Column="1"
+                            Text="X"
+                            BackgroundColor="Transparent"
+                            TextColor="#888888"
+                            FontSize="16"
+                            WidthRequest="36"
+                            HeightRequest="36"
+                            Padding="0"
+                            Clicked="OnCloseClicked"/>
+                </Grid>
+
+                <BoxView HeightRequest="1" BackgroundColor="#F0F0F0"/>
+
+                <!-- First name -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="First name"
+                           FontSize="12"
+                           TextColor="#888888"/>
+                    <Entry Placeholder="First name"
+                           Text="{Binding FirstName}"
+                           HeightRequest="44"
+                           FontSize="13"/>
+                </VerticalStackLayout>
+
+                <!-- Last name -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Last name"
+                           FontSize="12"
+                           TextColor="#888888"/>
+                    <Entry Placeholder="Last name"
+                           Text="{Binding LastName}"
+                           HeightRequest="44"
+                           FontSize="13"/>
+                </VerticalStackLayout>
+
+                <!-- Optional fields -->
+                <Label Text="Optional"
+                       FontSize="12"
+                       TextColor="#AAAAAA"
+                       Margin="0,8,0,0"/>
+
+                <BoxView HeightRequest="1" BackgroundColor="#F0F0F0"/>
+
+                <!-- Phone -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Phone" FontSize="12" TextColor="#888888"/>
+                    <Entry Placeholder="Phone"
+                           Text="{Binding Phone}"
+                           Keyboard="Telephone"
+                           HeightRequest="44"
+                           FontSize="13"/>
+                </VerticalStackLayout>
+
+                <!-- Email -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Email" FontSize="12" TextColor="#888888"/>
+                    <Entry Placeholder="Email"
+                           Text="{Binding Email}"
+                           Keyboard="Email"
+                           HeightRequest="44"
+                           FontSize="13"/>
+                </VerticalStackLayout>
+
+                <!-- ID number -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="ID number" FontSize="12" TextColor="#888888"/>
+                    <Entry Placeholder="ID / Passport number"
+                           Text="{Binding IdNumber}"
+                           HeightRequest="44"
+                           FontSize="13"/>
+                </VerticalStackLayout>
+
+                <!-- Address -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Address" FontSize="12" TextColor="#888888"/>
+                    <Entry Placeholder="Address"
+                           Text="{Binding Address}"
+                           HeightRequest="44"
+                           FontSize="13"/>
+                </VerticalStackLayout>
+
+                <!-- Notes -->
+                <VerticalStackLayout Spacing="5">
+                    <Label Text="Notes" FontSize="12" TextColor="#888888"/>
+                    <Editor Placeholder="Notes..."
+                            Text="{Binding Notes}"
+                            HeightRequest="70"
+                            FontSize="13"/>
+                </VerticalStackLayout>
+
+                <!-- Error -->
+                <Label Text="{Binding ErrorMessage}"
+                       TextColor="#E53935"
+                       FontSize="12"
+                       IsVisible="{Binding HasError}"/>
+
+                <!-- Save + Cancel -->
+                <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                    <Button Grid.Column="0"
+                            Text="Save"
+                            BackgroundColor="White"
+                            TextColor="#1A1A1A"
+                            BorderColor="#E0E0E0"
+                            BorderWidth="1"
+                            CornerRadius="20"
+                            HeightRequest="44"
+                            Command="{Binding SaveCommand}"/>
+                    <Button Grid.Column="1"
+                            Text="Cancel"
+                            BackgroundColor="White"
+                            TextColor="#E53935"
+                            BorderColor="#E53935"
+                            BorderWidth="1"
+                            CornerRadius="20"
+                            HeightRequest="44"
+                            Clicked="OnCloseClicked"/>
+                </Grid>
+
+            </VerticalStackLayout>
+        </ScrollView>
+    </Border>
+</toolkit:Popup>

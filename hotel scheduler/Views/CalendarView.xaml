@@ -13,20 +13,79 @@
               Padding="16,12"
               BackgroundColor="White">
 
-            <!-- Date range picker button -->
-            <Button Grid.Column="0"
-                    x:Name="DateRangeButton"
-                    Text="{Binding DateRangeLabel}"
-                    BackgroundColor="White"
-                    TextColor="#1A1A1A"
-                    BorderColor="#E0E0E0"
-                    BorderWidth="1"
-                    CornerRadius="20"
-                    FontSize="14"
-                    Padding="16,8"
-                    Command="{Binding OpenDatePickerCommand}"/>
+            <!-- Left: date navigation -->
+            <HorizontalStackLayout Grid.Column="0" Spacing="8" VerticalOptions="Center">
 
-            <!-- New reservation button -->
+                <!-- Left arrow -->
+                <Button Text="←"
+                        BackgroundColor="White"
+                        TextColor="#1A1A1A"
+                        BorderColor="#E0E0E0"
+                        BorderWidth="1"
+                        CornerRadius="20"
+                        WidthRequest="36"
+                        HeightRequest="36"
+                        Padding="0"
+                        Command="{Binding ShiftBackwardCommand}"/>
+
+                <!-- Date range label -->
+                <Border Stroke="#E0E0E0"
+                        StrokeThickness="1"
+                        StrokeShape="RoundRectangle 20"
+                        Padding="14,8">
+                    <Border.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding OpenDatePickerCommand}"/>
+                    </Border.GestureRecognizers>
+                    <Label Text="{Binding DateRangleLabel}"
+                           FontSize="14"
+                           TextColor="#1A1A1A"
+                           VerticalOptions="Center"/>
+                </Border>
+
+                <!-- Right arrow -->
+                <Button Text="→"
+                        BackgroundColor="White"
+                        TextColor="#1A1A1A"
+                        BorderColor="#E0E0E0"
+                        BorderWidth="1"
+                        CornerRadius="20"
+                        WidthRequest="36"
+                        HeightRequest="36"
+                        Padding="0"
+                        Command="{Binding ShiftForwardCommand}"/>
+
+                <!-- Day count selector -->
+                <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
+                    <Button Text="-"
+                            BackgroundColor="White"
+                            TextColor="#1A1A1A"
+                            BorderColor="#E0E0E0"
+                            BorderWidth="1"
+                            CornerRadius="20"
+                            WidthRequest="36"
+                            HeightRequest="36"
+                            Padding="0"
+                            Command="{Binding DecreaseDaysCommand}"/>
+                    <Label Text="{Binding DayCount, StringFormat='{0} days'}"
+                           FontSize="13"
+                           TextColor="#1A1A1A"
+                           VerticalOptions="Center"
+                           MinimumWidthRequest="54"
+                           HorizontalTextAlignment="Center"/>
+                    <Button Text="+"
+                            BackgroundColor="White"
+                            TextColor="#1A1A1A"
+                            BorderColor="#E0E0E0"
+                            BorderWidth="1"
+                            CornerRadius="20"
+                            WidthRequest="36"
+                            HeightRequest="36"
+                            Padding="0"
+                            Command="{Binding IncreaseDaysCommand}"/>
+                </HorizontalStackLayout>
+            </HorizontalStackLayout>
+
+            <!-- Right: new reservation -->
             <Button Grid.Column="2"
                     Text="New reservation"
                     BackgroundColor="White"

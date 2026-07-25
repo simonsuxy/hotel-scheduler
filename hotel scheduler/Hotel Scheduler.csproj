@@ -79,6 +79,7 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.9" />
 		<!-- Explicitly add SQLitePCLRaw.lib.e_sqlite3 to ensure an updated transitive dependency is used -->
 		<PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="3.53.3" />
+		<PackageReference Include="XCalendar.Maui" Version="4.8.0" />
 	</ItemGroup>
 
 	<ItemGroup>
@@ -86,6 +87,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Views\DateRangePickerView.xaml.cs">
+	    <DependentUpon>DateRangePickerView.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Views\MainView.xaml.cs">
 	    <DependentUpon>MainView.xaml</DependentUpon>
 	  </Compile>
@@ -93,6 +97,12 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Views\CalendarView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\DateRangePickerView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Views\GuestPopup.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="Views\LoginView.xaml">

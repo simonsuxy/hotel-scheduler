@@ -8,6 +8,7 @@ namespace hotel_scheduler.Views
     public partial class CalendarView : ContentView
     {
         private readonly CalendarViewModel _viewModel;
+        private CancellationTokenSource? _buildGridDebounce;
 
         private const double RoomColumnWidth = 80;
         private const double RowHeight = 60;
@@ -26,12 +27,44 @@ namespace hotel_scheduler.Views
             _viewModel = viewModel;
             BindingContext = viewModel;
 
-            // Load data and build grid once the view is attached to the visual tree
+            _viewModel.PropertyChanged += (s, e) =>
+            {
+                if (e.PropertyName == nameof(CalendarViewModel.Reservations) ||
+                    e.PropertyName == nameof(CalendarViewModel.VisibleDates) ||
+                    e.PropertyName == nameof(CalendarViewModel.StartDate) ||
+                    e.PropertyName == nameof(CalendarViewModel.EndDate))
+                    DebouncedBuildGrid();
+            };
+
             Loaded += async (s, e) =>
             {
                 await _viewModel.InitializeAsync();
                 BuildGrid();
             };
+        }
+
+        // Debounce BuildGrid to avoid multiple calls within a short time
+        private void DebouncedBuildGrid()
+        {
+            _buildGridDebounce?.Cancel();
+            _buildGridDebounce = new CancellationTokenSource();
+            var token = _buildGridDebounce.Token;
+
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                try
+                {
+                    await Task.Delay(50, token); // Wait 50ms for more PropertyChanged events
+                    if (!token.IsCancellationRequested)
+                    {
+                        BuildGrid();
+                    }
+                }
+                catch (OperationCanceledException)
+                {
+                    // Debounce was cancelled, another call came in
+                }
+            });
         }
 
         public void BuildGrid()
@@ -170,38 +203,64 @@ namespace hotel_scheduler.Views
 
                 foreach (var res in roomReservations)
                 {
-                    var startDayIndex = dates.FindIndex(
-                        d => d.Date == res.CheckIn.Date);
-                    var endDayIndex = dates.FindIndex(
-                        d => d.Date == res.CheckOut.Date);
+                    // Skip if reservation is completely outside the visible date window
+                    if (res.CheckOut.Date < dates[0].Date || res.CheckIn.Date > dates[^1].Date)
+                        continue;
 
-                    if (startDayIndex == -1) startDayIndex = 0;
-                    if (endDayIndex == -1) endDayIndex = dates.Count - 1;
+                    // Determine target start/end dates clamped to visible boundaries
+                    var clampedStart = res.CheckIn.Date < dates[0].Date ? dates[0].Date : res.CheckIn.Date;
+                    var clampedEnd = res.CheckOut.Date > dates[^1].Date ? dates[^1].Date : res.CheckOut.Date;
 
-                    var startHalfCol = startDayIndex * 2
-                        + (res.CheckIn.Hour >= 12 ? 1 : 0);
-                    var endHalfCol = endDayIndex * 2
-                        + (res.CheckOut.Hour >= 12 ? 1 : 0);
+                    var startDayIndex = dates.FindIndex(d => d.Date == clampedStart.Date);
+                    var endDayIndex = dates.FindIndex(d => d.Date == clampedEnd.Date);
 
-                    var halfColSpan = Math.Max(1, endHalfCol - startHalfCol);
+                    if (startDayIndex == -1 || endDayIndex == -1) continue;
+
+                    // Calculate start slot index (0-based relative to date columns)
+                    int startHalfCol = startDayIndex * 2;
+                    if (res.CheckIn.Date >= dates[0].Date && res.CheckIn.Hour >= 12)
+                    {
+                        startHalfCol += 1; // Starts in PM
+                    }
+
+                    // Calculate end slot index
+                    int endHalfCol = endDayIndex * 2;
+                    if (res.CheckOut.Date <= dates[^1].Date)
+                    {
+                        // Standard checkouts happen in AM (< 12:00). 
+                        // If checkout is in PM (>= 12:00), expand to PM slot.
+                        if (res.CheckOut.Hour >= 12)
+                        {
+                            endHalfCol += 1;
+                        }
+                    }
+                    else
+                    {
+                        endHalfCol = (dates.Count * 2) - 1; // Clamp to last visible PM slot
+                    }
+
+                    // Calculate span: inclusive count of half-day cells
+                    var halfColSpan = Math.Max(1, (endHalfCol - startHalfCol) + 1);
 
                     var bar = new Border
                     {
                         BackgroundColor = Color.FromArgb(res.Color),
-                        StrokeShape = new RoundRectangle
-                        {
-                            CornerRadius = new CornerRadius(20)
-                        },
-                        Padding = new Thickness(10, 0),
-                        Margin = new Thickness(2, 10),
-                        VerticalOptions = LayoutOptions.Center,
+                        StrokeShape = new RoundRectangle { CornerRadius = 8 },
+                        // Adjust padding: Top/Bottom set to 0, Left set to 14 to shift text inward
+                        Padding = new Thickness(14, 0, 10, 0),
+                        // Reduced vertical margin from 6 to 2 so the bar fills almost the full row height (60px)
+                        Margin = new Thickness(1, 2),
+                        VerticalOptions = LayoutOptions.Fill, // Stretches bar vertically across the row
                         Content = new Label
                         {
                             Text = res.GuestName,
                             TextColor = Colors.White,
-                            FontSize = 11,
+                            FontSize = 12,
+                            FontAttributes = FontAttributes.Bold,
                             VerticalTextAlignment = TextAlignment.Center,
-                            LineBreakMode = LineBreakMode.TailTruncation
+                            LineBreakMode = LineBreakMode.TailTruncation,
+                            // Margin shifts the text position inside the frame further right if needed
+                            Margin = new Thickness(4, 0, 0, 0)
                         }
                     };
 

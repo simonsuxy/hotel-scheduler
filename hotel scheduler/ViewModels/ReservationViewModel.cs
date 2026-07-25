@@ -120,7 +120,8 @@ namespace hotel_scheduler.ViewModels
             {
                 CheckIn = chosenTime.Value.Date;
                 CheckInTime = chosenTime.Value.Hour >= 12 ? "PM" : "AM";
-                CheckOut = chosenTime.Value.Date.AddDays(1);
+                CheckOut = chosenTime.Value.Date.AddDays(2);
+                CheckOutTime = "AM";
             }
         }
 
@@ -130,21 +131,32 @@ namespace hotel_scheduler.ViewModels
             IsEditing = true;
             _editingReservationId = reservation.Id;
             SelectedRoom = Rooms.FirstOrDefault(r => r.Id == reservation.RoomId);
-            CheckIn = reservation.CheckIn.Date;
-            CheckInTime = reservation.CheckIn.Hour >= 12 ? "PM" : "AM";
-            CheckOut = reservation.CheckOut.Date;
-            CheckOutTime = reservation.CheckOut.Hour >= 12 ? "PM" : "AM";
             GuestCount = reservation.GuestCount;
-            SelectedColorOption = ReservationColorsOptions.FirstOrDefault(c => c.Hex == reservation.Color)
-                                    ?? ReservationColorsOptions.First();
+            SelectedColorOption = ReservationColorsOptions
+                .FirstOrDefault(c => c.Hex == reservation.Color)
+                ?? ReservationColorsOptions.First();
             PaymentStatus = reservation.PaymentStatus;
             Notes = reservation.Notes;
+            CheckInTime = reservation.CheckIn.Hour >= 12 ? "PM" : "AM";
+            CheckOutTime = reservation.CheckOut.Hour >= 12 ? "PM" : "AM";
+
+            // Force DatePicker to update on main thread after a brief delay
+            await MainThread.InvokeOnMainThreadAsync(async () =>
+            {
+                await Task.Delay(50);
+                CheckIn = reservation.CheckIn.Date;
+                CheckOut = reservation.CheckOut.Date;
+            });
+
             var guest = await _guestService.GetGuestByIdAsync(reservation.GuestId);
             if (guest != null)
             {
                 SelectedGuest = guest;
                 OnPropertyChanged(nameof(HasSelectedGuest));
             }
+
+            OnPropertyChanged(nameof(PaymentStatusColor));
+            OnPropertyChanged(nameof(PaymentStatusLabel));
         }
 
         public void SetRooms(IEnumerable<RoomDTO> rooms)
@@ -222,8 +234,8 @@ namespace hotel_scheduler.ViewModels
                 HasError = true;
                 return;
             }
-             var checkIn = CheckIn.AddHours(CheckInTime == "PM" ? 14 : 8);
-             var checkOut = CheckOut.AddHours(CheckOutTime == "PM" ? 14 : 8);
+            var checkIn = CheckIn.Date.AddHours(CheckInTime == "PM" ? 14 : 8);
+            var checkOut = CheckOut.Date.AddHours(CheckOutTime == "PM" ? 14 : 8);
             try
             {
                 if (IsEditing && _editingReservationId.HasValue)

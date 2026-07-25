@@ -58,13 +58,15 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             return overlappingReservations.Select(MapToDTO).ToList();
         }
 
-        private async Task<bool> IsRoomAvailable(int roomId, DateTime checkIn, DateTime checkOut)
+        private async Task<bool> IsRoomAvailable(int roomId, DateTime checkIn, DateTime checkOut, int? excludeReservationId = null)
         {
-            bool hasOverlap = await _db.Reservations
-                 .AnyAsync(r => r.RoomId == roomId
-                             && r.CheckIn < checkOut
-                             && r.CheckOut > checkIn);
-            return !hasOverlap;
+            return !await _db.Reservations
+                .Where(r => r.RoomId == roomId
+                     && r.CheckIn < checkOut
+                     && r.CheckOut > checkIn
+                     // Exclude the current reservation being edited
+                     && (excludeReservationId == null || r.Id != excludeReservationId))
+                .AnyAsync();
         }
 
         public async Task<ReservationDTO> CreateReservationAsync(int roomId, int guestId, DateTime checkIn,
@@ -90,7 +92,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
                 GuestCount = guestCount,
                 Notes = notes,
                 Color = color,
-                CreatedAt = DateTime.UtcNow
+                CreatedAt = DateTime.Now
             };
             _db.Reservations.Add(reservation);
             await _db.SaveChangesAsync();
@@ -109,7 +111,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
                 throw new InvalidOperationException("Guest count must be at least 1.");
             var reservation = await _db.Reservations.FindAsync(id)
                 ?? throw new InvalidOperationException("Reservation not found.");
-            if (!await IsRoomAvailable(roomId, checkIn, checkOut))
+            if (!await IsRoomAvailable(roomId, checkIn, checkOut, id))
                 throw new InvalidOperationException("Room is not available for selected dates");
             reservation.RoomId = roomId;
             reservation.GuestId = guestId;

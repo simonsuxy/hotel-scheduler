@@ -7,6 +7,7 @@ using hotel_scheduler.ViewModels;
 using hotel_scheduler.Views;
 using Microsoft.Extensions.Logging;
 
+
 namespace hotel_scheduler
 {
     public static class MauiProgram
@@ -34,9 +35,12 @@ namespace hotel_scheduler
             // ViewModels
             builder.Services.AddTransient<LoginViewModel>();
             builder.Services.AddTransient<RegisterViewModel>();
-            builder.Services.AddTransient<CalendarViewModel>();
+            builder.Services.AddSingleton<CalendarViewModel>();  // Changed to Singleton to preserve state across view recreations
             builder.Services.AddTransient<MainViewModel>();
             builder.Services.AddTransient<ReservationViewModel>();
+            builder.Services.AddTransient<GuestPopupViewModel>();
+            builder.Services.AddTransient<DateRangePickerViewModel>();
+
 
 
             // Views
@@ -44,6 +48,8 @@ namespace hotel_scheduler
             builder.Services.AddTransient<RegisterView>();
             builder.Services.AddTransient<CalendarView>();
             builder.Services.AddTransient<ReservationPopup>();
+            builder.Services.AddTransient<GuestPopup>();
+            builder.Services.AddTransient<DateRangePickerPopup>();
             builder.Services.AddTransient<MainView>();
 #if DEBUG
             builder.Logging.AddDebug();

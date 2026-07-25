@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<toolkit:Popup
+    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+    x:Class="hotel_scheduler.Views.DateRangePickerPopup"
+    CanBeDismissedByTappingOutsideOfPopup="True"
+    HorizontalOptions="Center"
+    VerticalOptions="Center">
+
+    <Border WidthRequest="340"
+            BackgroundColor="White"
+            StrokeThickness="0"
+            StrokeShape="RoundRectangle 16"
+            Padding="24">
+        <VerticalStackLayout Spacing="16">
+
+            <!-- Header -->
+            <Grid ColumnDefinitions="*,Auto">
+                <Label Grid.Column="0"
+                       Text="Select date range"
+                       FontSize="18"
+                       FontAttributes="Bold"
+                       TextColor="#1A1A1A"
+                       VerticalOptions="Center"/>
+                <Button Grid.Column="1"
+                        Text="X"
+                        BackgroundColor="Transparent"
+                        TextColor="#888888"
+                        FontSize="16"
+                        WidthRequest="36"
+                        HeightRequest="36"
+                        Padding="0"
+                        Clicked="OnCloseClicked"/>
+            </Grid>
+
+            <BoxView HeightRequest="1" BackgroundColor="#F0F0F0"/>
+
+            <!-- Start date -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="Start date"
+                       FontSize="12"
+                       TextColor="#888888"/>
+                <DatePicker Date="{Binding SelectedStartDate, Mode=TwoWay}"
+                            HeightRequest="44"
+                            FontSize="13"/>
+            </VerticalStackLayout>
+
+            <!-- End date -->
+            <VerticalStackLayout Spacing="5">
+                <Label Text="End date"
+                       FontSize="12"
+                       TextColor="#888888"/>
+                <DatePicker Date="{Binding SelectedEndDate, Mode=TwoWay}"
+                            HeightRequest="44"
+                            FontSize="13"/>
+            </VerticalStackLayout>
+
+            <!-- Day count indicator -->
+            <Border BackgroundColor="#F5F5F5"
+                    StrokeThickness="0"
+                    StrokeShape="RoundRectangle 8"
+                    Padding="12,10">
+                <Grid ColumnDefinitions="*,Auto">
+                    <Label Grid.Column="0"
+                           Text="{Binding DayCountLabel}"
+                           FontSize="13"
+                           TextColor="#1A1A1A"
+                           VerticalOptions="Center"/>
+                    <Label Grid.Column="1"
+                           Text="{Binding DayCountLabel}"
+                           FontSize="12"
+                           TextColor="{Binding DayCountColor}"
+                           FontAttributes="Bold"
+                           VerticalOptions="Center"
+                           IsVisible="False"/>
+                    <!-- Range indicator bar -->
+                    <BoxView Grid.Column="1"
+                             WidthRequest="10"
+                             HeightRequest="10"
+                             CornerRadius="5"
+                             BackgroundColor="{Binding DayCountColor}"
+                             VerticalOptions="Center"/>
+                </Grid>
+            </Border>
+
+            <!-- Error -->
+            <Label Text="{Binding ErrorMessage}"
+                   TextColor="#E53935"
+                   FontSize="12"
+                   IsVisible="{Binding HasError}"/>
+
+            <!-- Hint -->
+            <Label Text="Minimum 5 days · Maximum 28 days"
+                   FontSize="11"
+                   TextColor="#AAAAAA"
+                   HorizontalTextAlignment="Center"/>
+
+            <!-- Confirm + Cancel -->
+            <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                <Button Grid.Column="0"
+                        Text="Cancel"
+                        BackgroundColor="White"
+                        TextColor="#888888"
+                        BorderColor="#E0E0E0"
+                        BorderWidth="1"
+                        CornerRadius="20"
+                        HeightRequest="44"
+                        Clicked="OnCloseClicked"/>
+                <Button Grid.Column="1"
+                        Text="Confirm"
+                        BackgroundColor="#4C4EE7"
+                        TextColor="White"
+                        CornerRadius="20"
+                        HeightRequest="44"
+                        Command="{Binding ConfirmCommand}"/>
+            </Grid>
+
+        </VerticalStackLayout>
+    </Border>
+</toolkit:Popup>
