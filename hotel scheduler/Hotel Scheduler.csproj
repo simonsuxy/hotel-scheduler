@@ -79,7 +79,6 @@
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="10.0.9" />
 		<!-- Explicitly add SQLitePCLRaw.lib.e_sqlite3 to ensure an updated transitive dependency is used -->
 		<PackageReference Include="SQLitePCLRaw.lib.e_sqlite3" Version="3.53.3" />
-		<PackageReference Include="XCalendar.Maui" Version="4.8.0" />
 	</ItemGroup>
 
 	<ItemGroup>

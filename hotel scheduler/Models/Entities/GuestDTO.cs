@@ -15,5 +15,6 @@ namespace hotel_scheduler.Models.Entities
         public string? Address { get; set; }
         public string Notes { get; set; } = "";
         public string FullName => $"{FirstName} {LastName}";
+        public List<ReservationDTO> Reservations { get; set; } = [];
     }
 }

@@ -17,7 +17,15 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             Email = guest.Email,
             Phone = guest.Phone,
             Address = guest.Address,
-            Notes = guest.Notes
+            Notes = guest.Notes,
+            Reservations = guest.Reservations.Select(r => new ReservationDTO
+            {
+                Id = r.Id,
+                RoomId = r.RoomId,
+                CheckIn = r.CheckIn,
+                CheckOut = r.CheckOut,
+                PaymentStatus = r.PaymentStatus
+            }).ToList()
         };
         
         public async Task<List<GuestDTO>> GetAllGuestsAsync()
