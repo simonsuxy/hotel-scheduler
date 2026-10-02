@@ -9,6 +9,39 @@
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary>
                     <toolkit:InvertedBoolConverter x:Key="InverseBoolConverter"/>
+
+                    <!-- Global control styles -->
+                    <Style TargetType="Entry">
+                        <Setter Property="TextColor" Value="#1A1A1A"/>
+                        <Setter Property="PlaceholderColor" Value="#AAAAAA"/>
+                        <Setter Property="BackgroundColor" Value="Transparent"/>
+                    </Style>
+
+                    <Style TargetType="Editor">
+                        <Setter Property="TextColor" Value="#1A1A1A"/>
+                        <Setter Property="PlaceholderColor" Value="#AAAAAA"/>
+                        <Setter Property="BackgroundColor" Value="Transparent"/>
+                    </Style>
+
+                    <Style TargetType="Picker">
+                        <Setter Property="TextColor" Value="#1A1A1A"/>
+                        <Setter Property="TitleColor" Value="#AAAAAA"/>
+                        <Setter Property="BackgroundColor" Value="Transparent"/>
+                    </Style>
+
+                    <Style TargetType="DatePicker">
+                        <Setter Property="TextColor" Value="#1A1A1A"/>
+                        <Setter Property="BackgroundColor" Value="Transparent"/>
+                    </Style>
+
+                    <Style TargetType="Label">
+                        <Setter Property="TextColor" Value="#1A1A1A"/>
+                    </Style>
+
+                    <Style TargetType="Button">
+                        <Setter Property="TextColor" Value="#1A1A1A"/>
+                    </Style>
+
                 </ResourceDictionary>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>

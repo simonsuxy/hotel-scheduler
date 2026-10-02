@@ -77,18 +77,18 @@
                         </Border>
 
                         <!-- + button -->
-                        <Border Grid.Column="1"
-                                Stroke="#E0E0E0"
-                                StrokeThickness="1"
-                                StrokeShape="RoundRectangle 8"
+                        <Button Grid.Column="1"
+                                Text="+"
+                                FontSize="22"
+                                TextColor="#4C4EE7"
+                                BackgroundColor="White"
+                                BorderColor="#E0E0E0"
+                                BorderWidth="1"
+                                CornerRadius="8"
                                 HeightRequest="44"
-                                WidthRequest="44">
-                            <Label Text="+"
-                                   FontSize="22"
-                                   HorizontalOptions="Center"
-                                   VerticalOptions="Center"
-                                   TextColor="#4C4EE7"/>
-                        </Border>
+                                WidthRequest="44"
+                                Padding="0"
+                                Command="{Binding OpenGuestPopupCommand}"/>
                     </Grid>
 
                     <!-- Search results -->
@@ -148,7 +148,7 @@
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                     <VerticalStackLayout Grid.Column="0" Spacing="5">
                         <Label Text="Check-in" FontSize="12" TextColor="#888888"/>
-                        <DatePicker Date="{Binding CheckInDate}"
+                        <DatePicker Date="{Binding CheckIn}"
                                     HeightRequest="44"
                                     FontSize="13"/>
                         <Picker ItemsSource="{Binding TimeOptions}"
@@ -159,7 +159,7 @@
 
                     <VerticalStackLayout Grid.Column="1" Spacing="5">
                         <Label Text="Check-out" FontSize="12" TextColor="#888888"/>
-                        <DatePicker Date="{Binding CheckOutDate}"
+                        <DatePicker Date="{Binding CheckOut}"
                                     HeightRequest="44"
                                     FontSize="13"/>
                         <Picker ItemsSource="{Binding TimeOptions}"

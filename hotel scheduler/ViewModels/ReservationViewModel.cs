@@ -5,14 +5,19 @@ using hotel_scheduler.Models.Entities;
 using hotel_scheduler.Models.Services;
 using hotel_scheduler.Models.Services.DatabaseServices;
 using System.Collections.ObjectModel;
+using CommunityToolkit.Maui.Extensions;
+using hotel_scheduler.Views;
+
+
 
 namespace hotel_scheduler.ViewModels
 {
-    public partial class ReservationViewModel(ReservationService reservationService, GuestService guestService, AuthService authService): ObservableObject
+    public partial class ReservationViewModel(ReservationService reservationService, GuestService guestService, AuthService authService, GuestPopupViewModel guestPopupViewModel): ObservableObject
     {
         private readonly ReservationService _reservationService = reservationService;
         private readonly GuestService _guestService = guestService;
         private readonly AuthService _authService = authService;
+        private readonly GuestPopupViewModel _guestPopupViewModel = guestPopupViewModel;
 
         public Action? OnSaved { get; set; }
         private int? _editingReservationId = null;
@@ -279,7 +284,7 @@ namespace hotel_scheduler.ViewModels
         }
 
         private void ResetPopup()
-        {            
+        {
             SelectedGuest = null;
             SelectedRoom = null;
             GuestSearchQuery = "";
@@ -301,6 +306,22 @@ namespace hotel_scheduler.ViewModels
             OnPropertyChanged(nameof(PaymentStatusColor));
             OnPropertyChanged(nameof(PaymentStatusLabel));
         }
+
+        [RelayCommand]
+        private async Task OpenGuestPopupAsync()
+        {
+            _guestPopupViewModel.InitializeGuestPopup(GuestSearchQuery);
+            _guestPopupViewModel.OnGuestCreated = (guest) =>
+            {
+                SelectedGuest = guest;
+                OnPropertyChanged(nameof(HasSelectedGuest));
+                GuestSearchQuery = "";
+                GuestSearchResults.Clear();
+            };
+            var popup = new GuestPopup(_guestPopupViewModel);
+            await Application.Current!.MainPage.ShowPopupAsync(popup);
+        }
+
 
         [RelayCommand]
         private void Close()

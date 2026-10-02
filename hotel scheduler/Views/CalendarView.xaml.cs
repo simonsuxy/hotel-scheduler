@@ -8,18 +8,15 @@ namespace hotel_scheduler.Views
     public partial class CalendarView : ContentView
     {
         private readonly CalendarViewModel _viewModel;
-        private CancellationTokenSource? _buildGridDebounce;
 
         private const double RoomColumnWidth = 80;
         private const double RowHeight = 60;
         private const double HeaderHeight = 48;
         private const double SubHeaderHeight = 28;
 
-        public static readonly List<string> ReservationColors =
-        [
-            "#4C9BE8", "#56C596", "#F4A261", "#E76F51",
-            "#A78BFA", "#F472B6", "#38BDF8", "#FBBF24"
-        ];
+        // Track whether structure needs full rebuild
+        private int _lastDayCount = 0;
+        private int _lastRoomCount = 0;
 
         public CalendarView(CalendarViewModel viewModel)
         {
@@ -29,11 +26,14 @@ namespace hotel_scheduler.Views
 
             _viewModel.PropertyChanged += (s, e) =>
             {
-                if (e.PropertyName == nameof(CalendarViewModel.Reservations) ||
-                    e.PropertyName == nameof(CalendarViewModel.VisibleDates) ||
-                    e.PropertyName == nameof(CalendarViewModel.StartDate) ||
-                    e.PropertyName == nameof(CalendarViewModel.EndDate))
-                    DebouncedBuildGrid();
+                // Full rebuild when dates or rooms change
+                if (e.PropertyName == nameof(CalendarViewModel.StartDate) ||
+                    e.PropertyName == nameof(CalendarViewModel.VisibleDates))
+                    MainThread.BeginInvokeOnMainThread(BuildGrid);
+
+                // Bars only when reservations change
+                else if (e.PropertyName == nameof(CalendarViewModel.Reservations))
+                    MainThread.BeginInvokeOnMainThread(BuildReservationBars);
             };
 
             Loaded += async (s, e) =>
@@ -43,30 +43,7 @@ namespace hotel_scheduler.Views
             };
         }
 
-        // Debounce BuildGrid to avoid multiple calls within a short time
-        private void DebouncedBuildGrid()
-        {
-            _buildGridDebounce?.Cancel();
-            _buildGridDebounce = new CancellationTokenSource();
-            var token = _buildGridDebounce.Token;
-
-            MainThread.BeginInvokeOnMainThread(async () =>
-            {
-                try
-                {
-                    await Task.Delay(50, token); // Wait 50ms for more PropertyChanged events
-                    if (!token.IsCancellationRequested)
-                    {
-                        BuildGrid();
-                    }
-                }
-                catch (OperationCanceledException)
-                {
-                    // Debounce was cancelled, another call came in
-                }
-            });
-        }
-
+        // Full rebuild — structure + bars
         public void BuildGrid()
         {
             CalendarGrid.Children.Clear();
@@ -75,8 +52,11 @@ namespace hotel_scheduler.Views
 
             var dates = _viewModel.VisibleDates;
             var rooms = _viewModel.Rooms.ToList();
-            var reservations = _viewModel.Reservations.ToList();
 
+            _lastDayCount = dates.Count;
+            _lastRoomCount = rooms.Count;
+
+            // Column definitions
             CalendarGrid.ColumnDefinitions.Add(
                 new ColumnDefinition { Width = RoomColumnWidth });
 
@@ -84,19 +64,18 @@ namespace hotel_scheduler.Views
                 CalendarGrid.ColumnDefinitions.Add(
                     new ColumnDefinition { Width = GridLength.Star });
 
-            CalendarGrid.RowDefinitions.Add(
-                new RowDefinition { Height = HeaderHeight });
-            CalendarGrid.RowDefinitions.Add(
-                new RowDefinition { Height = SubHeaderHeight });
+            // Row definitions
+            CalendarGrid.RowDefinitions.Add(new RowDefinition { Height = HeaderHeight });
+            CalendarGrid.RowDefinitions.Add(new RowDefinition { Height = SubHeaderHeight });
             foreach (var _ in rooms)
-                CalendarGrid.RowDefinitions.Add(
-                    new RowDefinition { Height = RowHeight });
+                CalendarGrid.RowDefinitions.Add(new RowDefinition { Height = RowHeight });
 
+            // Date headers
             for (int i = 0; i < dates.Count; i++)
             {
                 var date = dates[i];
                 var isToday = date.Date == DateTime.Today;
-                var dateColumn = 1 + (i * 2);
+                var dateCol = 1 + (i * 2);
 
                 var dateLabel = new Label
                 {
@@ -107,12 +86,10 @@ namespace hotel_scheduler.Views
                     TextColor = isToday
                         ? Color.FromArgb("#4C4EE7")
                         : Color.FromArgb("#888888"),
-                    FontAttributes = isToday
-                        ? FontAttributes.Bold
-                        : FontAttributes.None
+                    FontAttributes = isToday ? FontAttributes.Bold : FontAttributes.None
                 };
                 CalendarGrid.SetRow(dateLabel, 0);
-                CalendarGrid.SetColumn(dateLabel, dateColumn);
+                CalendarGrid.SetColumn(dateLabel, dateCol);
                 CalendarGrid.SetColumnSpan(dateLabel, 2);
                 CalendarGrid.Children.Add(dateLabel);
 
@@ -125,7 +102,7 @@ namespace hotel_scheduler.Views
                     TextColor = Color.FromArgb("#AAAAAA")
                 };
                 CalendarGrid.SetRow(amLabel, 1);
-                CalendarGrid.SetColumn(amLabel, dateColumn);
+                CalendarGrid.SetColumn(amLabel, dateCol);
                 CalendarGrid.Children.Add(amLabel);
 
                 var pmLabel = new Label
@@ -137,7 +114,7 @@ namespace hotel_scheduler.Views
                     TextColor = Color.FromArgb("#AAAAAA")
                 };
                 CalendarGrid.SetRow(pmLabel, 1);
-                CalendarGrid.SetColumn(pmLabel, dateColumn + 1);
+                CalendarGrid.SetColumn(pmLabel, dateCol + 1);
                 CalendarGrid.Children.Add(pmLabel);
 
                 var separator = new BoxView
@@ -147,11 +124,12 @@ namespace hotel_scheduler.Views
                     HorizontalOptions = LayoutOptions.Start
                 };
                 CalendarGrid.SetRow(separator, 0);
-                CalendarGrid.SetColumn(separator, dateColumn);
+                CalendarGrid.SetColumn(separator, dateCol);
                 CalendarGrid.SetRowSpan(separator, 2 + rooms.Count);
                 CalendarGrid.Children.Add(separator);
             }
 
+            // Room rows — label, separator, cells
             for (int rowIndex = 0; rowIndex < rooms.Count; rowIndex++)
             {
                 var room = rooms[rowIndex];
@@ -183,74 +161,94 @@ namespace hotel_scheduler.Views
 
                 for (int i = 0; i < dates.Count; i++)
                 {
-                    var date = dates[i];
                     var capturedRoom = room;
+                    var amDate = dates[i].AddHours(8);
+                    var pmDate = dates[i].AddHours(14);
 
-                    var amDate = date.AddHours(8);
                     var amCell = MakeCell(capturedRoom, amDate);
                     CalendarGrid.SetRow(amCell, gridRow);
                     CalendarGrid.SetColumn(amCell, 1 + (i * 2));
                     CalendarGrid.Children.Add(amCell);
 
-                    var pmDate = date.AddHours(14);
                     var pmCell = MakeCell(capturedRoom, pmDate);
                     CalendarGrid.SetRow(pmCell, gridRow);
                     CalendarGrid.SetColumn(pmCell, 1 + (i * 2) + 1);
                     CalendarGrid.Children.Add(pmCell);
                 }
+            }
+
+            // Draw bars after structure is built
+            BuildReservationBars();
+        }
+
+        // Only redraws bars — removes old bars and redraws new ones
+        // without touching the grid structure (columns, rows, headers, cells)
+        public void BuildReservationBars()
+        {
+            var dates = _viewModel.VisibleDates;
+            var rooms = _viewModel.Rooms.ToList();
+            var reservations = _viewModel.Reservations.ToList();
+
+            // If structure changed since last build, do a full rebuild instead
+            if (dates.Count != _lastDayCount || rooms.Count != _lastRoomCount)
+            {
+                BuildGrid();
+                return;
+            }
+
+            // Remove only existing bar elements — identified by tag
+            var barsToRemove = CalendarGrid.Children
+                .OfType<Border>()
+                .Where(v => v.ClassId == "reservation-bar")
+                .ToList();
+
+            foreach (var bar in barsToRemove)
+                CalendarGrid.Children.Remove(bar);
+
+            // Redraw bars
+            for (int rowIndex = 0; rowIndex < rooms.Count; rowIndex++)
+            {
+                var room = rooms[rowIndex];
+                var gridRow = rowIndex + 2;
 
                 var roomReservations = reservations.Where(r => r.RoomId == room.Id);
 
                 foreach (var res in roomReservations)
                 {
-                    // Skip if reservation is completely outside the visible date window
-                    if (res.CheckOut.Date < dates[0].Date || res.CheckIn.Date > dates[^1].Date)
-                        continue;
+                    if (res.CheckOut.Date < dates[0].Date ||
+                        res.CheckIn.Date > dates[^1].Date) continue;
 
-                    // Determine target start/end dates clamped to visible boundaries
-                    var clampedStart = res.CheckIn.Date < dates[0].Date ? dates[0].Date : res.CheckIn.Date;
-                    var clampedEnd = res.CheckOut.Date > dates[^1].Date ? dates[^1].Date : res.CheckOut.Date;
+                    var clampedStart = res.CheckIn.Date < dates[0].Date
+                        ? dates[0].Date : res.CheckIn.Date;
+                    var clampedEnd = res.CheckOut.Date > dates[^1].Date
+                        ? dates[^1].Date : res.CheckOut.Date;
 
                     var startDayIndex = dates.FindIndex(d => d.Date == clampedStart.Date);
                     var endDayIndex = dates.FindIndex(d => d.Date == clampedEnd.Date);
 
                     if (startDayIndex == -1 || endDayIndex == -1) continue;
 
-                    // Calculate start slot index (0-based relative to date columns)
                     int startHalfCol = startDayIndex * 2;
                     if (res.CheckIn.Date >= dates[0].Date && res.CheckIn.Hour >= 12)
-                    {
-                        startHalfCol += 1; // Starts in PM
-                    }
+                        startHalfCol++;
 
-                    // Calculate end slot index
                     int endHalfCol = endDayIndex * 2;
-                    if (res.CheckOut.Date <= dates[^1].Date)
-                    {
-                        // Standard checkouts happen in AM (< 12:00). 
-                        // If checkout is in PM (>= 12:00), expand to PM slot.
-                        if (res.CheckOut.Hour >= 12)
-                        {
-                            endHalfCol += 1;
-                        }
-                    }
-                    else
-                    {
-                        endHalfCol = (dates.Count * 2) - 1; // Clamp to last visible PM slot
-                    }
+                    if (res.CheckOut.Date <= dates[^1].Date && res.CheckOut.Hour >= 12)
+                        endHalfCol++;
+                    else if (res.CheckOut.Date > dates[^1].Date)
+                        endHalfCol = (dates.Count * 2) - 1;
 
-                    // Calculate span: inclusive count of half-day cells
                     var halfColSpan = Math.Max(1, (endHalfCol - startHalfCol) + 1);
 
                     var bar = new Border
                     {
+                        // Tag so we can find and remove bars without touching other elements
+                        ClassId = "reservation-bar",
                         BackgroundColor = Color.FromArgb(res.Color),
                         StrokeShape = new RoundRectangle { CornerRadius = 8 },
-                        // Adjust padding: Top/Bottom set to 0, Left set to 14 to shift text inward
                         Padding = new Thickness(14, 0, 10, 0),
-                        // Reduced vertical margin from 6 to 2 so the bar fills almost the full row height (60px)
                         Margin = new Thickness(1, 2),
-                        VerticalOptions = LayoutOptions.Fill, // Stretches bar vertically across the row
+                        VerticalOptions = LayoutOptions.Fill,
                         Content = new Label
                         {
                             Text = res.GuestName,
@@ -259,7 +257,6 @@ namespace hotel_scheduler.Views
                             FontAttributes = FontAttributes.Bold,
                             VerticalTextAlignment = TextAlignment.Center,
                             LineBreakMode = LineBreakMode.TailTruncation,
-                            // Margin shifts the text position inside the frame further right if needed
                             Margin = new Thickness(4, 0, 0, 0)
                         }
                     };
@@ -280,15 +277,10 @@ namespace hotel_scheduler.Views
 
         private ContentView MakeCell(RoomDTO room, DateTime dateTime)
         {
-            var cell = new ContentView
-            {
-                BackgroundColor = Colors.Transparent
-            };
-
+            var cell = new ContentView { BackgroundColor = Colors.Transparent };
             var tap = new TapGestureRecognizer();
             tap.Tapped += (s, e) =>
-                _viewModel.OpenNewReservationFromCellCommand
-                    .Execute((room, dateTime));
+                _viewModel.OpenNewReservationFromCellCommand.Execute((room, dateTime));
             cell.GestureRecognizers.Add(tap);
             return cell;
         }
