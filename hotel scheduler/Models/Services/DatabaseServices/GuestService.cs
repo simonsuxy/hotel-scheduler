@@ -31,6 +31,10 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         public async Task<List<GuestDTO>> GetAllGuestsAsync()
         {
             var guests = await _db.Guests
+                .Include(g => g.Reservations)
+                .ThenInclude(r => r.Room)
+                .OrderBy(g => g.LastName)
+                .ThenBy(g => g.FirstName)
                 .ToListAsync();
             return [.. guests.Select(MapToDTO)];
         }

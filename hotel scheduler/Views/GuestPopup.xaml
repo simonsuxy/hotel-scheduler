@@ -16,7 +16,7 @@
         <ScrollView>
             <VerticalStackLayout Padding="24" Spacing="16">
 
-                <!-- Header — title changes based on mode -->
+                <!-- Header -->
                 <Grid ColumnDefinitions="*,Auto">
                     <Label Grid.Column="0"
                            FontSize="20"
@@ -46,7 +46,7 @@
 
                 <BoxView HeightRequest="1" BackgroundColor="#F0F0F0"/>
 
-                <!-- First + Last name side by side -->
+                <!-- First + Last name -->
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                     <VerticalStackLayout Grid.Column="0" Spacing="5">
                         <Label Text="First name" FontSize="12" TextColor="#888888"/>
@@ -64,11 +64,8 @@
                     </VerticalStackLayout>
                 </Grid>
 
-                <!-- Optional section -->
-                <Label Text="Optional"
-                       FontSize="12"
-                       TextColor="#AAAAAA"
-                       Margin="0,4,0,0"/>
+                <!-- Optional -->
+                <Label Text="Optional" FontSize="12" TextColor="#AAAAAA" Margin="0,4,0,0"/>
                 <BoxView HeightRequest="1" BackgroundColor="#F0F0F0"/>
 
                 <!-- Phone + Email -->
@@ -124,36 +121,52 @@
                     <Label Text="Reservations"
                            FontSize="12"
                            TextColor="#888888"/>
-                    <CollectionView ItemsSource="{Binding Reservations}"
-                                    HeightRequest="120"
-                                    SelectionMode="None">
-                        <CollectionView.EmptyView>
-                            <Label Text="No reservations"
-                                   FontSize="12"
-                                   TextColor="#AAAAAA"
-                                   HorizontalOptions="Center"
-                                   Margin="0,12"/>
-                        </CollectionView.EmptyView>
-                        <CollectionView.ItemTemplate>
-                            <DataTemplate x:DataType="local:ReservationDTO">
-                                <Grid ColumnDefinitions="*,*,Auto"
-                                      Padding="0,6">
-                                    <Label Grid.Column="0"
-                                           Text="{Binding CheckIn, StringFormat='{0:MMM d yyyy}'}"
-                                           FontSize="12"
-                                           TextColor="#1A1A1A"/>
-                                    <Label Grid.Column="1"
-                                           Text="{Binding CheckOut, StringFormat='→ {0:MMM d}'}"
-                                           FontSize="12"
-                                           TextColor="#888888"/>
-                                    <Label Grid.Column="2"
-                                           Text="{Binding PaymentStatus}"
-                                           FontSize="11"
-                                           TextColor="#888888"/>
-                                </Grid>
-                            </DataTemplate>
-                        </CollectionView.ItemTemplate>
-                    </CollectionView>
+
+                    <!-- No reservations — can delete -->
+                    <VerticalStackLayout IsVisible="{Binding HasNoReservations}" Spacing="8">
+                        <Label Text="No reservations"
+                               FontSize="12"
+                               TextColor="#AAAAAA"
+                               HorizontalOptions="Center"/>
+                    </VerticalStackLayout>
+
+                    <!-- Has reservations — show all -->
+                    <VerticalStackLayout IsVisible="{Binding HasReservations}" Spacing="6">
+                        <CollectionView ItemsSource="{Binding Reservations}"
+                                        SelectionMode="None">
+                            <CollectionView.ItemTemplate>
+                                <DataTemplate x:DataType="local:ReservationDTO">
+                                    <Grid ColumnDefinitions="Auto,*,Auto"
+                                          Padding="0,5">
+                                        <BoxView Grid.Column="0"
+                                                 WidthRequest="8"
+                                                 HeightRequest="8"
+                                                 CornerRadius="4"
+                                                 BackgroundColor="{Binding Color}"
+                                                 VerticalOptions="Center"
+                                                 Margin="0,0,8,0"/>
+                                        <Label Grid.Column="1"
+                                               FontSize="12"
+                                               TextColor="#1A1A1A">
+                                            <Label.Text>
+                                                <MultiBinding StringFormat="{}{0:MMM d} → {1:MMM d yyyy}">
+                                                    <Binding Path="CheckIn"/>
+                                                    <Binding Path="CheckOut"/>
+                                                </MultiBinding>
+                                            </Label.Text>
+                                        </Label>
+                                        <Label Grid.Column="2"
+                                               Text="{Binding PaymentStatus}"
+                                               FontSize="11"
+                                               TextColor="#888888"/>
+                                    </Grid>
+                                </DataTemplate>
+                            </CollectionView.ItemTemplate>
+                        </CollectionView>
+                        <Label Text="Remove all reservations before deleting this guest."
+                               FontSize="11"
+                               TextColor="#AAAAAA"/>
+                    </VerticalStackLayout>
                 </VerticalStackLayout>
 
                 <!-- Error -->
@@ -184,12 +197,16 @@
                             Clicked="OnCloseClicked"/>
                 </Grid>
 
-                <!-- Delete — edit mode only -->
+                <!-- Delete — only when no reservations -->
                 <Button Text="Delete guest"
                         BackgroundColor="Transparent"
                         TextColor="#E53935"
                         FontSize="12"
-                        IsVisible="{Binding IsEditing}"
+                        BorderColor="#E53935"
+                        BorderWidth="1"
+                        CornerRadius="20"
+                        HeightRequest="40"
+                        IsVisible="{Binding HasNoReservations}"
                         Command="{Binding DeleteCommand}"/>
 
             </VerticalStackLayout>

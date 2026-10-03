@@ -43,6 +43,9 @@ namespace hotel_scheduler.ViewModels
         public partial bool HasError { get; set; } = false;
         public List<ReservationDTO> Reservations { get; private set; } = [];
 
+        public bool HasNoReservations => IsEditing && !Reservations.Any();
+        public bool HasReservations => IsEditing && Reservations.Any();
+
         public void InitializeGuestPopup(string prefilledName = "")
         {
             ResetForm();
@@ -69,6 +72,8 @@ namespace hotel_scheduler.ViewModels
             Address = guest.Address ?? "";
             Notes = guest.Notes;
             Reservations = guest.Reservations;
+            OnPropertyChanged(nameof(HasNoReservations));
+            OnPropertyChanged(nameof(HasReservations));
         }
 
 
@@ -162,6 +167,8 @@ namespace hotel_scheduler.ViewModels
             ErrorMessage = "";
             Reservations = [];
             HasError = false;
+            OnPropertyChanged(nameof(HasNoReservations));
+            OnPropertyChanged(nameof(HasReservations));
         }
 
     }

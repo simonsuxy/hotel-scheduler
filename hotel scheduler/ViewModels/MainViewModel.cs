@@ -20,8 +20,14 @@ namespace hotel_scheduler.ViewModels
 
         public bool IsAdmin => _authService.IsAdmin;
 
+        private bool _initialized = false;
+
         public void Initialize()
         {
+            // Only navigate to Calendar on first launch
+            // Subsequent calls should not reset the page
+            if (_initialized) return;
+            _initialized = true;
             NavigateTo("Calendar");
         }
 
@@ -32,6 +38,7 @@ namespace hotel_scheduler.ViewModels
             CurrentView = page switch
             {
                 "Calendar" => _serviceProvider.GetRequiredService<Views.CalendarView>(),
+                "Guests" => _serviceProvider.GetRequiredService<Views.GuestsView>(),
                 _ => new ContentView()
             };
         }
