@@ -22,6 +22,10 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             {
                 Id = r.Id,
                 RoomId = r.RoomId,
+                GuestId = r.GuestId != 0 ? r.GuestId : guest.Id, 
+                GuestCount = r.GuestCount,
+                Color = r.Color,
+                Notes = r.Notes,
                 CheckIn = r.CheckIn,
                 CheckOut = r.CheckOut,
                 PaymentStatus = r.PaymentStatus
@@ -42,12 +46,13 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         public async Task<GuestDTO?> GetGuestByIdAsync(int id)
         {
             var g = await _db.Guests
+                .Include(g => g.Reservations)
+                .ThenInclude(r => r.Room)
                 .FirstOrDefaultAsync(g => g.Id == id);
 
             if (g == null) return null;
             return MapToDTO(g);
         }
-
         // Searches guests by name, email, or phone
         public async Task<List<GuestDTO>> SearchAsync(string query)
         {

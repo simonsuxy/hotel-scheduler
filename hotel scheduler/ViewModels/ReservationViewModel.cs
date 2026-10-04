@@ -69,6 +69,10 @@ namespace hotel_scheduler.ViewModels
         [ObservableProperty]
         public partial bool HasError { get; set; } = false;
 
+        // Exposes OnPropertyChanged publicly so code-behind can trigger UI notifications
+        public void OnPropertyChangedPublic(string propertyName)
+            => OnPropertyChanged(propertyName);
+
 
 
         public ObservableCollection<string> TimeOptions { get; } = ["AM", "PM"];
@@ -141,7 +145,7 @@ namespace hotel_scheduler.ViewModels
                 .FirstOrDefault(c => c.Hex == reservation.Color)
                 ?? ReservationColorsOptions.First();
             PaymentStatus = reservation.PaymentStatus;
-            Notes = reservation.Notes;
+            Notes = reservation.Notes ?? "";
             CheckInTime = reservation.CheckIn.Hour >= 12 ? "PM" : "AM";
             CheckOutTime = reservation.CheckOut.Hour >= 12 ? "PM" : "AM";
 
@@ -157,7 +161,10 @@ namespace hotel_scheduler.ViewModels
             if (guest != null)
             {
                 SelectedGuest = guest;
+                GuestSearchQuery = "";
+                GuestSearchResults.Clear();
                 OnPropertyChanged(nameof(HasSelectedGuest));
+                OnPropertyChanged(nameof(HasGuestResults));
             }
 
             OnPropertyChanged(nameof(PaymentStatusColor));
@@ -318,7 +325,7 @@ namespace hotel_scheduler.ViewModels
                 GuestSearchQuery = "";
                 GuestSearchResults.Clear();
             };
-            var popup = new GuestPopup(_guestPopupViewModel);
+            var popup = new GuestPopup(_guestPopupViewModel, null, null);
             await Application.Current!.MainPage.ShowPopupAsync(popup);
         }
 

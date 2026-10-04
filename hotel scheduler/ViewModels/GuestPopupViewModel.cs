@@ -46,6 +46,10 @@ namespace hotel_scheduler.ViewModels
         public bool HasNoReservations => IsEditing && !Reservations.Any();
         public bool HasReservations => IsEditing && Reservations.Any();
 
+        public Action<ReservationDTO>? OnReservationTapped { get; set; }
+        public int? EditingGuestId => _editingGuestId;
+
+
         public void InitializeGuestPopup(string prefilledName = "")
         {
             ResetForm();
@@ -169,6 +173,12 @@ namespace hotel_scheduler.ViewModels
             HasError = false;
             OnPropertyChanged(nameof(HasNoReservations));
             OnPropertyChanged(nameof(HasReservations));
+        }
+
+        [RelayCommand]
+        private void OpenReservation(ReservationDTO reservation)
+        {
+            OnReservationTapped?.Invoke(reservation);
         }
 
     }

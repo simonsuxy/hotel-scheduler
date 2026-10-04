@@ -7,10 +7,12 @@ using System.Collections.ObjectModel;
 
 namespace hotel_scheduler.ViewModels
 {
-    public partial class GuestViewModel(GuestService guestService, GuestPopupViewModel guestPopupViewModel) : ObservableObject
+    public partial class GuestViewModel(GuestService guestService, GuestPopupViewModel guestPopupViewModel, ReservationViewModel reservationViewModel, IServiceProvider serviceProvider) : ObservableObject
     {
         private readonly GuestService _guestService = guestService;
         private readonly GuestPopupViewModel _guestPopupViewModel = guestPopupViewModel;
+        private readonly ReservationViewModel _reservationViewModel = reservationViewModel;
+        private readonly IServiceProvider _serviceProvider = serviceProvider;
 
         private List<GuestDTO> _allGuests = [];
         public ObservableCollection<GuestDTO> FilteredGuests { get; } = [];
@@ -103,8 +105,7 @@ namespace hotel_scheduler.ViewModels
             _guestPopupViewModel.InitializeGuestPopup();
             _guestPopupViewModel.OnGuestCreated = async (guest) =>
                 await LoadGuestsAsync();
-
-            var popup = new Views.GuestPopup(_guestPopupViewModel);
+            var popup = new Views.GuestPopup(_guestPopupViewModel, _reservationViewModel, _serviceProvider);
             await Application.Current!.MainPage!.ShowPopupAsync(popup);
         }
 
@@ -114,11 +115,11 @@ namespace hotel_scheduler.ViewModels
         {
             _guestPopupViewModel.InitializeEditGuestPopup(guest);
             _guestPopupViewModel.OnSaved = async () => await LoadGuestsAsync();
-
-            var popup = new Views.GuestPopup(_guestPopupViewModel);
+            var popup = new Views.GuestPopup(_guestPopupViewModel, _reservationViewModel, _serviceProvider);
             await Application.Current!.MainPage!.ShowPopupAsync(popup);
         }
 
+
+
     }
 }
-       
