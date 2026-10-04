@@ -69,20 +69,11 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
                 .AnyAsync();
         }
 
-        public async Task<ReservationDTO> CreateReservationAsync(int roomId, int guestId, DateTime checkIn,
-                                                    DateTime checkOut, int guestCount, string notes,
-                                                    string color, int? createdByUserId)
+        public async Task CreateReservationAsync(int roomId, int guestId, DateTime checkIn, DateTime checkOut,
+                                                   int guestCount, string notes, string color, int? createdById)
         {
-            if (checkOut <= checkIn)
-                throw new InvalidOperationException("Check-out must be after check-in");
-            if (guestCount < 1)
-                throw new InvalidOperationException("Guest count has to be at least 1");
+            await ValidateNoOverlapAsync(roomId, checkIn, checkOut);
 
-            if (!await IsRoomAvailable(roomId, checkIn, checkOut))
-            {
-                throw new InvalidOperationException("Room is not available at selected dates");
-            }
-            var room = await _db.Rooms.FindAsync(roomId) ?? throw new InvalidOperationException("Room not found");
             var reservation = new Reservation
             {
                 RoomId = roomId,
@@ -92,35 +83,45 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
                 GuestCount = guestCount,
                 Notes = notes,
                 Color = color,
-                CreatedAt = DateTime.Now
+                CreatedByUserId = createdById,
+                PaymentStatus = PaymentStatus.Unpaid
             };
+
             _db.Reservations.Add(reservation);
             await _db.SaveChangesAsync();
-            await _db.Entry(reservation).Reference(r => r.Room).LoadAsync();
-            await _db.Entry(reservation).Reference(r => r.Guest).LoadAsync();
-            return MapToDTO(reservation);
         }
 
-        public async Task UpdateAsync(int id, int roomId, int guestId,
-                                        DateTime checkIn,  DateTime checkOut,
-                                        int guestCount, string notes, string color)
+        public async Task UpdateAsync(int reservationId, int roomId, int guestId, DateTime checkIn, DateTime checkOut,
+                                       int guestCount, string notes, string color)
         {
-            if (checkOut <= checkIn)
-                throw new InvalidOperationException("Check-out must be after check-in.");
-            if (guestCount < 1)
-                throw new InvalidOperationException("Guest count must be at least 1.");
-            var reservation = await _db.Reservations.FindAsync(id)
+            var reservation = await _db.Reservations.FindAsync(reservationId)
                 ?? throw new InvalidOperationException("Reservation not found.");
-            if (!await IsRoomAvailable(roomId, checkIn, checkOut, id))
-                throw new InvalidOperationException("Room is not available for selected dates");
+
+            await ValidateNoOverlapAsync(roomId, checkIn, checkOut, excludeReservationId: reservationId);
+
             reservation.RoomId = roomId;
             reservation.GuestId = guestId;
             reservation.CheckIn = checkIn;
             reservation.CheckOut = checkOut;
             reservation.GuestCount = guestCount;
-            reservation.Notes = notes.Trim();
+            reservation.Notes = notes;
             reservation.Color = color;
+
             await _db.SaveChangesAsync();
+        }
+
+        private async Task ValidateNoOverlapAsync(int roomId, DateTime checkIn, DateTime checkOut, int? excludeReservationId = null)
+        {
+            bool hasOverlap = await _db.Reservations.AnyAsync(r =>
+                r.RoomId == roomId &&
+                (!excludeReservationId.HasValue || r.Id != excludeReservationId.Value) &&
+                checkIn < r.CheckOut &&
+                checkOut > r.CheckIn);
+
+            if (hasOverlap)
+            {
+                throw new InvalidOperationException("This room is already reserved for the selected date and time.");
+            }
         }
 
         public async Task DeleteAsync(int id)

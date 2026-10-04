@@ -146,8 +146,8 @@ namespace hotel_scheduler.ViewModels
                 ?? ReservationColorsOptions.First();
             PaymentStatus = reservation.PaymentStatus;
             Notes = reservation.Notes ?? "";
-            CheckInTime = reservation.CheckIn.Hour >= 12 ? "PM" : "AM";
-            CheckOutTime = reservation.CheckOut.Hour >= 12 ? "PM" : "AM";
+            CheckInTime = reservation.CheckIn.Hour >= 14 ? "PM" : "AM";
+            CheckOutTime = reservation.CheckOut.Hour >= 18 ? "PM" : "AM";
 
             // Force DatePicker to update on main thread after a brief delay
             await MainThread.InvokeOnMainThreadAsync(async () =>
@@ -247,7 +247,15 @@ namespace hotel_scheduler.ViewModels
                 return;
             }
             var checkIn = CheckIn.Date.AddHours(CheckInTime == "PM" ? 14 : 8);
-            var checkOut = CheckOut.Date.AddHours(CheckOutTime == "PM" ? 14 : 8);
+            var checkOut = CheckOut.Date.AddHours(CheckOutTime == "PM" ? 20 : 12);
+
+            if (checkOut <= checkIn)
+            {
+                ErrorMessage = "Check-out time must be after check-in time.";
+                HasError = true;
+                return;
+            }
+
             try
             {
                 if (IsEditing && _editingReservationId.HasValue)
