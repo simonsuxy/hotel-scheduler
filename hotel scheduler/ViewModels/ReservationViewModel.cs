@@ -141,8 +141,9 @@ namespace hotel_scheduler.ViewModels
             _editingReservationId = reservation.Id;
             SelectedRoom = Rooms.FirstOrDefault(r => r.Id == reservation.RoomId);
             GuestCount = reservation.GuestCount;
+            SelectedColor = string.IsNullOrWhiteSpace(reservation.Color) ? "#4C9BE8" : reservation.Color;
             SelectedColorOption = ReservationColorsOptions
-                .FirstOrDefault(c => c.Hex == reservation.Color)
+                .FirstOrDefault(c => c.Hex == SelectedColor)
                 ?? ReservationColorsOptions.First();
             PaymentStatus = reservation.PaymentStatus;
             Notes = reservation.Notes ?? "";

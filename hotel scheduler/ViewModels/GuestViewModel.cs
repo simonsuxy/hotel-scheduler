@@ -42,10 +42,22 @@ namespace hotel_scheduler.ViewModels
             _allGuests = await _guestService.GetAllGuestsAsync();
             ApplyFilters();
         }
+
         partial void OnSearchQueryChanged(string value) => ApplyFilters();
         partial void OnShowCurrentChanged(bool value) => ApplyFilters();
         partial void OnShowFutureChanged(bool value) => ApplyFilters();
         partial void OnShowPastChanged(bool value) => ApplyFilters();
+
+
+        // Priority 1 -> currently, 2 -> Future, 3 -> Past/None reservations
+        private static int GetGuestPriority(GuestDTO guest, DateTime now)
+        {
+            if (guest.Reservations.Any(r => r.CheckIn <= now && r.CheckOut >= now))
+                return 1;
+            if (guest.Reservations.Any(r => r.CheckIn > now))
+                return 2;
+            return 3;
+        }
 
         private void ApplyFilters()
         {
@@ -58,19 +70,20 @@ namespace hotel_scheduler.ViewModels
             {
                 if (!string.IsNullOrWhiteSpace(query) && !g.FullName.ToLower().Contains(query))
                     return false;
-                // filters guests that have reservation only in UNCHECKED filter
+
                 var isCurrent = g.Reservations.Any(r => r.CheckIn <= now && r.CheckOut >= now);
                 var isFuture = g.Reservations.Any(r => r.CheckIn > now);
                 var isPast = g.Reservations.Any(r => r.CheckOut < now);
                 var hasNoReservations = !g.Reservations.Any();
 
-
-
                 return (ShowCurrent && isCurrent) ||
                        (ShowFuture && isFuture) ||
                        (ShowPast && isPast) ||
                        hasNoReservations;
-            }).ToList();
+            })
+            .OrderBy(g => GetGuestPriority(g, now))
+            .ThenBy(g => g.FullName)
+            .ToList();
 
             FilteredGuests.Clear();
             foreach (var g in filtered)
@@ -118,8 +131,5 @@ namespace hotel_scheduler.ViewModels
             var popup = new Views.GuestPopup(_guestPopupViewModel, _reservationViewModel, _serviceProvider);
             await Application.Current!.MainPage!.ShowPopupAsync(popup);
         }
-
-
-
     }
 }

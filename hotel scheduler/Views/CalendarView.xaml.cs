@@ -296,10 +296,12 @@ namespace hotel_scheduler.Views
 
                         var halfColSpan = Math.Max(1, (endHalfCol - startHalfCol) + 1);
 
+                        var hexColor = !string.IsNullOrWhiteSpace(res.Color) ? res.Color : "#4C4EE7";
+
                         var bar = new Border
                         {
                             ClassId = "reservation-bar",
-                            BackgroundColor = Color.FromArgb(res.Color),
+                            BackgroundColor = Color.FromArgb(hexColor),
                             StrokeShape = new RoundRectangle { CornerRadius = 8 },
                             Padding = new Thickness(14, 0, 10, 0),
                             Margin = new Thickness(1, 2),
