@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\views\\calendarview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\calendarview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\models\\services\\databaseservices\\reservationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:models\\services\\databaseservices\\reservationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -57,11 +61,32 @@
       "DocumentGroups": [
         {
           "DockedWidth": 984,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 0,
+              "Title": "CalendarView.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\CalendarView.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\CalendarView.xaml.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\CalendarView.xaml.cs",
+              "RelativeToolTip": "Views\\CalendarView.xaml.cs",
+<<<<<<< Updated upstream
+              "ViewState": "AgIAADcBAAAAAAAAAAAIwEoBAAANAAAAAAAAAA==",
+=======
+<<<<<<< Updated upstream
+              "ViewState": "AgIAAEUBAAAAAAAAAAAqwGABAAAYAAAAAAAAAA==",
+=======
+              "ViewState": "AgIAAE4BAAAAAAAAAAAswF0BAAAJAAAAAAAAAA==",
+>>>>>>> Stashed changes
+>>>>>>> Stashed changes
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-04T20:15:24.689Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "Reservation.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Reservation.cs",
               "RelativeDocumentMoniker": "..\\DAL\\Entities\\Reservation.cs",
@@ -74,20 +99,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "ReservationService.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\ReservationService.cs",
               "RelativeDocumentMoniker": "Models\\Services\\DatabaseServices\\ReservationService.cs",
               "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\ReservationService.cs",
               "RelativeToolTip": "Models\\Services\\DatabaseServices\\ReservationService.cs",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAgwFgAAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAEUAAAAAAAAAAAAgwFYAAAA0AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-04T20:12:07.203Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "ReservationViewModel.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\ReservationViewModel.cs",
               "RelativeDocumentMoniker": "ViewModels\\ReservationViewModel.cs",
@@ -100,7 +125,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "ReservationPopup.xaml.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\ReservationPopup.xaml.cs",
               "RelativeDocumentMoniker": "Views\\ReservationPopup.xaml.cs",
@@ -113,7 +138,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "GuestPopup.xaml.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\GuestPopup.xaml.cs",
               "RelativeDocumentMoniker": "Views\\GuestPopup.xaml.cs",
@@ -126,7 +151,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "CalendarViewModel.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\CalendarViewModel.cs",
               "RelativeDocumentMoniker": "ViewModels\\CalendarViewModel.cs",
@@ -139,7 +164,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "GuestPopup.xaml",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\GuestPopup.xaml",
               "RelativeDocumentMoniker": "Views\\GuestPopup.xaml",
@@ -152,7 +177,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "GuestService.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\GuestService.cs",
               "RelativeDocumentMoniker": "Models\\Services\\DatabaseServices\\GuestService.cs",
@@ -165,7 +190,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "GuestPopupViewModel.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\GuestPopupViewModel.cs",
               "RelativeDocumentMoniker": "ViewModels\\GuestPopupViewModel.cs",
@@ -178,7 +203,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "GuestViewModel.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\GuestViewModel.cs",
               "RelativeDocumentMoniker": "ViewModels\\GuestViewModel.cs",
@@ -191,7 +216,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "RoomService.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\RoomService.cs",
               "RelativeDocumentMoniker": "Models\\Services\\DatabaseServices\\RoomService.cs",
@@ -204,7 +229,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "GuestView.xaml",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\GuestView.xaml",
               "RelativeDocumentMoniker": "Views\\GuestView.xaml",

@@ -46,10 +46,6 @@
       "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\reservationpopup.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\views\\guestview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\guestview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\models\\services\\databaseservices\\roomservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:models\\services\\databaseservices\\roomservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
@@ -71,7 +67,7 @@
               "RelativeDocumentMoniker": "Views\\CalendarView.xaml.cs",
               "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\CalendarView.xaml.cs",
               "RelativeToolTip": "Views\\CalendarView.xaml.cs",
-              "ViewState": "AgIAADcBAAAAAAAAAAAIwEoBAAANAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABAAAAA3AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-04T20:15:24.689Z",
               "EditorCaption": ""
@@ -136,7 +132,7 @@
               "RelativeDocumentMoniker": "Views\\GuestPopup.xaml.cs",
               "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\GuestPopup.xaml.cs",
               "RelativeToolTip": "Views\\GuestPopup.xaml.cs",
-              "ViewState": "AgIAAB8AAAAAAAAAAAAswDwAAAA/AAAAAAAAAA==",
+              "ViewState": "AgIAABkAAAAAAAAAAAAswDwAAAA/AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-04T19:30:35.833Z",
               "EditorCaption": ""
@@ -201,14 +197,14 @@
               "RelativeDocumentMoniker": "ViewModels\\GuestViewModel.cs",
               "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\GuestViewModel.cs",
               "RelativeToolTip": "ViewModels\\GuestViewModel.cs",
-              "ViewState": "AgIAAFkAAAAAAAAAAAAAwGIAAAAJAAAAAAAAAA==",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAkwHsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-08-03T00:21:04.588Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 11,
               "Title": "RoomService.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\RoomService.cs",
               "RelativeDocumentMoniker": "Models\\Services\\DatabaseServices\\RoomService.cs",
@@ -217,19 +213,6 @@
               "ViewState": "AgIAAAoAAAAAAAAAAAA1wCAAAAA+AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-04T19:31:11.489Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "GuestView.xaml",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\GuestView.xaml",
-              "RelativeDocumentMoniker": "Views\\GuestView.xaml",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\GuestView.xaml",
-              "RelativeToolTip": "Views\\GuestView.xaml",
-              "ViewState": "AgIAAIsAAAAAAAAAAAAwwKAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-03T18:32:36.556Z",
               "EditorCaption": ""
             }
           ]
