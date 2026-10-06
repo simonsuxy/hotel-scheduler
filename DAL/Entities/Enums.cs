@@ -5,4 +5,5 @@
     public enum RoomStatus { Active, Maintenance, Inactive }
     public enum PaymentStatus { Paid, PartiallyPaid, Unpaid }
     public enum PaymentMethod { Cash, Card, BankTransfer }
+    public enum ChargeType {  PerNight, Flat}
 }

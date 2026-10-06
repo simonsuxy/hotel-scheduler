@@ -18,22 +18,41 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             _db = db ?? throw new ArgumentNullException(nameof(db));
         }
 
-        private static ReservationDTO MapToDTO(Reservation reservation) => new()
+        private static ReservationDTO MapToDTO(Reservation reservation)
         {
-            Id = reservation.Id,
-            RoomId = reservation.RoomId,
-            RoomName = reservation.Room?.Name,
-            GuestName = reservation.Guest?.FullName,
-            GuestId = reservation.GuestId,
-            CheckIn = reservation.CheckIn,
-            CheckOut = reservation.CheckOut,
-            GuestCount = reservation.GuestCount,
-            PaymentStatus = reservation.PaymentStatus,
-            Notes = reservation.Notes,
-            CreatedAt = reservation.CreatedAt,
-            TotalPrice = 0,
-            Color = reservation.Color
-        };
+            int nights = reservation.Nights;
+            decimal roomPrice = reservation.Room?.PricePerNight ?? 0m;
+
+            var chargeDTOs = reservation.Charges?.Select(c => new ReservationChargeDTO
+            {
+                Id = c.Id,
+                ReservationId = c.ReservationId,
+                CategoryId = c.CategoryId,
+                CategoryName = c.Category?.Name ?? "",
+                ChargeType = c.Category?.Type ?? ChargeType.PerNight,
+                Quantity = c.Quantity,
+                PricePerNight = c.PricePerNight
+            }).ToList() ?? [];
+
+            return new ReservationDTO
+            {
+                Id = reservation.Id,
+                RoomId = reservation.RoomId,
+                RoomName = reservation.Room?.Name ?? "",
+                RoomPricePerNight = roomPrice,
+                GuestName = reservation.Guest?.FullName ?? "",
+                GuestId = reservation.GuestId,
+                CheckIn = reservation.CheckIn,
+                CheckOut = reservation.CheckOut,
+                GuestCount = reservation.GuestCount,
+                PaymentStatus = reservation.PaymentStatus,
+                Notes = reservation.Notes,
+                CreatedAt = reservation.CreatedAt,
+                Color = reservation.Color,
+                Charges = chargeDTOs,
+                TotalPrice = (roomPrice * nights) + chargeDTOs.Sum(c => c.CalculateTotal(nights))
+            };
+        }
 
         public async Task<List<ReservationDTO>> GetReservationsAsync()
         {
@@ -56,6 +75,19 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
                 .ToListAsync();
 
             return overlappingReservations.Select(MapToDTO).ToList();
+        }
+
+        public async Task<List<ReservationDTO>> GetReservationsWithChargesAsync()
+        {
+            var reservations = await _db.Reservations
+                .Include(r => r.Room)
+                .Include(r => r.Guest)
+                .Include(r => r.Charges)
+                    .ThenInclude(c => c.Category)
+                .OrderBy(r => r.CheckIn)
+                .ToListAsync();
+
+            return reservations.Select(MapToDTO).ToList();
         }
 
         private async Task<bool> IsRoomAvailable(int roomId, DateTime checkIn, DateTime checkOut, int? excludeReservationId = null)

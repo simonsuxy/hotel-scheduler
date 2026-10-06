@@ -23,5 +23,7 @@ namespace DAL.Entities
         //Token for future API
         public string ManageToken { get; set; }
             = Convert.ToBase64String(RandomNumberGenerator.GetBytes(32));
+
+        public List<ReservationCharge> Charges { get; set; } = [];
     }
 }
