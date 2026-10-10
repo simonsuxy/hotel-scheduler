@@ -11,8 +11,14 @@ namespace hotel_scheduler.Models.Entities
         public int ReservationId { get; set; }
         public int CategoryId { get; set; }
         public string CategoryName { get; set; } = "";
+        public string CategoryDescription { get; set; } = "";
         public ChargeType ChargeType { get; set; }
-        public int Quantity { get; set; }
+        private int _quantity = 1;
+        public int Quantity
+        {
+            get => _quantity;
+            set => _quantity = value < 1 ? 1 : value;
+        }
         public decimal PricePerNight { get; set; }
 
         public decimal CalculateTotal(int nights)

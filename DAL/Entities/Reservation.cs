@@ -17,7 +17,7 @@ namespace DAL.Entities
         public Guest Guest { get; set; } = null!;
         public User? CreatedByUser { get; set; }
         public int? CreatedByUserId { get; set; }
-        public int Nights => (CheckOut - CheckIn).Days;
+        public int Nights => Math.Max(1, (CheckOut.Date - CheckIn.Date).Days);
         public string Color { get; set; } = "#4C9BE8";
 
         //Token for future API

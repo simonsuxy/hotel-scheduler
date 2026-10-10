@@ -12,12 +12,15 @@ using hotel_scheduler.Views;
 
 namespace hotel_scheduler.ViewModels
 {
-    public partial class ReservationViewModel(ReservationService reservationService, GuestService guestService, AuthService authService, GuestPopupViewModel guestPopupViewModel): ObservableObject
+    public partial class ReservationViewModel(ReservationService reservationService, GuestService guestService,
+        AuthService authService, GuestPopupViewModel guestPopupViewModel,
+        FinanceService financeService): ObservableObject
     {
         private readonly ReservationService _reservationService = reservationService;
         private readonly GuestService _guestService = guestService;
         private readonly AuthService _authService = authService;
         private readonly GuestPopupViewModel _guestPopupViewModel = guestPopupViewModel;
+        private readonly FinanceService _financeService = financeService;
 
         public Action? OnSaved { get; set; }
         private int? _editingReservationId = null;
@@ -69,10 +72,23 @@ namespace hotel_scheduler.ViewModels
         [ObservableProperty]
         public partial bool HasError { get; set; } = false;
 
+        [ObservableProperty] public partial ChargeCategoryDTO? SelectedCategoryToAdd { get; set; }
+        [ObservableProperty] public partial decimal RoomBasePrice { get; set; }
+        [ObservableProperty] public partial decimal TotalExtrasPrice { get; set; }
+        [ObservableProperty] public partial decimal ComputedTotalPrice { get; set; }
+
+        public bool HasCharges => ReservationCharges.Count > 0;
+
+        public ObservableCollection<ChargeCategoryDTO> AvailableCategories { get; } = [];
+        public ObservableCollection<ReservationChargeDTO> ReservationCharges { get; } = [];
+
         // Exposes OnPropertyChanged publicly so code-behind can trigger UI notifications
         public void OnPropertyChangedPublic(string propertyName)
             => OnPropertyChanged(propertyName);
 
+        partial void OnCheckInChanged(DateTime value) => RecalculateTotals();
+        partial void OnCheckOutChanged(DateTime value) => RecalculateTotals();
+        partial void OnSelectedRoomChanged(RoomDTO? value) => RecalculateTotals();
 
 
         public ObservableCollection<string> TimeOptions { get; } = ["AM", "PM"];
@@ -132,6 +148,9 @@ namespace hotel_scheduler.ViewModels
                 CheckOut = chosenTime.Value.Date.AddDays(2);
                 CheckOutTime = "AM";
             }
+            ReservationCharges.Clear();
+            RecalculateTotals();
+            _ = LoadCategoriesAsync();
         }
 
         public async Task InitializeEditReservationPopup(ReservationDTO reservation)
@@ -170,6 +189,13 @@ namespace hotel_scheduler.ViewModels
 
             OnPropertyChanged(nameof(PaymentStatusColor));
             OnPropertyChanged(nameof(PaymentStatusLabel));
+
+            await LoadCategoriesAsync();
+            ReservationCharges.Clear();
+            var charges = await _financeService.GetChargesForReservationAsync(reservation.Id);
+            foreach(var charge in charges)
+                ReservationCharges.Add(charge);
+            RecalculateTotals();
         }
 
         public void SetRooms(IEnumerable<RoomDTO> rooms)
@@ -259,17 +285,26 @@ namespace hotel_scheduler.ViewModels
 
             try
             {
+                int reservationId;
                 if (IsEditing && _editingReservationId.HasValue)
                 {
+                    reservationId = _editingReservationId.Value;
                     await _reservationService.UpdateAsync(_editingReservationId.Value,
                                         SelectedRoom.Id, SelectedGuest.Id, checkIn, checkOut,
                                         GuestCount, Notes, SelectedColor);
                     await _reservationService.UpdatePaymenetStatus(_editingReservationId.Value, PaymentStatus);
+                    var oldCharges = await _financeService.GetChargesForReservationAsync(reservationId);
+                    foreach (var c in oldCharges) 
+                        await _financeService.RemoveChargeFromReservationAsync(c.Id);
                 }
                 else
                 {
-                    await _reservationService.CreateReservationAsync(SelectedRoom.Id, SelectedGuest.Id, checkIn, checkOut,
+                    reservationId = await _reservationService.CreateReservationAsync(SelectedRoom.Id, SelectedGuest.Id, checkIn, checkOut,
                                                 GuestCount, Notes, SelectedColor, _authService.CurrentUser?.Id);
+                }
+                foreach (var charge in ReservationCharges)
+                {
+                    await _financeService.AddChargeToReservationAsync(reservationId, charge.CategoryId, charge.Quantity, charge.PricePerNight);
                 }
                 OnSaved?.Invoke();
                 CloseAction?.Invoke();
@@ -337,6 +372,84 @@ namespace hotel_scheduler.ViewModels
             var popup = new GuestPopup(_guestPopupViewModel, null, null);
             await Application.Current!.MainPage.ShowPopupAsync(popup);
         }
+
+        private void RecalculateTotals()
+        {
+            int nights = Math.Max(1, (CheckOut.Date - CheckIn.Date).Days);
+            RoomBasePrice = (SelectedRoom?.PricePerNight ?? 0m) * nights;
+            TotalExtrasPrice = ReservationCharges.Sum(c => c.CalculateTotal(nights));
+            ComputedTotalPrice = RoomBasePrice + TotalExtrasPrice;
+            OnPropertyChanged(nameof(HasCharges));
+        }
+
+        partial void OnSelectedCategoryToAddChanged(ChargeCategoryDTO? value)
+        {
+            if (value == null) return;
+
+            // If the user clicked the placeholder option, reset picker to placeholder
+            if (value.Id == -1)
+            {
+                MainThread.BeginInvokeOnMainThread(() =>
+                    SelectedCategoryToAdd = AvailableCategories.FirstOrDefault(c => c.Id == -1));
+                return;
+            }
+
+            // Normal item selected: add it to reservation charges
+            ReservationCharges.Add(new ReservationChargeDTO
+            {
+                Id = 0,
+                CategoryId = value.Id,
+                CategoryName = value.Name,
+                CategoryDescription = value.Description,
+                ChargeType = value.Type,
+                Quantity = 1,
+                PricePerNight = value.DefaultPricePerNight
+            });
+
+            RecalculateTotals();
+
+            // Reset picker visually back to placeholder
+            MainThread.BeginInvokeOnMainThread(() =>
+                SelectedCategoryToAdd = AvailableCategories.FirstOrDefault(c => c.Id == -1));
+        }
+
+        [RelayCommand]
+        private void RemoveCharge(ReservationChargeDTO charge)
+        {
+            if (charge != null)
+            {
+                ReservationCharges.Remove(charge);
+                RecalculateTotals();
+            }
+        }
+
+        private async Task LoadCategoriesAsync()
+        {
+            AvailableCategories.Clear();
+
+            // 1. Insert the dummy placeholder item first for the xaml
+            AvailableCategories.Add(new ChargeCategoryDTO
+            {
+                Id = -1,
+                Name = "Add new category..."
+            });
+
+            var cats = await _financeService.GetCategoriesAsync();
+            foreach (var c in cats) AvailableCategories.Add(c);
+            SelectedCategoryToAdd = AvailableCategories.First();
+        }
+
+        [RelayCommand]
+        private void UpdateChargeQuantity(ReservationChargeDTO charge)
+        {
+            if (charge == null) return;
+            // Force re-assignment to trigget boundary 
+            charge.Quantity = charge.Quantity;
+
+            RecalculateTotals();
+            OnPropertyChanged(nameof(ReservationCharges));
+        }
+
 
 
         [RelayCommand]

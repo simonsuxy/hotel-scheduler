@@ -20,7 +20,7 @@ namespace hotel_scheduler.Models.Entities
         public PaymentStatus PaymentStatus { get; set; } = PaymentStatus.Unpaid;
         public string Notes { get; set; } = "";
         public DateTime CreatedAt { get; set; }
-        public int Nights => (CheckOut - CheckIn).Days;
+        public int Nights => Math.Max(1, (CheckOut.Date - CheckIn.Date).Days);
         public decimal TotalPrice { get; set; }
         public string Color { get; set; } = "#4C9BE8";
 

@@ -25,6 +25,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             ReservationId = charge.ReservationId,
             CategoryId = charge.CategoryId,
             CategoryName = charge.Category?.Name ?? "",
+            CategoryDescription = charge.Category?.Description ?? "",
             ChargeType = charge.Category?.Type ?? ChargeType.PerNight,
             Quantity = charge.Quantity,
             PricePerNight = charge.PricePerNight
@@ -45,7 +46,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             string description = "")
         {
             var trimmedName = name.Trim();
-            if (await _db.ChargeCategories.AnyAsync(c => c.Name.Equals(trimmedName, StringComparison.OrdinalIgnoreCase)))
+            if (await _db.ChargeCategories.AnyAsync(c => c.Name.ToLower() == trimmedName.ToLower()))
                 throw new InvalidOperationException($"Category '{trimmedName}' already exists.");
 
             var category = new ChargeCategory
@@ -74,7 +75,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
                 ?? throw new InvalidOperationException("Category not found.");
 
             var trimmedName = name.Trim();
-            if (await _db.ChargeCategories.AnyAsync(c => c.Name.Equals(trimmedName, StringComparison.CurrentCultureIgnoreCase) && c.Id != id))
+            if (await _db.ChargeCategories.AnyAsync(c => c.Name.ToLower() == trimmedName.ToLower() && c.Id != id))
                 throw new InvalidOperationException($"Category '{trimmedName}' already exists.");
 
             category.Name = trimmedName;

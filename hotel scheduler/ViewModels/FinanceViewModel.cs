@@ -37,8 +37,6 @@ namespace hotel_scheduler.ViewModels
         public async Task LoadCategoriesAsync()
         {
             var categories = await _financeService.GetCategoriesAsync();
-
-
             Categories.Clear();
             foreach (var cat in categories)
             {
@@ -87,12 +85,19 @@ namespace hotel_scheduler.ViewModels
             if (string.IsNullOrWhiteSpace(NewCategoryName) || !decimal.TryParse(NewCategoryPrice, out decimal price))
                 return;
 
-            await _financeService.CreateCategoryAsync(NewCategoryName, price, NewCategoryType, NewCategoryDescription);
+            try
+            {
+                await _financeService.CreateCategoryAsync(NewCategoryName, price, NewCategoryType, NewCategoryDescription);
 
-            NewCategoryName = "";
-            NewCategoryPrice = "";
-            NewCategoryDescription = "";
-
+                NewCategoryName = "";
+                NewCategoryPrice = "";
+                NewCategoryDescription = "";
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Error saving category: {ex.Message}";
+                HasError = true;
+            }
             await LoadCategoriesAsync();
         }
 

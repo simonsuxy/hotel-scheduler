@@ -1,5 +1,6 @@
 using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Maui.Views;
+using hotel_scheduler.Models.Entities;
 using hotel_scheduler.ViewModels;
 
 namespace hotel_scheduler.Views
@@ -44,6 +45,14 @@ namespace hotel_scheduler.Views
                 _serviceProvider.GetRequiredService<ReservationViewModel>(),
                 _serviceProvider);
             await Application.Current!.MainPage!.ShowPopupAsync(popup);
+        }
+
+        private void OnQuantityCompleted(object sender, EventArgs e)
+        {
+            if (sender is Entry entry && entry.BindingContext is ReservationChargeDTO charge)
+            {
+                _viewModel.UpdateChargeQuantityCommand.Execute(charge);
+            }
         }
 
 

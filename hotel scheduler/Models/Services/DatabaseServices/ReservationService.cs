@@ -101,7 +101,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
                 .AnyAsync();
         }
 
-        public async Task CreateReservationAsync(int roomId, int guestId, DateTime checkIn, DateTime checkOut,
+        public async Task<int> CreateReservationAsync(int roomId, int guestId, DateTime checkIn, DateTime checkOut,
                                                    int guestCount, string notes, string color, int? createdById)
         {
             await ValidateNoOverlapAsync(roomId, checkIn, checkOut);
@@ -121,6 +121,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
 
             _db.Reservations.Add(reservation);
             await _db.SaveChangesAsync();
+            return reservation.Id;
         }
 
         public async Task UpdateAsync(int reservationId, int roomId, int guestId, DateTime checkIn, DateTime checkOut,
