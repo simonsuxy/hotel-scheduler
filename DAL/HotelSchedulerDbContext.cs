@@ -10,6 +10,8 @@ namespace DAL
         public DbSet<Guest> Guests => Set<Guest>();
         public DbSet<Reservation> Reservations => Set<Reservation>();
         public DbSet<Settings> Settings => Set<Settings>();
+        public DbSet<ChargeCategory> ChargeCategories => Set<ChargeCategory>();
+        public DbSet<ReservationCharge> ReservationCharges => Set<ReservationCharge>();
 
         protected override void OnConfiguring(DbContextOptionsBuilder options)
         => options.UseSqlite("Data Source=data.sqlite");

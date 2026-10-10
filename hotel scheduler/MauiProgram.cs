@@ -5,6 +5,7 @@ using hotel_scheduler.Models.Services;
 using hotel_scheduler.Models.Services.DatabaseServices;
 using hotel_scheduler.ViewModels;
 using hotel_scheduler.Views;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 
@@ -30,6 +31,7 @@ namespace hotel_scheduler
             builder.Services.AddTransient<RoomService>();
             builder.Services.AddTransient<SettingsService>();
             builder.Services.AddTransient<ReservationService>();
+            builder.Services.AddTransient<FinanceService>();
             builder.Services.AddSingleton<AuthService>();
 
             // ViewModels
@@ -41,6 +43,7 @@ namespace hotel_scheduler
             builder.Services.AddTransient<GuestPopupViewModel>();
             builder.Services.AddTransient<DateRangePickerViewModel>();
             builder.Services.AddTransient<GuestViewModel>();
+            builder.Services.AddTransient<FinanceViewModel>();
 
 
 
@@ -52,18 +55,22 @@ namespace hotel_scheduler
             builder.Services.AddTransient<GuestPopup>();
             builder.Services.AddTransient<DateRangePickerPopup>();
             builder.Services.AddTransient<GuestsView>();
+            builder.Services.AddTransient<FinanceView>();
             builder.Services.AddTransient<MainView>();
 #if DEBUG
             builder.Logging.AddDebug();
 #endif
             var app = builder.Build();
 
-            // Creates data.sqlite automatically on first launch if it doesn't exist
-            // No migrations needed during development
+
             using (var scope = app.Services.CreateScope())
             {
                 var db = scope.ServiceProvider.GetRequiredService<HotelSchedulerDbContext>();
+
+                // Automatically applies pending migrations and creates the DB if missing
+                //db.Database.EnsureDeleted();
                 db.Database.EnsureCreated();
+
                 if (!db.Rooms.Any())
                 {
                     db.Rooms.AddRange(

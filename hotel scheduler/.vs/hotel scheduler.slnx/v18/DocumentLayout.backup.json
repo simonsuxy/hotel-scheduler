@@ -1,57 +1,25 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\",
+  "WorkspaceRootPath": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\viewmodels\\reservationviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\reservationviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\financeview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\financeview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\viewmodels\\calendarviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\calendarviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\viewmodels\\chargecategoryitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\chargecategoryitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\viewmodels\\registerviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\registerviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\viewmodels\\financeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\financeviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\views\\calendarview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\calendarview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\models\\services\\databaseservices\\reservationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:models\\services\\databaseservices\\reservationservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{DEB3DC7C-5059-F4AD-2883-65AE6414B1AF}|..\\DAL\\DAL.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\dal\\entities\\reservation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\views\\guestpopup.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\guestpopup.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\models\\services\\databaseservices\\guestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:models\\services\\databaseservices\\guestservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\viewmodels\\guestviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\guestviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\viewmodels\\guestpopupviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\guestpopupviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\views\\guestpopup.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\guestpopup.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\views\\reservationpopup.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\reservationpopup.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\github\\hotel scheduler\\hotel scheduler\\models\\services\\databaseservices\\roomservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:models\\services\\databaseservices\\roomservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{DEB3DC7C-5059-F4AD-2883-65AE6414B1AF}|..\\DAL\\DAL.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\dal\\hotelschedulerdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -61,175 +29,71 @@
       "DocumentGroups": [
         {
           "DockedWidth": 984,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 0,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "RegisterViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\RegisterViewModel.cs",
-              "RelativeDocumentMoniker": "ViewModels\\RegisterViewModel.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\RegisterViewModel.cs",
-              "RelativeToolTip": "ViewModels\\RegisterViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-04T20:34:23.803Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "CalendarView.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\CalendarView.xaml.cs",
-              "RelativeDocumentMoniker": "Views\\CalendarView.xaml.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\CalendarView.xaml.cs",
-              "RelativeToolTip": "Views\\CalendarView.xaml.cs",
-              "ViewState": "AgIAABoBAAAAAAAAAAAcwC8BAABHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-04T20:15:24.689Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 5,
-              "Title": "Reservation.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Reservation.cs",
-              "RelativeDocumentMoniker": "..\\DAL\\Entities\\Reservation.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\DAL\\Entities\\Reservation.cs",
-              "RelativeToolTip": "..\\DAL\\Entities\\Reservation.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-04T20:13:07.744Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "ReservationService.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\ReservationService.cs",
-              "RelativeDocumentMoniker": "Models\\Services\\DatabaseServices\\ReservationService.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\ReservationService.cs",
-              "RelativeToolTip": "Models\\Services\\DatabaseServices\\ReservationService.cs",
-              "ViewState": "AgIAAEUAAAAAAAAAAAAgwFYAAAA0AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-04T20:12:07.203Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "ReservationViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\ReservationViewModel.cs",
-              "RelativeDocumentMoniker": "ViewModels\\ReservationViewModel.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\ReservationViewModel.cs",
-              "RelativeToolTip": "ViewModels\\ReservationViewModel.cs",
-              "ViewState": "AgIAAIAAAAAAAAAAAAAAAJUAAABHAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-04T19:41:19.464Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "ReservationPopup.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\ReservationPopup.xaml.cs",
-              "RelativeDocumentMoniker": "Views\\ReservationPopup.xaml.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\ReservationPopup.xaml.cs",
-              "RelativeToolTip": "Views\\ReservationPopup.xaml.cs",
-              "ViewState": "AgIAABAAAAAAAAAAAAAAwDMAAAABAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-04T19:39:59.799Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "GuestPopup.xaml.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\GuestPopup.xaml.cs",
-              "RelativeDocumentMoniker": "Views\\GuestPopup.xaml.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\GuestPopup.xaml.cs",
-              "RelativeToolTip": "Views\\GuestPopup.xaml.cs",
-              "ViewState": "AgIAABkAAAAAAAAAAAAswDwAAAA/AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-04T19:30:35.833Z",
+              "Title": "FinanceView.xaml",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\FinanceView.xaml",
+              "RelativeDocumentMoniker": "Views\\FinanceView.xaml",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\FinanceView.xaml",
+              "RelativeToolTip": "Views\\FinanceView.xaml",
+              "ViewState": "AgIAAL0AAAAAAAAAAAAiwNUAAAAOAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-10-07T12:43:03.517Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
-              "Title": "CalendarViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\CalendarViewModel.cs",
-              "RelativeDocumentMoniker": "ViewModels\\CalendarViewModel.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\CalendarViewModel.cs",
-              "RelativeToolTip": "ViewModels\\CalendarViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAABAAAAAAAAAAA==",
+              "Title": "ChargeCategoryItemViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\ChargeCategoryItemViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\ChargeCategoryItemViewModel.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\ChargeCategoryItemViewModel.cs",
+              "RelativeToolTip": "ViewModels\\ChargeCategoryItemViewModel.cs",
+              "ViewState": "AgIAABQAAAAAAAAAAAAiwCUAAAA2AAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-04T19:43:50.613Z",
+              "WhenOpened": "2026-10-07T12:33:28.747Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "GuestPopup.xaml",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\GuestPopup.xaml",
-              "RelativeDocumentMoniker": "Views\\GuestPopup.xaml",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Views\\GuestPopup.xaml",
-              "RelativeToolTip": "Views\\GuestPopup.xaml",
-              "ViewState": "AgIAALoAAAAAAAAAAAAIwNIAAAAiAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-08-07T20:30:53.29Z",
+              "DocumentIndex": 2,
+              "Title": "FinanceViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\FinanceViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\FinanceViewModel.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\FinanceViewModel.cs",
+              "RelativeToolTip": "ViewModels\\FinanceViewModel.cs",
+              "ViewState": "AgIAAJkAAAAAAAAAAAAowJ8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-06T20:15:13.257Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "GuestService.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\GuestService.cs",
-              "RelativeDocumentMoniker": "Models\\Services\\DatabaseServices\\GuestService.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\GuestService.cs",
-              "RelativeToolTip": "Models\\Services\\DatabaseServices\\GuestService.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAowCEAAAAIAAAAAAAAAA==",
+              "DocumentIndex": 3,
+              "Title": "MauiProgram.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\MauiProgram.cs",
+              "RelativeDocumentMoniker": "MauiProgram.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\MauiProgram.cs",
+              "RelativeToolTip": "MauiProgram.cs",
+              "ViewState": "AgIAAEIAAAAAAAAAAAD4v0oAAAARAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-04T19:48:35.182Z",
+              "WhenOpened": "2026-10-06T20:08:55.194Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "GuestPopupViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\GuestPopupViewModel.cs",
-              "RelativeDocumentMoniker": "ViewModels\\GuestPopupViewModel.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\GuestPopupViewModel.cs",
-              "RelativeToolTip": "ViewModels\\GuestPopupViewModel.cs",
-              "ViewState": "AgIAAJYAAAAAAAAAAAAAwKQAAAAaAAAAAAAAAA==",
+              "DocumentIndex": 4,
+              "Title": "HotelSchedulerDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\DAL\\HotelSchedulerDbContext.cs",
+              "RelativeDocumentMoniker": "..\\DAL\\HotelSchedulerDbContext.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\DAL\\HotelSchedulerDbContext.cs",
+              "RelativeToolTip": "..\\DAL\\HotelSchedulerDbContext.cs",
+              "ViewState": "AgIAADwAAAAAAAAAAAAAAEsAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-03T00:29:39.134Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 8,
-              "Title": "GuestViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\GuestViewModel.cs",
-              "RelativeDocumentMoniker": "ViewModels\\GuestViewModel.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\ViewModels\\GuestViewModel.cs",
-              "RelativeToolTip": "ViewModels\\GuestViewModel.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAAkwHsAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-08-03T00:21:04.588Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
-              "Title": "RoomService.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\RoomService.cs",
-              "RelativeDocumentMoniker": "Models\\Services\\DatabaseServices\\RoomService.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\GitHub\\hotel scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\RoomService.cs",
-              "RelativeToolTip": "Models\\Services\\DatabaseServices\\RoomService.cs",
-              "ViewState": "AgIAAAoAAAAAAAAAAAA1wCAAAAA+AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-04T19:31:11.489Z",
+              "WhenOpened": "2026-10-06T19:41:30.009Z",
               "EditorCaption": ""
             }
           ]

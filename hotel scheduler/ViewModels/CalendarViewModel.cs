@@ -162,6 +162,7 @@ namespace hotel_scheduler.ViewModels
             await ShowPopupAsync();
         }
 
+        [Obsolete]
         private async Task ShowPopupAsync()
         {
             var guestPopupViewModel = _serviceProvider.GetRequiredService<GuestPopupViewModel>();
