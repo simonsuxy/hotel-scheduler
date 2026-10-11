@@ -9,7 +9,7 @@
     <Grid RowDefinitions="Auto,*" Padding="16" RowSpacing="16">
 
         <!-- Top Overview Cards -->
-        <Grid Grid.Row="0" ColumnDefinitions="*,*,*,*" ColumnSpacing="12">
+        <Grid Grid.Row="0" ColumnDefinitions="*,*,*" ColumnSpacing="12">
 
             <!-- Total Revenue -->
             <Border Grid.Column="0" BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="16">
@@ -35,13 +35,6 @@
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Total Line Items / Extras -->
-            <Border Grid.Column="3" BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="16">
-                <VerticalStackLayout Spacing="4">
-                    <Label Text="Extras Revenue" FontSize="12" TextColor="#888888"/>
-                    <Label Text="{Binding TotalExtrasRevenue, StringFormat='{0:C}'}" FontSize="20" FontAttributes="Bold" TextColor="#4C4EE7"/>
-                </VerticalStackLayout>
-            </Border>
         </Grid>
 
         <!-- Main Content Area: Left (Categories) vs Right (Financial Log) -->
