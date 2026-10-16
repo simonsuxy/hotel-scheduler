@@ -95,6 +95,17 @@
                                ConverterParameter=Income}"/>
                 </Grid>
 
+                <!-- Rooms -->
+                <Grid ColumnDefinitions="32,*" Padding="12,10"
+                      BackgroundColor="{Binding ActivePage, Converter={StaticResource ActivePageColorConverter}, ConverterParameter=Rooms}">
+                    <Grid.GestureRecognizers>
+                        <TapGestureRecognizer Command="{Binding NavigateToCommand}" CommandParameter="Rooms"/>
+                    </Grid.GestureRecognizers>
+                    <Image Grid.Column="0" Source="icon_rooms.png" HeightRequest="20" WidthRequest="20"/>
+                    <Label Grid.Column="1" Text="Rooms" FontSize="14" VerticalOptions="Center"
+                           TextColor="{Binding ActivePage, Converter={StaticResource ActivePageTextColorConverter}, ConverterParameter=Rooms}"/>
+                </Grid>
+
                 <!-- Users — admin only -->
                 <Grid ColumnDefinitions="32,*"
                       Padding="12,10"

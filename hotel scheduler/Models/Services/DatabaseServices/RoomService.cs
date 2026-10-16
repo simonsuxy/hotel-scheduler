@@ -19,7 +19,8 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             Status = room.Status,
             PricePerNight = room.PricePerNight,
             Capacity = room.Capacity,
-            Notes = room.Notes
+            Notes = room.Notes,
+            HasReservations = room.Reservations.Count > 0
         };
 
         public async Task<List<RoomDTO>> GetRoomsAsync()
@@ -47,7 +48,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         }
 
         public async Task<RoomDTO> CreateRoomAsync(string name, string description,
-                                                    RoomType type, int capacity,
+                                                    string type, int capacity, RoomStatus status,
                                                     decimal pricePerNight, string notes)
         {
             if (await _db.Rooms.AnyAsync(r => r.Name.ToLower() == name.Trim().ToLower()))
@@ -56,8 +57,8 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             {
                 Name = name,
                 Description = description,
-                Type = type,
-                Status = RoomStatus.Active,
+                Type = string.IsNullOrWhiteSpace(type) ? "Single" : type.Trim(),
+                Status = status,
                 Capacity = capacity,
                 PricePerNight = pricePerNight,
                 Notes = notes
@@ -68,7 +69,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         }
 
         public async Task UpdateRoomAsync(int id, string name, string description,
-                                            RoomType type, int capacity,
+                                            string type, int capacity,RoomStatus status,
                                             decimal pricePerNight, string notes)
         {
             var room = await _db.Rooms.FindAsync(id)
@@ -78,9 +79,10 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
                 throw new InvalidOperationException($"A room named '{name}' already exists.");
             room.Name = name;
             room.Description = description;
-            room.Type = type;
+            room.Type = string.IsNullOrWhiteSpace(type) ? "Single" : type.Trim();
             room.Capacity = capacity;
             room.PricePerNight = pricePerNight;
+            room.Status = status;
             room.Notes = notes;
             await _db.SaveChangesAsync();
         }
@@ -93,32 +95,18 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             await _db.SaveChangesAsync();
         }
 
-        public async Task DeactivateAsync(int id)
+        public async Task DeleteRoomAsync(int id)
         {
             var room = await _db.Rooms
                 .Include(r => r.Reservations)
                 .FirstOrDefaultAsync(r => r.Id == id)
                 ?? throw new InvalidOperationException("Room not found.");
 
-            // Warn if room has future reservations still attached
-            var hasFutureReservations = room.Reservations
-                .Any(r => r.CheckOut > DateTime.UtcNow);
+            if (room.Reservations.Count != 0)
+                throw new InvalidOperationException("Cannot delete a room with existing reservations.");
 
-            if (hasFutureReservations)
-                throw new InvalidOperationException(
-                    "Cannot deactivate a room with future reservations. Reassign or cancel them first.");
-            room.Status = RoomStatus.Inactive;
+            _db.Rooms.Remove(room);
             await _db.SaveChangesAsync();
         }
-
-        public async Task ActivateAsync(int id)
-        {
-            var room = await _db.Rooms.FindAsync(id)
-                ?? throw new InvalidOperationException("Room not found.");
-
-            room.Status = RoomStatus.Active;
-            await _db.SaveChangesAsync();
-        }
-
     }
 }

@@ -44,6 +44,7 @@ namespace hotel_scheduler
             builder.Services.AddTransient<DateRangePickerViewModel>();
             builder.Services.AddTransient<GuestViewModel>();
             builder.Services.AddTransient<FinanceViewModel>();
+            builder.Services.AddSingleton<RoomsViewModel>();
 
 
 
@@ -56,6 +57,7 @@ namespace hotel_scheduler
             builder.Services.AddTransient<DateRangePickerPopup>();
             builder.Services.AddTransient<GuestsView>();
             builder.Services.AddTransient<FinanceView>();
+            builder.Services.AddSingleton<RoomsView>();
             builder.Services.AddTransient<MainView>();
 #if DEBUG
             builder.Logging.AddDebug();
@@ -74,10 +76,10 @@ namespace hotel_scheduler
                 if (!db.Rooms.Any())
                 {
                     db.Rooms.AddRange(
-                        new Room { Name = "101", Description = "Standard single", Type = RoomType.Single, Capacity = 1, PricePerNight = 60m, Status = RoomStatus.Active },
-                        new Room { Name = "102", Description = "Standard double", Type = RoomType.Double, Capacity = 2, PricePerNight = 90m, Status = RoomStatus.Active },
-                        new Room { Name = "201", Description = "Suite", Type = RoomType.Suite, Capacity = 3, PricePerNight = 150m, Status = RoomStatus.Active },
-                        new Room { Name = "202", Description = "Standard double", Type = RoomType.Double, Capacity = 2, PricePerNight = 90m, Status = RoomStatus.Active }
+                        new Room { Name = "101", Description = "Standard single", Type = "Single", Capacity = 1, PricePerNight = 60m, Status = RoomStatus.Active },
+                        new Room { Name = "102", Description = "Standard double", Type = "Double", Capacity = 2, PricePerNight = 90m, Status = RoomStatus.Active },
+                        new Room { Name = "201", Description = "Suite", Type = "Suite", Capacity = 3, PricePerNight = 150m, Status = RoomStatus.Active },
+                        new Room { Name = "202", Description = "Standard double", Type = "Double", Capacity = 2, PricePerNight = 90m, Status = RoomStatus.Active }
                     );
                     db.SaveChanges();
                 }
