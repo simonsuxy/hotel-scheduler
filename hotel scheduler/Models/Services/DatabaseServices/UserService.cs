@@ -52,11 +52,16 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         {
             if (await IsUsernameTakenAsync(username))
                 throw new InvalidOperationException($"Username '{username}' is already taken.");
+
+            bool isFirstUser = !await _db.Users.AnyAsync();
+
+            var finalRole = isFirstUser ? UserRole.Admin : role;
+
             var user = new User
             {
                 Username = username.Trim().ToLower(),
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
-                Role = role,
+                Role = finalRole,
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow
             };

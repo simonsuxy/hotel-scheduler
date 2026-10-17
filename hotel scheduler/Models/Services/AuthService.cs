@@ -21,8 +21,8 @@ namespace hotel_scheduler.Models.Services
             using var scope = _serviceProvider.CreateScope();
             var userService = scope.ServiceProvider.GetRequiredService<UserService>();
             var user = await userService.LoginAsync(username, password);
-            if (user == null)
-            CurrentUser = user;
+            if (user != null)
+                CurrentUser = user;
         }
 
         public async Task RegisterAsync(string username, string password1, string password2)

@@ -40,3 +40,8 @@ hotel scheduler/.vs/hotel scheduler.slnx/DesignTimeBuild/.dtbcache.v2
 *.v2
 /hotel scheduler/.vs/hotel scheduler.slnx/DesignTimeBuild
 /hotel scheduler/.vs/hotel scheduler.slnx
+*.json
+*.json
+*.v2
+*.csproj
+/hotel scheduler/.vs

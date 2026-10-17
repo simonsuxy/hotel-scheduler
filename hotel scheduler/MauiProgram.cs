@@ -44,7 +44,8 @@ namespace hotel_scheduler
             builder.Services.AddTransient<DateRangePickerViewModel>();
             builder.Services.AddTransient<GuestViewModel>();
             builder.Services.AddTransient<FinanceViewModel>();
-            builder.Services.AddSingleton<RoomsViewModel>();
+            builder.Services.AddTransient<RoomsViewModel>();
+            builder.Services.AddTransient<UsersViewModel>();
 
 
 
@@ -57,7 +58,8 @@ namespace hotel_scheduler
             builder.Services.AddTransient<DateRangePickerPopup>();
             builder.Services.AddTransient<GuestsView>();
             builder.Services.AddTransient<FinanceView>();
-            builder.Services.AddSingleton<RoomsView>();
+            builder.Services.AddTransient<RoomsView>();
+            builder.Services.AddTransient<UsersView>();
             builder.Services.AddTransient<MainView>();
 #if DEBUG
             builder.Logging.AddDebug();

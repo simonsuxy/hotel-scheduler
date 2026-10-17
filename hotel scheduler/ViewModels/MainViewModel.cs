@@ -41,6 +41,7 @@ namespace hotel_scheduler.ViewModels
                 "Guests" => _serviceProvider.GetRequiredService<Views.GuestsView>(),
                 "Income" => _serviceProvider.GetRequiredService<Views.FinanceView>(),
                 "Rooms" => _serviceProvider.GetRequiredService<Views.RoomsView>(),
+                "Users" => _serviceProvider.GetRequiredService<Views.UsersView>(),
                 _ => new ContentView()
             };
         }

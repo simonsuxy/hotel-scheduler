@@ -1,0 +1,79 @@
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:vm="clr-namespace:hotel_scheduler.ViewModels"
+             x:Class="hotel_scheduler.Views.UsersView"
+             BackgroundColor="#F5F5F5">
+
+    <Grid RowDefinitions="Auto,*" Padding="24">
+
+        <!-- Header -->
+        <VerticalStackLayout Grid.Row="0" Spacing="4" Margin="0,0,0,16">
+            <Label Text="User Management" FontSize="20" FontAttributes="Bold" TextColor="#1A1A1A"/>
+            <Label Text="Manage team access, roles, and permissions." FontSize="13" TextColor="#888888"/>
+
+            <Label Text="{Binding ErrorMessage}" TextColor="#E53935" FontSize="13" IsVisible="{Binding HasError}" Margin="0,8,0,0"/>
+        </VerticalStackLayout>
+
+        <!-- Users List -->
+        <Border Grid.Row="1" BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 12">
+            <CollectionView ItemsSource="{Binding Users}" SelectionMode="None" Margin="0,8">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="vm:UserItemViewModel">
+                        <Grid ColumnDefinitions="*,100,100,Auto" Padding="16,12" ColumnSpacing="16">
+
+                            <!-- User Info -->
+                            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2">
+                                <Label Text="{Binding Username}" FontSize="14" FontAttributes="Bold" TextColor="#1A1A1A"/>
+                                <Label Text="{Binding CreatedAt, StringFormat='Joined: {0:MMM d, yyyy}'}" FontSize="11" TextColor="#888888"/>
+                            </VerticalStackLayout>
+
+                            <!-- Status Badge -->
+                            <Border Grid.Column="1" BackgroundColor="#F5F5F5" Stroke="{Binding StatusColor}" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="8,4" HorizontalOptions="Start" VerticalOptions="Center">
+                                <Label Text="{Binding StatusLabel}" FontSize="11" FontAttributes="Bold" TextColor="{Binding StatusColor}"/>
+                            </Border>
+
+                            <!-- Role Badge -->
+                            <Border Grid.Column="2" BackgroundColor="#F0F0FF" Stroke="#4C4EE7" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="8,4" HorizontalOptions="Start" VerticalOptions="Center">
+                                <Label Text="{Binding RoleLabel}" FontSize="11" FontAttributes="Bold" TextColor="#4C4EE7"/>
+                            </Border>
+
+                            <!-- Action Buttons (Hidden entirely for the First User) -->
+                            <HorizontalStackLayout Grid.Column="3" Spacing="8" VerticalOptions="Center" IsVisible="{Binding IsNotFirstUser}">
+
+                                <!-- Promote/Demote -->
+                                <Button Text="{Binding ToggleRoleActionText}"
+                                        Command="{Binding BindingContext.ToggleRoleCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="Transparent" 
+                                        TextColor="#4C4EE7" 
+                                        BorderColor="#4C4EE7" 
+                                        BorderWidth="1" 
+                                        CornerRadius="8" 
+                                        HeightRequest="32" 
+                                        FontSize="11" 
+                                        Padding="12,0"/>
+
+                                <!-- Deactivate/Activate -->
+                                <Button Text="{Binding ToggleStatusActionText}"
+                                        Command="{Binding BindingContext.ToggleStatusCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
+                                        CommandParameter="{Binding .}"
+                                        BackgroundColor="Transparent" 
+                                        TextColor="{Binding ToggleStatusActionColor}" 
+                                        BorderColor="{Binding ToggleStatusActionColor}" 
+                                        BorderWidth="1" 
+                                        CornerRadius="8" 
+                                        HeightRequest="32" 
+                                        FontSize="11" 
+                                        Padding="12,0"/>
+
+                            </HorizontalStackLayout>
+
+                            <!-- Bottom Divider Line -->
+                            <BoxView Grid.Row="1" Grid.ColumnSpan="4" HeightRequest="1" BackgroundColor="#F0F0F0" VerticalOptions="End" Margin="0,12,-16,-12" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </Border>
+    </Grid>
+</ContentView>
