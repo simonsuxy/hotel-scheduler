@@ -1,35 +1,33 @@
-# Build output
-bin/
-obj/
+# Build and Debug output
+[Bb]in/
+[Oo]bj/
 
 # Visual Studio & VS Code
 .vs/
 **/.vs/
 .vscode/
-*.suo
 *.user
-*.slnx
+*.suo
 *.vsidx
 *.v2
 *.dtbcache.v2
 DocumentLayout*.json
+DocumentLayout*.backup.json
 
-# Database
+# Local Database (Prevents overwriting each other's local test data)
 *.sqlite
 *.sqlite-shm
 *.sqlite-wal
 
-# .NET secrets
+# .NET Secrets
 appsettings.Development.json
 secrets.json
 
-# OS junk
+# OS Generated Junk
 .DS_Store
 Thumbs.db
 desktop.ini
 
-# MAUI / Android / iOS
+# MAUI / Android / iOS Keys
 *.keystore
 *.jks
-platforms/android/
-platforms/ios/
