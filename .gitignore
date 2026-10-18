@@ -2,18 +2,17 @@
 bin/
 obj/
 
-# Visual Studio
+# Visual Studio & VS Code
 .vs/
-/hotel scheduler/.vs
+**/.vs/
+.vscode/
 *.suo
 *.user
 *.slnx
-*.dtbcache.v2
 *.vsidx
-DocumentLayout.backup.json
-
-# VS Code
-.vscode/
+*.v2
+*.dtbcache.v2
+DocumentLayout*.json
 
 # Database
 *.sqlite
@@ -34,14 +33,3 @@ desktop.ini
 *.jks
 platforms/android/
 platforms/ios/
-hotel scheduler/.vs/hotel scheduler.slnx/DesignTimeBuild/.dtbcache.v2
-/hotel scheduler/.vs/hotel scheduler.slnx/DesignTimeBuild
-hotel scheduler/.vs/hotel scheduler.slnx/DesignTimeBuild/.dtbcache.v2
-*.v2
-/hotel scheduler/.vs/hotel scheduler.slnx/DesignTimeBuild
-/hotel scheduler/.vs/hotel scheduler.slnx
-*.json
-*.json
-*.v2
-*.csproj
-/hotel scheduler/.vs
