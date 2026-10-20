@@ -4,149 +4,169 @@ using CommunityToolkit.Mvvm.Input;
 using hotel_scheduler.Models.Entities;
 using hotel_scheduler.Models.Services.DatabaseServices;
 using hotel_scheduler.Views;
-using System.Collections.ObjectModel;
 
 namespace hotel_scheduler.ViewModels
 {
-    public partial class CalendarViewModel(
-        ReservationService reservationService,
-        RoomService roomService,
-        ReservationViewModel reservationViewModel,
-        DateRangePickerViewModel dateRangePickerViewModel,
-        IServiceProvider serviceProvider) : ObservableObject
+    public partial class CalendarViewModel(ReservationService reservationService, RoomService roomService,
+            ReservationViewModel reservationViewModel, IServiceProvider serviceProvider) : ObservableObject
     {
         private readonly ReservationService _reservationService = reservationService;
         private readonly RoomService _roomService = roomService;
         private readonly ReservationViewModel _reservationViewModel = reservationViewModel;
-        private readonly DateRangePickerViewModel _dateRangePickerViewModel = dateRangePickerViewModel;
         private readonly IServiceProvider _serviceProvider = serviceProvider;
 
-        public ObservableCollection<RoomDTO> Rooms { get; private set; } = [];
-        public ObservableCollection<ReservationDTO> Reservations { get; private set; } = [];
+        // These lists are always REPLACED, never modified in place. That makes it safe
+        // for the view to read them from a background thread while computing bar positions.
+        public List<RoomDTO> Rooms { get; private set; } = [];
+        public List<ReservationDTO> Reservations { get; private set; } = [];
+
+        // Built once per range change instead of on every property access.
+        private List<DateTime> _visibleDates = [];
+        public List<DateTime> VisibleDates => _visibleDates;
 
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(DateRangeLabel))]
         [NotifyPropertyChangedFor(nameof(VisibleDates))]
         public partial DateTime StartDate { get; set; } = DateTime.Today;
-
         [ObservableProperty]
         [NotifyPropertyChangedFor(nameof(DateRangeLabel))]
         [NotifyPropertyChangedFor(nameof(VisibleDates))]
         public partial DateTime EndDate { get; set; } = DateTime.Today.AddDays(6);
-
-        [ObservableProperty]
-        public partial bool IsNewReservationPopupOpen { get; set; } = false;
-
-        [ObservableProperty]
-        public partial bool IsEditReservationPopupOpen { get; set; } = false;
-
-        [ObservableProperty]
-        public partial ReservationDTO? SelectedReservation { get; set; } = null;
-
-        [ObservableProperty]
-        public partial DateTime PrefilledDate { get; set; } = DateTime.Today;
-
-        [ObservableProperty]
-        public partial RoomDTO? PrefilledRoom { get; set; } = null;
-
         [ObservableProperty]
         public partial int DayCount { get; set; } = 7;
 
-        private bool _suppressDayCountChanged = false;
+        public string DateRangeLabel => $"{StartDate:MMM d} | {EndDate:MMM d}";
 
-        partial void OnDayCountChanged(int value)
+        // Only one DB query at a time: a DbContext must never run two queries in parallel.
+        private readonly SemaphoreSlim _dbLock = new(1, 1);
+
+        // Bumped on every refresh request. If a newer request exists by the time we get the lock
+        // (or finish querying), the older one is skipped/discarded, so rapid arrow clicks
+        // collapse into ~1-2 queries instead of one per click.
+        private int _loadVersion;
+
+        // True when the date range changed and the grid still needs a FULL rebuild.
+        // Stays true if the request that set it gets superseded, so the change is never lost.
+        private bool _rangeDirty;
+
+        // Runs the query on a background thread, serialized by the lock.
+        private async Task<T> RunDbAsync<T>(Func<Task<T>> query)
         {
-            if (_suppressDayCountChanged) return;
-            EndDate = StartDate.AddDays(value - 1);
-        }
-
-        public string DateRangeLabel => $"{StartDate:MMM d} - {EndDate:MMM d}";
-
-        public List<DateTime> VisibleDates
-        {
-            get
-            {
-                var dates = new List<DateTime>();
-                for (var day = StartDate; day <= EndDate; day = day.AddDays(1))
-                    dates.Add(day);
-                return dates;
+            await _dbLock.WaitAsync();
+            try 
+            { 
+                return await Task.Run(query); 
+            }
+            finally 
+            { 
+                _dbLock.Release(); 
             }
         }
 
         public async Task InitializeAsync()
         {
             EndDate = StartDate.AddDays(DayCount - 1);
-            await LoadRoomsAsync();
-            await LoadReservationsAsync();
+            Rooms = (await RunDbAsync(() => _roomService.GetAllActiveRoomAsync())).ToList();
+            _rangeDirty = true;
+            await RefreshAsync();
         }
 
-        private async Task LoadRoomsAsync()
+
+        // using atomic version keeps track in which order the request came newest
+        // if newer request comes, the running one gets discarded
+        private async Task RefreshAsync()
         {
-            var rooms = await _roomService.GetAllActiveRoomAsync();
-            Rooms.Clear();
-            foreach (var room in rooms)
-                Rooms.Add(room);
+            var version = Interlocked.Increment(ref _loadVersion);
+            await _dbLock.WaitAsync();  // waits for a lock
+            try
+            {
+                if (version != _loadVersion) return;       // newer request already queued, so discard
+
+                var start = StartDate;
+                var end = EndDate;
+                var loaded = await Task.Run(() =>
+                    _reservationService.GetReservationsByDateAsync(start, end.AddDays(1)));
+
+                if (version != _loadVersion) return;       // newer request already queued, so discard
+
+                Reservations = loaded;
+                if (_rangeDirty)
+                {
+                    // dates changed, data stays the same
+                    _rangeDirty = false;
+                    _visibleDates = BuildDates(start, end);
+                    OnPropertyChanged(nameof(VisibleDates));
+                }
+                else
+                {
+                    // dates stay the same, data changed
+                    OnPropertyChanged(nameof(Reservations));
+                }
+            }
+            finally { _dbLock.Release(); }
         }
 
-        private async Task LoadReservationsAsync()
+        private static List<DateTime> BuildDates(DateTime start, DateTime end)
         {
-            var reservations = await _reservationService.GetReservationsByDateAsync(StartDate, EndDate.AddDays(1));
-            Reservations.Clear();
-            foreach (var reservation in reservations)
-                Reservations.Add(reservation);
+            var days = (end.Date - start.Date).Days + 1;
+            var list = new List<DateTime>(days);
+            for (var i = 0; i < days; i++)
+                list.Add(start.Date.AddDays(i));
+            return list;
+        }
 
-            OnPropertyChanged(nameof(DateRangeLabel));
-            OnPropertyChanged(nameof(VisibleDates));
-            OnPropertyChanged(nameof(Reservations));
+
+        // Single entry point for every range change (arrows, +/- days, date picker).
+        private async Task SetRangeAsync(DateTime start, int dayCount)
+        {
+            DayCount = dayCount;
+            StartDate = start;
+            EndDate = start.AddDays(dayCount - 1);
+            OnPropertyChanged(nameof(DateRangeLabel));   
+            _rangeDirty = true;
+            await RefreshAsync();
         }
 
         [RelayCommand]
-        private async Task ShiftForwardAsync()
-        {
-            StartDate = StartDate.AddDays(1);
-            EndDate = EndDate.AddDays(1);
-            await LoadReservationsAsync();
-        }
+        private Task ShiftForwardAsync() => SetRangeAsync(StartDate.AddDays(1), DayCount);
 
         [RelayCommand]
-        private async Task ShiftBackwardAsync()
-        {
-            StartDate = StartDate.AddDays(-1);
-            EndDate = EndDate.AddDays(-1);
-            await LoadReservationsAsync();
-        }
+        private Task ShiftBackwardAsync() => SetRangeAsync(StartDate.AddDays(-1), DayCount);
 
         [RelayCommand]
-        private async Task IncreaseDaysAsync()
-        {
-            if (DayCount >= 28) return;
-            DayCount++;
-            await LoadReservationsAsync();
-        }
+        private Task IncreaseDaysAsync()
+            => DayCount >= 28 ? Task.CompletedTask : SetRangeAsync(StartDate, DayCount + 1);
 
         [RelayCommand]
-        private async Task DecreaseDaysAsync()
-        {
-            if (DayCount <= 5) return;
-            DayCount--;
-            await LoadReservationsAsync();
-        }
+        private Task DecreaseDaysAsync()
+            => DayCount <= 5 ? Task.CompletedTask : SetRangeAsync(StartDate, DayCount - 1);
 
         [RelayCommand]
         private async Task SetDateRangeAsync(object param)
         {
             if (param is not (DateTime start, DateTime end)) return;
-            StartDate = start;
-            EndDate = end;
-            await LoadReservationsAsync();
+            await SetRangeAsync(start.Date, (end.Date - start.Date).Days + 1);
         }
+
+        [RelayCommand]
+        private async Task OpenDatePickerAsync()
+        {
+            var pickerViewModel = _serviceProvider.GetRequiredService<DateRangePickerViewModel>();
+            pickerViewModel.Initialize(StartDate, EndDate);
+            pickerViewModel.OnRangeSelected = async (start, end) =>
+                await SetRangeAsync(start.Date, (end.Date - start.Date).Days + 1);
+
+            var popup = new DateRangePickerPopup(pickerViewModel);
+            await Application.Current!.MainPage!.ShowPopupAsync(popup);
+        }
+
 
         [RelayCommand]
         private async Task OpenNewReservationAsync()
         {
             _reservationViewModel.SetRooms(Rooms);
-            await _reservationViewModel.InitializeNewReservationPopup();
-            _reservationViewModel.OnSaved = async () => await LoadReservationsAsync();
+            _reservationViewModel.InitializeNewReservationPopup();
+            _reservationViewModel.OnSaved = async () => await RefreshAsync();
             await ShowPopupAsync();
         }
 
@@ -157,8 +177,8 @@ namespace hotel_scheduler.ViewModels
             var (room, dateTime) = tuple;
 
             _reservationViewModel.SetRooms(Rooms);
-            await _reservationViewModel.InitializeNewReservationPopup(room, dateTime);
-            _reservationViewModel.OnSaved = async () => await LoadReservationsAsync();
+            _reservationViewModel.InitializeNewReservationPopup(room, dateTime);
+            _reservationViewModel.OnSaved = async () => await RefreshAsync();
             await ShowPopupAsync();
         }
 
@@ -167,7 +187,7 @@ namespace hotel_scheduler.ViewModels
         {
             _reservationViewModel.SetRooms(Rooms);
             await _reservationViewModel.InitializeEditReservationPopup(reservation);
-            _reservationViewModel.OnSaved = async () => await LoadReservationsAsync();
+            _reservationViewModel.OnSaved = async () => await RefreshAsync();
             await ShowPopupAsync();
         }
 
@@ -176,37 +196,6 @@ namespace hotel_scheduler.ViewModels
             var guestPopupViewModel = _serviceProvider.GetRequiredService<GuestPopupViewModel>();
             var popup = new ReservationPopup(_reservationViewModel, guestPopupViewModel, _serviceProvider);
             await Application.Current!.MainPage!.ShowPopupAsync(popup);
-        }
-
-        [RelayCommand]
-        private async Task OpenDatePickerAsync()
-        {
-            _dateRangePickerViewModel.Initialize(StartDate, EndDate);
-            bool rangeChanged = false;
-
-            _dateRangePickerViewModel.OnRangeSelected = (start, end) =>
-            {
-                _suppressDayCountChanged = true;
-                try
-                {
-                    StartDate = start;
-                    EndDate = end;
-                    DayCount = (int)(end - start).TotalDays + 1;
-                }
-                finally
-                {
-                    _suppressDayCountChanged = false;
-                }
-                rangeChanged = true;
-            };
-
-            var popup = new DateRangePickerPopup(_dateRangePickerViewModel);
-            await Application.Current!.MainPage!.ShowPopupAsync(popup);
-
-            if (rangeChanged)
-            {
-                await LoadReservationsAsync();
-            }
         }
     }
 }

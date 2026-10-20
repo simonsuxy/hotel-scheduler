@@ -25,7 +25,7 @@ namespace hotel_scheduler
                 options.SetShouldEnableSnackbarOnWindows(false);
             });
 
-            builder.Services.AddDbContext<HotelSchedulerDbContext>();
+            builder.Services.AddDbContext<HotelSchedulerDbContext>(ServiceLifetime.Transient);
             builder.Services.AddTransient<UserService>();
             builder.Services.AddTransient<GuestService>();
             builder.Services.AddTransient<RoomService>();

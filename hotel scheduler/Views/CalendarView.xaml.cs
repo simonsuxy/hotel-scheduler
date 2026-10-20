@@ -1,3 +1,5 @@
+using System.ComponentModel;
+using System.Diagnostics;
 using hotel_scheduler.Models.Entities;
 using hotel_scheduler.ViewModels;
 using Microsoft.Maui.Controls.Shapes;
@@ -12,11 +14,21 @@ namespace hotel_scheduler.Views
         private const double RowHeight = 60;
         private const double HeaderHeight = 48;
         private const double SubHeaderHeight = 28;
+        private static readonly Dictionary<string, Color> ColorCache = [];
+        private static readonly Color AccentColor = Color.FromArgb("#4C4EE7");
+        private static readonly Color MutedColor = Color.FromArgb("#888888");
+        private static readonly Color FaintColor = Color.FromArgb("#AAAAAA");
+        private List<DateTime> _shownDates = [];
+        private int _lastDayCount;
+        private string _roomSignature = "";
+        private readonly List<Label> _dateLabels = [];
+        private readonly List<View> _barElements = [];
 
-        private int _lastDayCount = 0;
-        private int _lastRoomCount = 0;
-        private DateTime _lastStartDate = DateTime.MinValue;
-        private readonly Dictionary<int, List<View>> _roomStaticElements = [];
+        // Newer refresh invalidates an older one that is still computing
+        private int _buildTicket;
+
+        private sealed record CellInfo(RoomDTO Room, int HalfCol);
+        private sealed record BarPosition(int Row, int Column, int Span, string Hex, ReservationDTO Reservation);
 
         public CalendarView(CalendarViewModel viewModel)
         {
@@ -24,308 +36,320 @@ namespace hotel_scheduler.Views
             _viewModel = viewModel;
             BindingContext = viewModel;
 
-            _viewModel.PropertyChanged += (s, e) =>
-            {
-                if (e.PropertyName == nameof(CalendarViewModel.StartDate) ||
-                    e.PropertyName == nameof(CalendarViewModel.VisibleDates))
-                {
-                    MainThread.BeginInvokeOnMainThread(BuildGrid);
-                }
-                else if (e.PropertyName == nameof(CalendarViewModel.Reservations))
-                {
-                    MainThread.BeginInvokeOnMainThread(BuildReservationBars);
-                }
-            };
+            _viewModel.PropertyChanged += OnViewModelPropertyChanged;
 
-            Loaded += async (s, e) =>
+            // The VM raises its notification when loading finishes, which triggers the first build.
+            Loaded += async (s, e) => await _viewModel.InitializeAsync();
+        }
+
+        // Listens ONLY to the two "data ready" signals. StartDate/EndDate changes are ignored.
+        private void OnViewModelPropertyChanged(object? sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName is nameof(CalendarViewModel.VisibleDates)
+                               or nameof(CalendarViewModel.Reservations))
             {
-                await _viewModel.InitializeAsync();
-                BuildGrid();
-            };
+                MainThread.BeginInvokeOnMainThread(() => _ = RefreshGridAsync());
+            }
+        }
+
+        private async Task RefreshGridAsync()
+        {
+            try
+            {
+                var ticket = ++_buildTicket;
+
+                // Snapshot on the UI thread (the VM replaces these lists, never mutates them)
+                var dates = _viewModel.VisibleDates;
+                var rooms = _viewModel.Rooms;
+                var reservations = _viewModel.Reservations;
+                if (dates.Count == 0) return;
+
+                // Pure math over the snapshot, no UI objects touched, so it can run off-thread
+                var bars = await Task.Run(() => ComputeBarPositions(dates, rooms, reservations));
+
+                if (ticket != _buildTicket) return;   // a newer refresh started meanwhile
+
+                // Creating/adding UI elements has to stay on the UI thread
+                CalendarGrid.BatchBegin();            // one layout pass for all changes below
+                try
+                {
+                    _shownDates = dates;
+
+                    // only when day count or rooms change
+                    if (NeedsStructureRebuild(dates, rooms))
+                        RebuildStructure(dates, rooms);
+
+                    UpdateDateLabels(dates);          // edits existing labels in place
+                    ApplyBars(bars);
+                }
+                finally
+                {
+                    CalendarGrid.BatchCommit();
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine($"Calendar refresh failed: {ex}");
+            }
         }
 
         private bool NeedsStructureRebuild(List<DateTime> dates, List<RoomDTO> rooms)
+            => dates.Count != _lastDayCount || RoomSignature(rooms) != _roomSignature;
+
+        // Changes when rooms are added/removed/renamed/reordered
+        private static string RoomSignature(List<RoomDTO> rooms)
+            => string.Join('|', rooms.Select(r => $"{r.Id}:{r.Name}"));
+
+        // ---------- Pure computation (runs on a background thread) ----------
+
+        private static List<BarPosition> ComputeBarPositions(
+            List<DateTime> dates, List<RoomDTO> rooms, List<ReservationDTO> reservations)
         {
-            if (dates.Count == 0) return false;
-            return dates.Count != _lastDayCount
-                || rooms.Count != _lastRoomCount
-                || dates[0].Date != _lastStartDate;
+            var result = new List<BarPosition>(reservations.Count);
+            if (dates.Count == 0) return result;
+
+            var first = dates[0].Date;
+            var last = dates[^1].Date;
+            var lastHalfCol = dates.Count * 2 - 1;
+
+            // One pass over reservations + O(1) room lookup (rooms start at grid row 2)
+            var rowByRoom = new Dictionary<int, int>(rooms.Count);
+            for (int i = 0; i < rooms.Count; i++)
+                rowByRoom[rooms[i].Id] = i + 2;
+
+            foreach (var res in reservations)
+            {
+                if (!rowByRoom.TryGetValue(res.RoomId, out var row)) continue;
+                if (res.CheckOut.Date < first || res.CheckIn.Date > last) continue;
+
+                // Days are consecutive, so the index is simply "days since the first day".
+                // No FindIndex scan and no dictionary needed. Math.Max/Min clamp to the visible range.
+                int startDay = Math.Max(0, (res.CheckIn.Date - first).Days);
+                int endDay = Math.Min(dates.Count - 1, (res.CheckOut.Date - first).Days);
+
+                // Each day has 2 columns: even = AM, odd = PM
+                int startCol = startDay * 2;
+                if (res.CheckIn.Date >= first && res.CheckIn.Hour >= 12)
+                    startCol++;
+
+                int endCol = endDay * 2;
+                if (res.CheckOut.Date <= last && res.CheckOut.Hour > 12)
+                    endCol++;
+                else if (res.CheckOut.Date > last)
+                    endCol = lastHalfCol;
+
+                var span = Math.Max(1, endCol - startCol + 1);
+                var hex = string.IsNullOrWhiteSpace(res.Color) ? "#4C4EE7" : res.Color;
+
+                result.Add(new BarPosition(row, 1 + startCol, span, hex, res));
+            }
+
+            return result;
         }
 
-        public void BuildGrid()
+        // ---------- UI building (UI thread only) ----------
+
+        private void RebuildStructure(List<DateTime> dates, List<RoomDTO> rooms)
         {
-            var dates = _viewModel.VisibleDates;
-            var rooms = _viewModel.Rooms.ToList();
+            CalendarGrid.Children.Clear();
+            CalendarGrid.ColumnDefinitions.Clear();
+            CalendarGrid.RowDefinitions.Clear();
+            _dateLabels.Clear();
+            _barElements.Clear();
 
-            if (dates.Count == 0) return;
+            int days = dates.Count;
 
-            CalendarGrid.BatchBegin();
-            try
+            CalendarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = RoomColumnWidth });
+            for (int i = 0; i < days * 2; i++)
+                CalendarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+
+            CalendarGrid.RowDefinitions.Add(new RowDefinition { Height = HeaderHeight });
+            CalendarGrid.RowDefinitions.Add(new RowDefinition { Height = SubHeaderHeight });
+            foreach (var _ in rooms)
+                CalendarGrid.RowDefinitions.Add(new RowDefinition { Height = RowHeight });
+
+            // Header elements: created once here. Only the date label text changes later.
+            for (int i = 0; i < days; i++)
             {
-                CalendarGrid.Children.Clear();
+                var col = 1 + i * 2;
 
-                if (NeedsStructureRebuild(dates, rooms))
+                var dateLabel = new Label
                 {
-                    CalendarGrid.ColumnDefinitions.Clear();
-                    CalendarGrid.RowDefinitions.Clear();
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    FontSize = 12
+                };
+                Grid.SetRow(dateLabel, 0);
+                Grid.SetColumn(dateLabel, col);
+                Grid.SetColumnSpan(dateLabel, 2);
+                CalendarGrid.Children.Add(dateLabel);
+                _dateLabels.Add(dateLabel);
 
-                    CalendarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = RoomColumnWidth });
+                AddSubHeader("AM", col);
+                AddSubHeader("PM", col + 1);
 
-                    for (int i = 0; i < dates.Count * 2; i++)
-                    {
-                        CalendarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
-                    }
+                var separator = new BoxView
+                {
+                    BackgroundColor = GetColor("#E0E0E0"),
+                    WidthRequest = 1,
+                    HorizontalOptions = LayoutOptions.Start
+                };
+                Grid.SetRow(separator, 0);
+                Grid.SetColumn(separator, col);
+                Grid.SetRowSpan(separator, 2 + rooms.Count);
+                CalendarGrid.Children.Add(separator);
+            }
 
-                    CalendarGrid.RowDefinitions.Add(new RowDefinition { Height = HeaderHeight });
-                    CalendarGrid.RowDefinitions.Add(new RowDefinition { Height = SubHeaderHeight });
+            // Room rows: label, separator line, and one tappable cell per half-day
+            for (int r = 0; r < rooms.Count; r++)
+            {
+                var room = rooms[r];
+                var row = r + 2;
 
-                    foreach (var _ in rooms)
-                    {
-                        CalendarGrid.RowDefinitions.Add(new RowDefinition { Height = RowHeight });
-                    }
+                var roomLabel = new Label
+                {
+                    Text = room.Name,
+                    VerticalTextAlignment = TextAlignment.Center,
+                    HorizontalTextAlignment = TextAlignment.Center,
+                    FontSize = 13,
+                    FontAttributes = FontAttributes.Bold,
+                    TextColor = GetColor("#1A1A1A")
+                };
+                Grid.SetRow(roomLabel, row);
+                Grid.SetColumn(roomLabel, 0);
+                CalendarGrid.Children.Add(roomLabel);
 
-                    _roomStaticElements.Clear();
-                    _lastDayCount = dates.Count;
-                    _lastRoomCount = rooms.Count;
-                    _lastStartDate = dates[0].Date;
+                var rowSep = new BoxView
+                {
+                    BackgroundColor = GetColor("#F0F0F0"),
+                    HeightRequest = 1,
+                    VerticalOptions = LayoutOptions.End
+                };
+                Grid.SetRow(rowSep, row);
+                Grid.SetColumn(rowSep, 0);
+                Grid.SetColumnSpan(rowSep, 1 + days * 2);
+                CalendarGrid.Children.Add(rowSep);
+
+                for (int h = 0; h < days * 2; h++)
+                {
+                    var cell = MakeCell(room, h);
+                    Grid.SetRow(cell, row);
+                    Grid.SetColumn(cell, 1 + h);
+                    CalendarGrid.Children.Add(cell);
                 }
+            }
 
-                for (int i = 0; i < dates.Count; i++)
+            _lastDayCount = days;
+            _roomSignature = RoomSignature(rooms);
+        }
+
+        private void AddSubHeader(string text, int col)
+        {
+            var label = new Label
+            {
+                Text = text,
+                HorizontalTextAlignment = TextAlignment.Center,
+                VerticalTextAlignment = TextAlignment.Center,
+                FontSize = 10,
+                TextColor = FaintColor
+            };
+            Grid.SetRow(label, 1);
+            Grid.SetColumn(label, col);
+            CalendarGrid.Children.Add(label);
+        }
+
+        // Shifting the range only needs new text on existing labels, not new elements
+        private void UpdateDateLabels(List<DateTime> dates)
+        {
+            for (int i = 0; i < dates.Count && i < _dateLabels.Count; i++)
+            {
+                var date = dates[i];
+                var isToday = date.Date == DateTime.Today;
+                var label = _dateLabels[i];
+
+                label.Text = $"{date:ddd} {date.Day}";
+                label.TextColor = isToday ? AccentColor : MutedColor;
+                label.FontAttributes = isToday ? FontAttributes.Bold : FontAttributes.None;
+            }
+        }
+
+        private void ApplyBars(List<BarPosition> bars)
+        {
+            // Remove the old bars via our own list (no scan over Children)
+            foreach (var old in _barElements)
+                CalendarGrid.Children.Remove(old);
+            _barElements.Clear();
+
+            foreach (var b in bars)
+            {
+                var bar = new Border
                 {
-                    var date = dates[i];
-                    var isToday = date.Date == DateTime.Today;
-                    var dateCol = 1 + (i * 2);
-
-                    var dateLabel = new Label
+                    BackgroundColor = GetColor(b.Hex),
+                    StrokeShape = new RoundRectangle { CornerRadius = 8 },
+                    Padding = new Thickness(14, 0, 10, 0),
+                    Margin = new Thickness(1, 2),
+                    VerticalOptions = LayoutOptions.Fill,
+                    Content = new Label
                     {
-                        Text = $"{date:ddd} {date.Day}",
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        VerticalTextAlignment = TextAlignment.Center,
+                        Text = b.Reservation.GuestName,
+                        TextColor = Colors.White,
                         FontSize = 12,
-                        TextColor = isToday ? Color.FromArgb("#4C4EE7") : Color.FromArgb("#888888"),
-                        FontAttributes = isToday ? FontAttributes.Bold : FontAttributes.None
-                    };
-                    CalendarGrid.SetRow(dateLabel, 0);
-                    CalendarGrid.SetColumn(dateLabel, dateCol);
-                    CalendarGrid.SetColumnSpan(dateLabel, 2);
-                    CalendarGrid.Children.Add(dateLabel);
-
-                    var amLabel = new Label
-                    {
-                        Text = "AM",
-                        HorizontalTextAlignment = TextAlignment.Center,
+                        FontAttributes = FontAttributes.Bold,
                         VerticalTextAlignment = TextAlignment.Center,
-                        FontSize = 10,
-                        TextColor = Color.FromArgb("#AAAAAA")
-                    };
-                    CalendarGrid.SetRow(amLabel, 1);
-                    CalendarGrid.SetColumn(amLabel, dateCol);
-                    CalendarGrid.Children.Add(amLabel);
-
-                    var pmLabel = new Label
-                    {
-                        Text = "PM",
-                        HorizontalTextAlignment = TextAlignment.Center,
-                        VerticalTextAlignment = TextAlignment.Center,
-                        FontSize = 10,
-                        TextColor = Color.FromArgb("#AAAAAA")
-                    };
-                    CalendarGrid.SetRow(pmLabel, 1);
-                    CalendarGrid.SetColumn(pmLabel, dateCol + 1);
-                    CalendarGrid.Children.Add(pmLabel);
-
-                    var separator = new BoxView
-                    {
-                        BackgroundColor = Color.FromArgb("#E0E0E0"),
-                        WidthRequest = 1,
-                        HorizontalOptions = LayoutOptions.Start
-                    };
-                    CalendarGrid.SetRow(separator, 0);
-                    CalendarGrid.SetColumn(separator, dateCol);
-                    CalendarGrid.SetRowSpan(separator, 2 + rooms.Count);
-                    CalendarGrid.Children.Add(separator);
-                }
-
-                for (int rowIndex = 0; rowIndex < rooms.Count; rowIndex++)
-                {
-                    var room = rooms[rowIndex];
-                    var gridRow = rowIndex + 2;
-
-                    if (!_roomStaticElements.TryGetValue(room.Id, out var cachedElements))
-                    {
-                        cachedElements = [];
-
-                        var roomLabel = new Label
-                        {
-                            Text = room.Name,
-                            VerticalTextAlignment = TextAlignment.Center,
-                            HorizontalTextAlignment = TextAlignment.Center,
-                            FontSize = 13,
-                            FontAttributes = FontAttributes.Bold,
-                            TextColor = Color.FromArgb("#1A1A1A")
-                        };
-                        Grid.SetRow(roomLabel, gridRow);
-                        Grid.SetColumn(roomLabel, 0);
-                        cachedElements.Add(roomLabel);
-
-                        var rowSep = new BoxView
-                        {
-                            BackgroundColor = Color.FromArgb("#F0F0F0"),
-                            HeightRequest = 1,
-                            VerticalOptions = LayoutOptions.End
-                        };
-                        Grid.SetRow(rowSep, gridRow);
-                        Grid.SetColumn(rowSep, 0);
-                        Grid.SetColumnSpan(rowSep, 1 + _lastDayCount * 2);
-                        cachedElements.Add(rowSep);
-
-                        for (int i = 0; i < _lastDayCount; i++)
-                        {
-                            var capturedRoom = room;
-                            var amDate = _viewModel.VisibleDates[i].AddHours(8);
-                            var pmDate = _viewModel.VisibleDates[i].AddHours(14);
-
-                            var amCell = MakeCell(capturedRoom, amDate);
-                            Grid.SetRow(amCell, gridRow);
-                            Grid.SetColumn(amCell, 1 + (i * 2));
-                            cachedElements.Add(amCell);
-
-                            var pmCell = MakeCell(capturedRoom, pmDate);
-                            Grid.SetRow(pmCell, gridRow);
-                            Grid.SetColumn(pmCell, 1 + (i * 2) + 1);
-                            cachedElements.Add(pmCell);
-                        }
-
-                        _roomStaticElements[room.Id] = cachedElements;
+                        LineBreakMode = LineBreakMode.TailTruncation,
+                        Margin = new Thickness(4, 0, 0, 0)
                     }
-                    else
-                    {
-                        foreach (var el in cachedElements)
-                            Grid.SetRow(el, gridRow);
-                    }
+                };
 
-                    foreach (var el in cachedElements)
-                        CalendarGrid.Children.Add(el);
-                }
-            }
-            finally
-            {
-                CalendarGrid.BatchCommit();
-            }
+                // One shared handler method; the reservation travels in CommandParameter,
+                // so there is no per-bar closure
+                var tap = new TapGestureRecognizer { CommandParameter = b.Reservation };
+                tap.Tapped += OnBarTapped;
+                bar.GestureRecognizers.Add(tap);
 
-            BuildReservationBars();
-        }
-
-        public void BuildReservationBars()
-        {
-            var dates = _viewModel.VisibleDates;
-            var rooms = _viewModel.Rooms.ToList();
-            var reservations = _viewModel.Reservations.ToList();
-
-            if (dates.Count == 0) return;
-
-            if (NeedsStructureRebuild(dates, rooms))
-            {
-                BuildGrid();
-                return;
-            }
-
-            CalendarGrid.BatchBegin();
-            try
-            {
-                var barsToRemove = CalendarGrid.Children
-                    .OfType<Border>()
-                    .Where(v => v.ClassId == "reservation-bar")
-                    .ToList();
-
-                foreach (var bar in barsToRemove)
-                    CalendarGrid.Children.Remove(bar);
-
-                var reservationsByRoom = reservations
-                    .GroupBy(r => r.RoomId)
-                    .ToDictionary(g => g.Key, g => g.ToList());
-
-                for (int rowIndex = 0; rowIndex < rooms.Count; rowIndex++)
-                {
-                    var room = rooms[rowIndex];
-                    var gridRow = rowIndex + 2;
-
-                    if (!reservationsByRoom.TryGetValue(room.Id, out var roomReservations))
-                        continue;
-
-                    foreach (var res in roomReservations)
-                    {
-                        if (res.CheckOut.Date < dates[0].Date || res.CheckIn.Date > dates[^1].Date)
-                            continue;
-
-                        var clampedStart = res.CheckIn.Date < dates[0].Date ? dates[0].Date : res.CheckIn.Date;
-                        var clampedEnd = res.CheckOut.Date > dates[^1].Date ? dates[^1].Date : res.CheckOut.Date;
-
-                        var startDayIndex = dates.FindIndex(d => d.Date == clampedStart.Date);
-                        var endDayIndex = dates.FindIndex(d => d.Date == clampedEnd.Date);
-
-                        if (startDayIndex == -1 || endDayIndex == -1) continue;
-
-                        int startHalfCol = startDayIndex * 2;
-                        if (res.CheckIn.Date >= dates[0].Date && res.CheckIn.Hour >= 12)
-                            startHalfCol++;
-
-                        int endHalfCol = endDayIndex * 2;
-                        if (res.CheckOut.Date <= dates[^1].Date && res.CheckOut.Hour > 12)
-                            endHalfCol++;
-                        else if (res.CheckOut.Date > dates[^1].Date)
-                            endHalfCol = (dates.Count * 2) - 1;
-
-                        var halfColSpan = Math.Max(1, (endHalfCol - startHalfCol) + 1);
-                        var hexColor = !string.IsNullOrWhiteSpace(res.Color) ? res.Color : "#4C4EE7";
-
-                        var bar = new Border
-                        {
-                            ClassId = "reservation-bar",
-                            BackgroundColor = Color.FromArgb(hexColor),
-                            StrokeShape = new RoundRectangle { CornerRadius = 8 },
-                            Padding = new Thickness(14, 0, 10, 0),
-                            Margin = new Thickness(1, 2),
-                            VerticalOptions = LayoutOptions.Fill,
-                            Content = new Label
-                            {
-                                Text = res.GuestName,
-                                TextColor = Colors.White,
-                                FontSize = 12,
-                                FontAttributes = FontAttributes.Bold,
-                                VerticalTextAlignment = TextAlignment.Center,
-                                LineBreakMode = LineBreakMode.TailTruncation,
-                                Margin = new Thickness(4, 0, 0, 0)
-                            }
-                        };
-
-                        var capturedRes = res;
-                        var tap = new TapGestureRecognizer();
-                        tap.Tapped += (s, e) =>
-                            _viewModel.OpenEditReservationCommand.Execute(capturedRes);
-                        bar.GestureRecognizers.Add(tap);
-
-                        CalendarGrid.SetRow(bar, gridRow);
-                        CalendarGrid.SetColumn(bar, 1 + startHalfCol);
-                        CalendarGrid.SetColumnSpan(bar, halfColSpan);
-                        CalendarGrid.Children.Add(bar);
-                    }
-                }
-            }
-            finally
-            {
-                CalendarGrid.BatchCommit();
+                Grid.SetRow(bar, b.Row);
+                Grid.SetColumn(bar, b.Column);
+                Grid.SetColumnSpan(bar, b.Span);
+                CalendarGrid.Children.Add(bar);   // added last, so bars sit above the cells
+                _barElements.Add(bar);
             }
         }
 
-        private ContentView MakeCell(RoomDTO room, DateTime dateTime)
+        private ContentView MakeCell(RoomDTO room, int halfCol)
         {
             var cell = new ContentView { BackgroundColor = Colors.Transparent };
-            var tap = new TapGestureRecognizer();
-            tap.Tapped += (s, e) =>
-                _viewModel.OpenNewReservationFromCellCommand.Execute((room, dateTime));
+            var tap = new TapGestureRecognizer { CommandParameter = new CellInfo(room, halfCol) };
+            tap.Tapped += OnCellTapped;
             cell.GestureRecognizers.Add(tap);
             return cell;
+        }
+
+        private void OnBarTapped(object? sender, TappedEventArgs e)
+        {
+            if (e.Parameter is ReservationDTO reservation)
+                _viewModel.OpenEditReservationCommand.Execute(reservation);
+        }
+
+        private void OnCellTapped(object? sender, TappedEventArgs e)
+        {
+            if (e.Parameter is not CellInfo cell) return;
+            var dayIndex = cell.HalfCol / 2;
+            if (dayIndex >= _shownDates.Count) return;
+
+            // The date is resolved at TAP time, not baked into the cell. That is why cells
+            // survive a range shift without being recreated (before, every shift rebuilt them all).
+            var dateTime = _shownDates[dayIndex].Date.AddHours(cell.HalfCol % 2 == 0 ? 8 : 14);
+            _viewModel.OpenNewReservationFromCellCommand.Execute((cell.Room, dateTime));
+        }
+
+        private static Color GetColor(string hex)
+        {
+            if (!ColorCache.TryGetValue(hex, out var color))
+            {
+                color = Color.FromArgb(hex);
+                ColorCache[hex] = color;
+            }
+            return color;
         }
     }
 }
