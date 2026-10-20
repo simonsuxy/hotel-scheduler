@@ -18,19 +18,22 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
                 Address = settings.Address,
                 Phone = settings.Phone,
                 Currency = settings.Currency,
-                DefaultCalendarDays = settings.DefaultCalendarDays
+                DefaultCalendarDays = settings.DefaultCalendarDays,
+                DefaultCheckInTime = settings.DefaultCheckInTime,
+                DefaultCheckOutTime = settings.DefaultCheckOutTime,
             };
         }
 
-        public async Task UpdateSettingsAsync(string hotelName, string address,
-                                    string phone, string currency, int defaultCalendarDays)
+        public async Task UpdateSettingsAsync(SettingsDTO dto)
         {
             var settings = await _db.Settings.SingleAsync();
-            settings.HotelName = hotelName.Trim();
-            settings.Address = address.Trim();
-            settings.Phone = phone.Trim();
-            settings.Currency = currency.Trim();
-            settings.DefaultCalendarDays = defaultCalendarDays;
+            settings.HotelName = dto.HotelName.Trim();
+            settings.Address = dto.Address?.Trim();
+            settings.Phone = dto.Phone?.Trim();
+            settings.Currency = dto.Currency.Trim();
+            settings.DefaultCalendarDays = dto.DefaultCalendarDays;
+            settings.DefaultCheckInTime = dto.DefaultCheckInTime;
+            settings.DefaultCheckOutTime = dto.DefaultCheckOutTime;
             await _db.SaveChangesAsync();
         }
     }

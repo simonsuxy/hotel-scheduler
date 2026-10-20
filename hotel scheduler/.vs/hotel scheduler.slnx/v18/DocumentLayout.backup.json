@@ -3,6 +3,57 @@
   "WorkspaceRootPath": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\hotel scheduler.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:hotel scheduler.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\models\\services\\databaseservices\\settingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:models\\services\\databaseservices\\settingsservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\viewmodels\\reservationviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\reservationviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\viewmodels\\calendarviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\calendarviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\settingsview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\settingsview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\guestview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\guestview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\usersview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\usersview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\viewmodels\\settingsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\settingsviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\viewmodels\\daterangepickerviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\daterangepickerviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\models\\entities\\settingsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:models\\entities\\settingsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{DEB3DC7C-5059-F4AD-2883-65AE6414B1AF}|..\\DAL\\DAL.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\dal\\entities\\settings.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\models\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:models\\services\\authservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -12,26 +63,6 @@
     },
     {
       "AbsoluteMoniker": "D:0:0:{DEB3DC7C-5059-F4AD-2883-65AE6414B1AF}|..\\DAL\\DAL.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\dal\\entities\\user.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\mainview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\mainview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:viewmodels\\mainviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:mauiprogram.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\usersview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\usersview.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\usersview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\usersview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\viewmodels\\usersviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -52,38 +83,6 @@
     {
       "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\models\\entities\\roomdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:models\\entities\\roomdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\reservationpopup.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\reservationpopup.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\calendarview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\calendarview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\daterangepickerview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\daterangepickerview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\financeview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\financeview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\guestpopup.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\guestpopup.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\registerview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\registerview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\loginview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\loginview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\views\\guestview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|solutionrelative:views\\guestview.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{F289B1B1-9801-DBD3-16A7-5449B5589F04}|Hotel Scheduler.csproj|c:\\users\\ninja\\documents\\code\\hotel-scheduler\\hotel scheduler\\viewmodels\\chargecategoryitemviewmodel.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -108,97 +107,32 @@
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "AuthService.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Services\\AuthService.cs",
-              "RelativeDocumentMoniker": "Models\\Services\\AuthService.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Services\\AuthService.cs",
-              "RelativeToolTip": "Models\\Services\\AuthService.cs",
-              "ViewState": "AgIAAAgAAAAAAAAAAAAAwBkAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-17T19:11:29.348Z",
+              "Title": "Hotel Scheduler",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Hotel Scheduler.csproj",
+              "RelativeDocumentMoniker": "Hotel Scheduler.csproj",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Hotel Scheduler.csproj",
+              "RelativeToolTip": "Hotel Scheduler.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAABKAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2026-10-20T11:42:40.349Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "UserService.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\UserService.cs",
-              "RelativeDocumentMoniker": "Models\\Services\\DatabaseServices\\UserService.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\UserService.cs",
-              "RelativeToolTip": "Models\\Services\\DatabaseServices\\UserService.cs",
-              "ViewState": "AgIAACAAAAAAAAAAAAAswDAAAAAJAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-17T19:08:36.1Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "User.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\DAL\\Entities\\User.cs",
-              "RelativeDocumentMoniker": "..\\DAL\\Entities\\User.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\DAL\\Entities\\User.cs",
-              "RelativeToolTip": "..\\DAL\\Entities\\User.cs",
+              "DocumentIndex": 7,
+              "Title": "GuestView.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\GuestView.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\GuestView.xaml.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\GuestView.xaml.cs",
+              "RelativeToolTip": "Views\\GuestView.xaml.cs",
               "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-17T19:08:13.155Z",
+              "WhenOpened": "2026-10-20T11:24:44.898Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 8,
-              "Title": "UsersViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\UsersViewModel.cs",
-              "RelativeDocumentMoniker": "ViewModels\\UsersViewModel.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\UsersViewModel.cs",
-              "RelativeToolTip": "ViewModels\\UsersViewModel.cs",
-              "ViewState": "AgIAAAMAAAAAAAAAAAAAAEkAAAA7AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-17T18:51:45.379Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "RoomsViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\RoomsViewModel.cs",
-              "RelativeDocumentMoniker": "ViewModels\\RoomsViewModel.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\RoomsViewModel.cs",
-              "RelativeToolTip": "ViewModels\\RoomsViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-17T18:51:10.539Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "MainViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\MainViewModel.cs",
-              "RelativeDocumentMoniker": "ViewModels\\MainViewModel.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\MainViewModel.cs",
-              "RelativeToolTip": "ViewModels\\MainViewModel.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAmwCsAAABSAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-16T17:59:19.455Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 9,
-              "Title": "UserItemViewModel.cs",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\UserItemViewModel.cs",
-              "RelativeDocumentMoniker": "ViewModels\\UserItemViewModel.cs",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\UserItemViewModel.cs",
-              "RelativeToolTip": "ViewModels\\UserItemViewModel.cs",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA3AAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-17T18:41:03.864Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
               "Title": "UsersView.xaml.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\UsersView.xaml.cs",
               "RelativeDocumentMoniker": "Views\\UsersView.xaml.cs",
@@ -211,46 +145,206 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 3,
+              "Title": "MainViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\MainViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\MainViewModel.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\MainViewModel.cs",
+              "RelativeToolTip": "ViewModels\\MainViewModel.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAiwDIAAAAdAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-16T17:59:19.455Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "SettingsService.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\SettingsService.cs",
+              "RelativeDocumentMoniker": "Models\\Services\\DatabaseServices\\SettingsService.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\SettingsService.cs",
+              "RelativeToolTip": "Models\\Services\\DatabaseServices\\SettingsService.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABQAAABDAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-18T21:43:50.393Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
               "Title": "MauiProgram.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\MauiProgram.cs",
               "RelativeDocumentMoniker": "MauiProgram.cs",
               "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\MauiProgram.cs",
               "RelativeToolTip": "MauiProgram.cs",
-              "ViewState": "AgIAACIAAAAA1h2LbT4iwDUAAAA6AAAAAAAAAA==",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAAAF4AAAABAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-16T17:41:23.461Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "MainView.xaml",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\MainView.xaml",
-              "RelativeDocumentMoniker": "Views\\MainView.xaml",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\MainView.xaml",
-              "RelativeToolTip": "Views\\MainView.xaml",
-              "ViewState": "AgIAAFoAAAAAAAAAAAAAAG8AAAAVAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-16T17:58:17.257Z",
+              "DocumentIndex": 6,
+              "Title": "SettingsView.xaml.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\SettingsView.xaml.cs",
+              "RelativeDocumentMoniker": "Views\\SettingsView.xaml.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\SettingsView.xaml.cs",
+              "RelativeToolTip": "Views\\SettingsView.xaml.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-20T11:24:04.677Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
-              "Title": "UsersView.xaml",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\UsersView.xaml",
-              "RelativeDocumentMoniker": "Views\\UsersView.xaml",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\UsersView.xaml",
-              "RelativeToolTip": "Views\\UsersView.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAE4AAAAOAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-17T19:03:45.743Z",
+              "DocumentIndex": 4,
+              "Title": "ReservationViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\ReservationViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\ReservationViewModel.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\ReservationViewModel.cs",
+              "RelativeToolTip": "ViewModels\\ReservationViewModel.cs",
+              "ViewState": "AgIAABUBAAAAAAAAAAAAwCMBAAAXAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-20T11:27:31.681Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "CalendarViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\CalendarViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\CalendarViewModel.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\CalendarViewModel.cs",
+              "RelativeToolTip": "ViewModels\\CalendarViewModel.cs",
+              "ViewState": "AgIAAH0AAAAAAAAAAAAUwJcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-20T11:35:02.99Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "DateRangePickerViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\DateRangePickerViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\DateRangePickerViewModel.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\DateRangePickerViewModel.cs",
+              "RelativeToolTip": "ViewModels\\DateRangePickerViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-18T21:56:01.826Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "SettingsViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\SettingsViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\SettingsViewModel.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\SettingsViewModel.cs",
+              "RelativeToolTip": "ViewModels\\SettingsViewModel.cs",
+              "ViewState": "AgIAAFUAAAAAAAAAAAAuwF0AAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-18T21:47:39.603Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 11,
+              "Title": "SettingsDTO.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Entities\\SettingsDTO.cs",
+              "RelativeDocumentMoniker": "Models\\Entities\\SettingsDTO.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Entities\\SettingsDTO.cs",
+              "RelativeToolTip": "Models\\Entities\\SettingsDTO.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAsAAAArAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-18T21:43:31.377Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "Settings.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\DAL\\Entities\\Settings.cs",
+              "RelativeDocumentMoniker": "..\\DAL\\Entities\\Settings.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\DAL\\Entities\\Settings.cs",
+              "RelativeToolTip": "..\\DAL\\Entities\\Settings.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAZAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-18T21:41:41.001Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "AuthService.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Services\\AuthService.cs",
+              "RelativeDocumentMoniker": "Models\\Services\\AuthService.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Services\\AuthService.cs",
+              "RelativeToolTip": "Models\\Services\\AuthService.cs",
+              "ViewState": "AgIAAA8AAAAAAAAAAAAowBkAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-17T19:11:29.348Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "UserService.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\UserService.cs",
+              "RelativeDocumentMoniker": "Models\\Services\\DatabaseServices\\UserService.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\UserService.cs",
+              "RelativeToolTip": "Models\\Services\\DatabaseServices\\UserService.cs",
+              "ViewState": "AgIAACAAAAAAAAAAAAAswDAAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-17T19:08:36.1Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "User.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\DAL\\Entities\\User.cs",
+              "RelativeDocumentMoniker": "..\\DAL\\Entities\\User.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\DAL\\Entities\\User.cs",
+              "RelativeToolTip": "..\\DAL\\Entities\\User.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-17T19:08:13.155Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "UsersViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\UsersViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\UsersViewModel.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\UsersViewModel.cs",
+              "RelativeToolTip": "ViewModels\\UsersViewModel.cs",
+              "ViewState": "AgIAAAMAAAAAAAAAAAAAAEkAAAA7AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-17T18:51:45.379Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "RoomsViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\RoomsViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\RoomsViewModel.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\RoomsViewModel.cs",
+              "RelativeToolTip": "ViewModels\\RoomsViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-17T18:51:10.539Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "UserItemViewModel.cs",
+              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\UserItemViewModel.cs",
+              "RelativeDocumentMoniker": "ViewModels\\UserItemViewModel.cs",
+              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\ViewModels\\UserItemViewModel.cs",
+              "RelativeToolTip": "ViewModels\\UserItemViewModel.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA0AAAA3AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2026-10-17T18:41:03.864Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
               "Title": "RoomService.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Services\\DatabaseServices\\RoomService.cs",
               "RelativeDocumentMoniker": "Models\\Services\\DatabaseServices\\RoomService.cs",
@@ -258,12 +352,11 @@
               "RelativeToolTip": "Models\\Services\\DatabaseServices\\RoomService.cs",
               "ViewState": "AgIAAFgAAAAAAAAAAAAuwGMAAAAmAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2026-10-16T17:40:11.289Z",
-              "EditorCaption": ""
+              "WhenOpened": "2026-10-16T17:40:11.289Z"
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 20,
               "Title": "RoomDTO.cs",
               "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Models\\Entities\\RoomDTO.cs",
               "RelativeDocumentMoniker": "Models\\Entities\\RoomDTO.cs",
@@ -272,102 +365,6 @@
               "ViewState": "AgIAAAAAAAAAAAAAAAAAABEAAAAxAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-10-16T17:39:38.051Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 13,
-              "Title": "ReservationPopup.xaml",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\ReservationPopup.xaml",
-              "RelativeDocumentMoniker": "Views\\ReservationPopup.xaml",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\ReservationPopup.xaml",
-              "RelativeToolTip": "Views\\ReservationPopup.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-16T17:58:29.363Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
-              "Title": "FinanceView.xaml",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\FinanceView.xaml",
-              "RelativeDocumentMoniker": "Views\\FinanceView.xaml",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\FinanceView.xaml",
-              "RelativeToolTip": "Views\\FinanceView.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-16T17:58:25.192Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 17,
-              "Title": "GuestPopup.xaml",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\GuestPopup.xaml",
-              "RelativeDocumentMoniker": "Views\\GuestPopup.xaml",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\GuestPopup.xaml",
-              "RelativeToolTip": "Views\\GuestPopup.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-16T17:58:24.606Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 15,
-              "Title": "DateRangePickerView.xaml",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\DateRangePickerView.xaml",
-              "RelativeDocumentMoniker": "Views\\DateRangePickerView.xaml",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\DateRangePickerView.xaml",
-              "RelativeToolTip": "Views\\DateRangePickerView.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-16T17:58:01.846Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "CalendarView.xaml",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\CalendarView.xaml",
-              "RelativeDocumentMoniker": "Views\\CalendarView.xaml",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\CalendarView.xaml",
-              "RelativeToolTip": "Views\\CalendarView.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-16T17:58:05.997Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 18,
-              "Title": "RegisterView.xaml",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\RegisterView.xaml",
-              "RelativeDocumentMoniker": "Views\\RegisterView.xaml",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\RegisterView.xaml",
-              "RelativeToolTip": "Views\\RegisterView.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-16T17:58:23.122Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 19,
-              "Title": "LoginView.xaml",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\LoginView.xaml",
-              "RelativeDocumentMoniker": "Views\\LoginView.xaml",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\LoginView.xaml",
-              "RelativeToolTip": "Views\\LoginView.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-16T17:58:15.602Z"
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 20,
-              "Title": "GuestView.xaml",
-              "DocumentMoniker": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\GuestView.xaml",
-              "RelativeDocumentMoniker": "Views\\GuestView.xaml",
-              "ToolTip": "C:\\Users\\ninja\\Documents\\code\\hotel-scheduler\\hotel scheduler\\Views\\GuestView.xaml",
-              "RelativeToolTip": "Views\\GuestView.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-10-16T17:58:14.869Z"
             },
             {
               "$type": "Document",

@@ -14,13 +14,14 @@ namespace hotel_scheduler.ViewModels
 {
     public partial class ReservationViewModel(ReservationService reservationService, GuestService guestService,
         AuthService authService, GuestPopupViewModel guestPopupViewModel,
-        FinanceService financeService): ObservableObject
+        FinanceService financeService, SettingsService settingsService): ObservableObject
     {
         private readonly ReservationService _reservationService = reservationService;
         private readonly GuestService _guestService = guestService;
         private readonly AuthService _authService = authService;
         private readonly GuestPopupViewModel _guestPopupViewModel = guestPopupViewModel;
         private readonly FinanceService _financeService = financeService;
+        private readonly SettingsService _settingsService = settingsService;
 
         public Action? OnSaved { get; set; }
         private int? _editingReservationId = null;
@@ -134,19 +135,36 @@ namespace hotel_scheduler.ViewModels
             IsColorDropdownOpen = !IsColorDropdownOpen;
         }
 
-        public void InitializeNewReservationPopup(RoomDTO? chosenRoom = null, DateTime? chosenTime = null)
+        public async Task InitializeNewReservationPopup(RoomDTO? chosenRoom = null, DateTime? chosenTime = null)
         {
             ResetPopup();
             IsEditing = false;
             _editingReservationId = null;
+
             if (chosenRoom != null)
                 SelectedRoom = Rooms.FirstOrDefault(r => r.Id == chosenRoom.Id);
+
+            var settings = await _settingsService.GetSettingsAsync();
+
             if (chosenTime != null)
             {
                 CheckIn = chosenTime.Value.Date;
-                CheckInTime = chosenTime.Value.Hour >= 12 ? "PM" : "AM";
+                // If chosen from the calendar, use the clicked hour, else use Settings
+                CheckInTime = chosenTime.Value.Hour == 0
+                    ? (settings.DefaultCheckInTime.Hours >= 12 ? "PM" : "AM")
+                    : (chosenTime.Value.Hour >= 12 ? "PM" : "AM");
+
                 CheckOut = chosenTime.Value.Date.AddDays(2);
-                CheckOutTime = "AM";
+                CheckOutTime = settings.DefaultCheckOutTime.Hours >= 12 ? "PM" : "AM";
+            }
+            else
+            {
+                // Default new reservation (e.g., clicked from top menu button)
+                CheckIn = DateTime.Today;
+                CheckInTime = settings.DefaultCheckInTime.Hours >= 12 ? "PM" : "AM";
+
+                CheckOut = DateTime.Today.AddDays(2);
+                CheckOutTime = settings.DefaultCheckOutTime.Hours >= 12 ? "PM" : "AM";
             }
             ReservationCharges.Clear();
             RecalculateTotals();
@@ -273,8 +291,13 @@ namespace hotel_scheduler.ViewModels
                 HasError = true;
                 return;
             }
-            var checkIn = CheckIn.Date.AddHours(CheckInTime == "PM" ? 14 : 8);
-            var checkOut = CheckOut.Date.AddHours(CheckOutTime == "PM" ? 20 : 12);
+            var settings = await _settingsService.GetSettingsAsync();
+
+            int inHour = CheckInTime == "PM" ? Math.Max(12, settings.DefaultCheckInTime.Hours) : 8;
+            int outHour = CheckOutTime == "AM" ? Math.Min(11, settings.DefaultCheckOutTime.Hours) : 20;
+
+            var checkIn = CheckIn.Date.AddHours(inHour);
+            var checkOut = CheckOut.Date.AddHours(outHour);
 
             if (checkOut <= checkIn)
             {

@@ -13,7 +13,7 @@ namespace DAL.Entities
         public string? Email { get; set; }
         public string Currency { get; set; } = "EUR";
         public int DefaultCalendarDays { get; set; } = 14;
-        public int CancellationPolicyDays { get; set; } = 2;
-        
+        public TimeSpan DefaultCheckInTime { get; set; } = new TimeSpan(14, 0, 0);
+        public TimeSpan DefaultCheckOutTime { get; set; } = new TimeSpan(10, 0, 0);
     }
 }

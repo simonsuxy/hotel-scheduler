@@ -133,7 +133,7 @@ namespace hotel_scheduler.ViewModels
         private async Task OpenNewReservationAsync()
         {
             _reservationViewModel.SetRooms(Rooms);
-            _reservationViewModel.InitializeNewReservationPopup();
+            await _reservationViewModel.InitializeNewReservationPopup();
             _reservationViewModel.OnSaved = async () => await LoadReservationsAsync();
             await ShowPopupAsync();
         }
@@ -145,7 +145,7 @@ namespace hotel_scheduler.ViewModels
             var (room, dateTime) = tuple;
 
             _reservationViewModel.SetRooms(Rooms);
-            _reservationViewModel.InitializeNewReservationPopup(room, dateTime);
+            await _reservationViewModel.InitializeNewReservationPopup(room, dateTime);
             _reservationViewModel.OnSaved = async () => await LoadReservationsAsync();
             await ShowPopupAsync();
         }

@@ -46,6 +46,7 @@ namespace hotel_scheduler
             builder.Services.AddTransient<FinanceViewModel>();
             builder.Services.AddTransient<RoomsViewModel>();
             builder.Services.AddTransient<UsersViewModel>();
+            builder.Services.AddTransient<SettingsViewModel>();
 
 
 
@@ -60,6 +61,7 @@ namespace hotel_scheduler
             builder.Services.AddTransient<FinanceView>();
             builder.Services.AddTransient<RoomsView>();
             builder.Services.AddTransient<UsersView>();
+            builder.Services.AddTransient<SettingsView>();
             builder.Services.AddTransient<MainView>();
 #if DEBUG
             builder.Logging.AddDebug();
@@ -73,7 +75,7 @@ namespace hotel_scheduler
 
                 // Automatically applies pending migrations and creates the DB if missing
                 //db.Database.EnsureDeleted();
-                db.Database.EnsureCreated();
+                db.Database.Migrate();
 
                 if (!db.Rooms.Any())
                 {
