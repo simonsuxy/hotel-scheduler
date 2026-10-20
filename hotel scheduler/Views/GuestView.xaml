@@ -35,84 +35,84 @@
                     Command="{Binding OpenNewGuestCommand}"/>
         </Grid>
 
-        <!-- Filter Toggles -->
+        <!-- Filter toggles -->
         <HorizontalStackLayout Grid.Row="1"
-                               Padding="16,8"
-                               Spacing="8"
-                               BackgroundColor="White">
+                       Padding="16,8"
+                       Spacing="8"
+                       BackgroundColor="White">
 
-            <!-- Current Filter -->
+            <!-- Current -->
             <Border Padding="10,6"
-                    StrokeShape="RoundRectangle 20"
-                    StrokeThickness="1.5"
-                    Stroke="{Binding ShowCurrent, Converter={StaticResource BoolToAccentColorConverter}}"
-                    BackgroundColor="{Binding ShowCurrent, Converter={StaticResource BoolToAccentBgConverter}}">
+            StrokeShape="RoundRectangle 20"
+            StrokeThickness="1.5"
+            Stroke="#4C4EE7"
+            BackgroundColor="#F0F1FE">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ToggleCurrentCommand}"/>
                 </Border.GestureRecognizers>
                 <HorizontalStackLayout Spacing="6">
                     <BoxView WidthRequest="8" HeightRequest="8"
-                             CornerRadius="4"
-                             BackgroundColor="#43A047"
-                             VerticalOptions="Center"/>
+                     CornerRadius="4"
+                     BackgroundColor="#43A047"
+                     VerticalOptions="Center"/>
                     <Label Text="Current" FontSize="12"
-                           TextColor="{Binding ShowCurrent, Converter={StaticResource BoolToAccentColorConverter}}"
-                           VerticalOptions="Center"/>
+                   TextColor="#4C4EE7"
+                   VerticalOptions="Center"/>
                     <Label Text="✓"
-                           FontSize="11"
-                           TextColor="#4C4EE7"
-                           VerticalOptions="Center"
-                           IsVisible="{Binding ShowCurrent}"/>
+                   FontSize="11"
+                   TextColor="#4C4EE7"
+                   VerticalOptions="Center"
+                   IsVisible="{Binding ShowCurrent}"/>
                 </HorizontalStackLayout>
             </Border>
 
-            <!-- Future Filter -->
+            <!-- Future -->
             <Border Padding="10,6"
-                    StrokeShape="RoundRectangle 20"
-                    StrokeThickness="1.5"
-                    Stroke="{Binding ShowFuture, Converter={StaticResource BoolToAccentColorConverter}}"
-                    BackgroundColor="{Binding ShowFuture, Converter={StaticResource BoolToAccentBgConverter}}">
+            StrokeShape="RoundRectangle 20"
+            StrokeThickness="1.5"
+            Stroke="#4C4EE7"
+            BackgroundColor="#F0F1FE">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding ToggleFutureCommand}"/>
                 </Border.GestureRecognizers>
                 <HorizontalStackLayout Spacing="6">
                     <BoxView WidthRequest="8" HeightRequest="8"
-                             CornerRadius="4"
-                             BackgroundColor="#4C4EE7"
-                             VerticalOptions="Center"/>
+                     CornerRadius="4"
+                     BackgroundColor="#4C4EE7"
+                     VerticalOptions="Center"/>
                     <Label Text="Future" FontSize="12"
-                           TextColor="{Binding ShowFuture, Converter={StaticResource BoolToAccentColorConverter}}"
-                           VerticalOptions="Center"/>
+                   TextColor="#4C4EE7"
+                   VerticalOptions="Center"/>
                     <Label Text="✓"
-                           FontSize="11"
-                           TextColor="#4C4EE7"
-                           VerticalOptions="Center"
-                           IsVisible="{Binding ShowFuture}"/>
+                   FontSize="11"
+                   TextColor="#4C4EE7"
+                   VerticalOptions="Center"
+                   IsVisible="{Binding ShowFuture}"/>
                 </HorizontalStackLayout>
             </Border>
 
-            <!-- Past Filter -->
+            <!-- Past -->
             <Border Padding="10,6"
-                    StrokeShape="RoundRectangle 20"
-                    StrokeThickness="1.5"
-                    Stroke="{Binding ShowPast, Converter={StaticResource BoolToAccentColorConverter}}"
-                    BackgroundColor="{Binding ShowPast, Converter={StaticResource BoolToAccentBgConverter}}">
+            StrokeShape="RoundRectangle 20"
+            StrokeThickness="1.5"
+            Stroke="#4C4EE7"
+            BackgroundColor="#F0F1FE">
                 <Border.GestureRecognizers>
                     <TapGestureRecognizer Command="{Binding TogglePastCommand}"/>
                 </Border.GestureRecognizers>
                 <HorizontalStackLayout Spacing="6">
                     <BoxView WidthRequest="8" HeightRequest="8"
-                             CornerRadius="4"
-                             BackgroundColor="#FB8C00"
-                             VerticalOptions="Center"/>
+                     CornerRadius="4"
+                     BackgroundColor="#FB8C00"
+                     VerticalOptions="Center"/>
                     <Label Text="Past" FontSize="12"
-                           TextColor="{Binding ShowPast, Converter={StaticResource BoolToAccentColorConverter}}"
-                           VerticalOptions="Center"/>
+                   TextColor="#4C4EE7"
+                   VerticalOptions="Center"/>
                     <Label Text="✓"
-                           FontSize="11"
-                           TextColor="#4C4EE7"
-                           VerticalOptions="Center"
-                           IsVisible="{Binding ShowPast}"/>
+                   FontSize="11"
+                   TextColor="#4C4EE7"
+                   VerticalOptions="Center"
+                   IsVisible="{Binding ShowPast}"/>
                 </HorizontalStackLayout>
             </Border>
         </HorizontalStackLayout>

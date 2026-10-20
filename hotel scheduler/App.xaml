@@ -11,6 +11,20 @@
                 <ResourceDictionary>
                     <toolkit:InvertedBoolConverter x:Key="InverseBoolConverter"/>
 
+                    <ResourceDictionary>
+                        <!-- Built-in Toolkit Converters -->
+                        <toolkit:InvertedBoolConverter x:Key="InverseBoolConverter"/>
+
+                        <!-- Custom Application Converters -->
+                        <converters:ActivePageColorConverter x:Key="ActivePageColorConverter"/>
+                        <converters:ActivePageTextColorConverter x:Key="ActivePageTextColorConverter"/>
+                        <converters:PaymentStatusToColorConverter x:Key="PaymentStatusToColorConverter"/>
+                        <converters:RoomStatusToColorConverter x:Key="RoomStatusToColorConverter"/>
+                        <converters:EnumToBoolConverter x:Key="EnumToBoolConverter"/>
+                        <converters:NullToBoolConverter x:Key="NullToBoolConverter"/>
+                        <converters:CurrencyFormatterConverter x:Key="CurrencyFormatterConverter"/>
+                    </ResourceDictionary>
+
                     <!-- Global Light Theme Fallbacks -->
                     <Style TargetType="Entry">
                         <Setter Property="TextColor" Value="#1A1A1A"/>
