@@ -3,86 +3,79 @@
              x:Class="hotel_scheduler.Views.SettingsView"
              BackgroundColor="#F5F5F5">
 
-    <ScrollView>
-        <VerticalStackLayout Padding="24" Spacing="24" MaximumWidthRequest="800" HorizontalOptions="Start">
+    <ScrollView HorizontalOptions="Fill">
+        <VerticalStackLayout Padding="24" Spacing="24" HorizontalOptions="Fill">
 
+            <!-- Page Header -->
             <VerticalStackLayout Spacing="4">
                 <Label Text="Settings" FontSize="24" FontAttributes="Bold" TextColor="#1A1A1A"/>
                 <Label Text="Manage your hotel details, operating hours, and database." FontSize="13" TextColor="#888888"/>
             </VerticalStackLayout>
 
             <!-- General Details Card -->
-            <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="20">
+            <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="20" HorizontalOptions="Fill">
                 <VerticalStackLayout Spacing="16">
                     <Label Text="General Details" FontSize="16" FontAttributes="Bold" TextColor="#1A1A1A"/>
 
-                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="16" RowSpacing="16">
+                    <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="16" RowSpacing="16" HorizontalOptions="Fill">
                         <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="4">
                             <Label Text="Hotel Name" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding CurrentSettings.HotelName}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <Entry Text="{Binding HotelName}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="4">
                             <Label Text="Email" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding CurrentSettings.Email}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <Entry Text="{Binding Email}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA" Keyboard="Email"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
                             <Label Text="Address" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding CurrentSettings.Address}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <Entry Text="{Binding Address}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
                             <Label Text="Phone Number" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding CurrentSettings.Phone}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <Entry Text="{Binding Phone}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA" Keyboard="Telephone"/>
                         </VerticalStackLayout>
                     </Grid>
                 </VerticalStackLayout>
             </Border>
 
             <!-- Operations & Preferences Card -->
-            <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="20">
+            <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="20" HorizontalOptions="Fill">
                 <VerticalStackLayout Spacing="16">
                     <Label Text="Operations &amp; Preferences" FontSize="16" FontAttributes="Bold" TextColor="#1A1A1A"/>
 
-                    <Grid ColumnDefinitions="*,*,*" RowDefinitions="Auto,Auto" ColumnSpacing="16" RowSpacing="16">
-                        <!-- Language/Localization -->
-                        <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="4">
-                            <Label Text="Language (Localization)" FontSize="12" TextColor="#888888"/>
-                            <Border Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 4" BackgroundColor="#F8F9FA" HeightRequest="40">
-                                <Picker ItemsSource="{Binding AvailableLanguages}" SelectedItem="{Binding CurrentSettings.Language}" FontSize="14" TextColor="#1A1A1A" BackgroundColor="Transparent" HorizontalOptions="Fill"/>
-                            </Border>
-                        </VerticalStackLayout>
-
-                        <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="4">
+                    <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="16" HorizontalOptions="Fill">
+                        <VerticalStackLayout Grid.Column="0" Spacing="4">
                             <Label Text="Default Check-In Time" FontSize="12" TextColor="#888888"/>
-                            <TimePicker Time="{Binding CurrentSettings.DefaultCheckInTime}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <TimePicker Time="{Binding DefaultCheckInTime}" Format="h:mm tt" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
                         </VerticalStackLayout>
 
-                        <VerticalStackLayout Grid.Row="0" Grid.Column="2" Spacing="4">
+                        <VerticalStackLayout Grid.Column="1" Spacing="4">
                             <Label Text="Default Check-Out Time" FontSize="12" TextColor="#888888"/>
-                            <TimePicker Time="{Binding CurrentSettings.DefaultCheckOutTime}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <TimePicker Time="{Binding DefaultCheckOutTime}" Format="h:mm tt" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
                         </VerticalStackLayout>
 
-                        <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
+                        <VerticalStackLayout Grid.Column="2" Spacing="4">
                             <Label Text="Currency" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding CurrentSettings.Currency}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <Entry Text="{Binding Currency}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
                         </VerticalStackLayout>
 
-                        <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
+                        <VerticalStackLayout Grid.Column="3" Spacing="4">
                             <Label Text="Default Calendar Days" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding CurrentSettings.DefaultCalendarDays}" Keyboard="Numeric" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <Entry Text="{Binding DefaultCalendarDays}" Keyboard="Numeric" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
                         </VerticalStackLayout>
                     </Grid>
                 </VerticalStackLayout>
             </Border>
 
-            <!-- Database & Exports Card -->
-            <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="20">
+            <!-- Database & Data Management Card -->
+            <Border BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="20" HorizontalOptions="Fill">
                 <VerticalStackLayout Spacing="16">
                     <Label Text="Database &amp; Data Management" FontSize="16" FontAttributes="Bold" TextColor="#1A1A1A"/>
 
-                    <Grid ColumnDefinitions="*,Auto" VerticalOptions="Center" RowSpacing="12" RowDefinitions="Auto,Auto,Auto">
+                    <Grid ColumnDefinitions="*,Auto" RowSpacing="12" RowDefinitions="Auto,Auto,Auto" HorizontalOptions="Fill">
 
                         <!-- CSV Export -->
                         <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="2" VerticalOptions="Center">
@@ -90,7 +83,7 @@
                             <Label Text="Download a CSV spreadsheet of your reservations by date range." FontSize="12" TextColor="#888888"/>
                         </VerticalStackLayout>
                         <Button Grid.Row="0" Grid.Column="1" Text="Select Dates &amp; Export CSV" Command="{Binding ExportCsvCommand}"
-                                BackgroundColor="White" TextColor="#4C4EE7" BorderColor="#4C4EE7" BorderWidth="1" CornerRadius="8" Padding="12,6" HeightRequest="36"/>
+                                BackgroundColor="White" TextColor="#4C4EE7" BorderColor="#4C4EE7" BorderWidth="1" CornerRadius="8" Padding="16,6" HeightRequest="36"/>
 
                         <!-- Backup DB -->
                         <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="2" VerticalOptions="Center">
@@ -98,7 +91,7 @@
                             <Label Text="Save a physical copy of your raw data.sqlite file." FontSize="12" TextColor="#888888"/>
                         </VerticalStackLayout>
                         <Button Grid.Row="1" Grid.Column="1" Text="Backup to File" Command="{Binding BackupDatabaseCommand}"
-                                BackgroundColor="White" TextColor="#1A1A1A" BorderColor="#E0E0E0" BorderWidth="1" CornerRadius="8" Padding="12,6" HeightRequest="36"/>
+                                BackgroundColor="White" TextColor="#1A1A1A" BorderColor="#E0E0E0" BorderWidth="1" CornerRadius="8" Padding="16,6" HeightRequest="36"/>
 
                         <!-- Restore DB -->
                         <VerticalStackLayout Grid.Row="2" Grid.Column="0" Spacing="2" VerticalOptions="Center">
@@ -106,17 +99,17 @@
                             <Label Text="Overwrite current system data with a previous backup file." FontSize="12" TextColor="#888888"/>
                         </VerticalStackLayout>
                         <Button Grid.Row="2" Grid.Column="1" Text="Restore from File" Command="{Binding RestoreDatabaseCommand}"
-                                BackgroundColor="White" TextColor="#E53935" BorderColor="#E53935" BorderWidth="1" CornerRadius="8" Padding="12,6" HeightRequest="36"/>
+                                BackgroundColor="White" TextColor="#E53935" BorderColor="#E53935" BorderWidth="1" CornerRadius="8" Padding="16,6" HeightRequest="36"/>
                     </Grid>
                 </VerticalStackLayout>
             </Border>
 
             <!-- Action Footer -->
-            <Grid ColumnDefinitions="*,Auto">
+            <Grid ColumnDefinitions="*,Auto" HorizontalOptions="Fill">
                 <Label Grid.Column="0" Text="{Binding StatusMessage}" TextColor="{Binding StatusColor}" FontAttributes="Bold" VerticalOptions="Center" IsVisible="{Binding ShowStatus}"/>
 
                 <Button Grid.Column="1" Text="Save Settings" Command="{Binding SaveSettingsCommand}"
-                        BackgroundColor="#4C4EE7" TextColor="White" CornerRadius="8" Padding="24,8" HeightRequest="44"/>
+                        BackgroundColor="#4C4EE7" TextColor="White" CornerRadius="8" Padding="32,8" HeightRequest="44"/>
             </Grid>
 
         </VerticalStackLayout>

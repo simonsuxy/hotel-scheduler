@@ -10,6 +10,7 @@ namespace hotel_scheduler.Models.Entities
         public string HotelName { get; set; } = "Hotel";
         public string? Address { get; set; }
         public string? Phone { get; set; } 
+        public string? Email { get; set; }
         public string Currency { get; set; } = "EUR";
         public int DefaultCalendarDays { get; set; } = 14;
         public TimeSpan DefaultCheckInTime { get; set; } = new TimeSpan(14, 0, 0);

@@ -17,6 +17,16 @@ namespace hotel_scheduler.ViewModels
         private readonly SettingsService _settingsService = settingsService;
         private readonly ReservationService _reservationService = reservationService;
         private readonly DateRangePickerViewModel _dateRangePickerViewModel = dateRangePickerViewModel;
+
+        [ObservableProperty] public partial string HotelName { get; set; } = "Hotel";
+        [ObservableProperty] public partial string Email { get; set; } = "";
+        [ObservableProperty] public partial string Address { get; set; } = "";
+        [ObservableProperty] public partial string Phone { get; set; } = "";
+        [ObservableProperty] public partial string Currency { get; set; } = "EUR";
+        [ObservableProperty] public partial int DefaultCalendarDays { get; set; } = 14;
+        [ObservableProperty] public partial TimeSpan DefaultCheckInTime { get; set; } = new TimeSpan(14, 0, 0);
+        [ObservableProperty] public partial TimeSpan DefaultCheckOutTime { get; set; } = new TimeSpan(10, 0, 0);
+
         [ObservableProperty] public partial SettingsDTO CurrentSettings { get; set; } = new();
         [ObservableProperty] public partial string StatusMessage { get; set; } = "";
         [ObservableProperty] public partial bool ShowStatus { get; set; } = false;
@@ -24,15 +34,50 @@ namespace hotel_scheduler.ViewModels
 
         public async Task InitializeAsync()
         {
-            CurrentSettings = await _settingsService.GetSettingsAsync();
-            ShowStatus = false;
+            try
+            {
+                var settings = await _settingsService.GetSettingsAsync();
+                HotelName = settings.HotelName;
+                Email = settings.Email ?? "";
+                Address = settings.Address ?? "";
+                Phone = settings.Phone ?? "";
+                Currency = settings.Currency;
+                DefaultCalendarDays = settings.DefaultCalendarDays;
+                DefaultCheckInTime = settings.DefaultCheckInTime;
+                DefaultCheckOutTime = settings.DefaultCheckOutTime;
+
+                ShowStatus = false;
+            }
+            catch (Exception ex)
+            {
+                ShowMessage($"Error loading settings: {ex.Message}", "#E53935");
+            }
         }
 
         [RelayCommand]
         private async Task SaveSettingsAsync()
         {
-            await _settingsService.UpdateSettingsAsync(CurrentSettings);
-            ShowMessage("Settings saved!", "#43A047");
+            try
+            {
+                var dto = new SettingsDTO
+                {
+                    HotelName = HotelName,
+                    Email = Email,
+                    Address = Address,
+                    Phone = Phone,
+                    Currency = Currency,
+                    DefaultCalendarDays = DefaultCalendarDays,
+                    DefaultCheckInTime = DefaultCheckInTime,
+                    DefaultCheckOutTime = DefaultCheckOutTime
+                };
+
+                await _settingsService.UpdateSettingsAsync(dto);
+                ShowMessage("Settings saved successfully!", "#43A047");
+            }
+            catch (Exception ex)
+            {
+                ShowMessage($"Error saving settings: {ex.Message}", "#E53935");
+            }
         }
 
         [RelayCommand]
