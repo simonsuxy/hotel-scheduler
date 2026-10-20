@@ -5,8 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hotel_scheduler.Models.Services.DatabaseServices
 {
-    // Handles all database operations for Users.
-
     public class UserService(HotelSchedulerDbContext db)
     {
         private readonly HotelSchedulerDbContext _db = db;
@@ -23,26 +21,30 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         public async Task<List<UserDTO>> GetAllUsersAsync()
         {
             var users = await _db.Users
+                .AsNoTracking()
+                .OrderBy(u => u.Username)
                 .ToListAsync();
+
             return [.. users.Select(MapToDTO)];
         }
 
         public async Task<UserDTO?> GetUserByIdAsync(int id)
         {
-            var u = await _db.Users.FindAsync(id);
-            if (u == null) return null;
-            return MapToDTO(u);
+            var user = await _db.Users
+                .AsNoTracking()
+                .FirstOrDefaultAsync(u => u.Id == id);
+
+            return user == null ? null : MapToDTO(user);
         }
 
         public async Task<bool> IsUsernameTakenAsync(string username)
-            => await _db.Users.AnyAsync(u => u.Username == username.Trim().ToLower());
+            => await _db.Users.AnyAsync(u => u.Username.ToLower() == username.Trim().ToLower());
 
         public async Task<UserDTO?> LoginAsync(string username,  string password)
         {
+            var trimmedUsername = username.Trim().ToLower();
             var user = await _db.Users
-                .FirstOrDefaultAsync(u => u.Username == username.Trim().ToLower() && u.IsActive);
-            if (user  == null)
-                throw new InvalidOperationException("Incorrect username.");
+                .FirstOrDefaultAsync(u => u.Username.ToLower() == trimmedUsername && u.IsActive) ?? throw new InvalidOperationException("Incorrect username.");
             if (!BCrypt.Net.BCrypt.Verify(password, user.PasswordHash))
                 throw new InvalidOperationException("Incorrect password.");
             return MapToDTO(user);
@@ -50,37 +52,45 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
 
         public async Task<UserDTO?> RegisterAsync(string username, string password, UserRole role)
         {
-            if (await IsUsernameTakenAsync(username))
-                throw new InvalidOperationException($"Username '{username}' is already taken.");
+            var trimmedUsername = username.Trim().ToLower();
 
+            if (await IsUsernameTakenAsync(trimmedUsername))
+            {
+                throw new InvalidOperationException($"Username '{username.Trim()}' is already taken.");
+            }
+
+            // assigns admin automatically if database is empty
             bool isFirstUser = !await _db.Users.AnyAsync();
-
             var finalRole = isFirstUser ? UserRole.Admin : role;
 
             var user = new User
             {
-                Username = username.Trim().ToLower(),
+                Username = trimmedUsername,
                 PasswordHash = BCrypt.Net.BCrypt.HashPassword(password),
                 Role = finalRole,
                 IsActive = true,
                 CreatedAt = DateTime.UtcNow
             };
+
             _db.Users.Add(user);
             await _db.SaveChangesAsync();
+
             return MapToDTO(user);
         }
 
         public async Task UpdateUserAsync(int id, string username, UserRole role)
         {
             var user = await _db.Users.FindAsync(id)
-                ?? throw new InvalidOperationException("User not found");
-            user.Username = username.Trim();
+                ?? throw new InvalidOperationException("User not found.");
+
+            var trimmedUsername = username.Trim().ToLower();
+            if (await _db.Users.AnyAsync(u => u.Username.ToLower() == trimmedUsername && u.Id != id))
+                throw new InvalidOperationException($"Username '{trimmedUsername}' is already taken.");
+
+            user.Username = trimmedUsername;
             user.Role = role;
             await _db.SaveChangesAsync();
         }
-
-        // Changes old password to a new password only if user inputed the correct old password
-        // If they don't, throws error InvalidOperationException
         public async Task ResetUserPasswordAsync(int id, string newPassword, string oldPassword)
         {
             var user = await _db.Users.FindAsync(id)

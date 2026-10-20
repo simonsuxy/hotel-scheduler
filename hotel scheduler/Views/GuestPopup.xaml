@@ -1,13 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<toolkit:Popup
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    xmlns:local="clr-namespace:hotel_scheduler.Models.Entities"
-    x:Class="hotel_scheduler.Views.GuestPopup"
-    CanBeDismissedByTappingOutsideOfPopup="True"
-    HorizontalOptions="End"
-    VerticalOptions="Fill">
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               xmlns:local="clr-namespace:hotel_scheduler.Models.Entities"
+               x:Class="hotel_scheduler.Views.GuestPopup"
+               CanBeDismissedByTappingOutsideOfPopup="True"
+               HorizontalOptions="End"
+               VerticalOptions="Fill">
 
     <Border WidthRequest="380"
             BackgroundColor="White"
@@ -26,15 +25,14 @@
                         <Label.Text>
                             <Binding Path="IsEditing">
                                 <Binding.Converter>
-                                    <toolkit:BoolToObjectConverter
-                                        TrueObject="Edit guest"
-                                        FalseObject="New guest"/>
+                                    <toolkit:BoolToObjectConverter TrueObject="Edit guest"
+                                                                   FalseObject="New guest"/>
                                 </Binding.Converter>
                             </Binding>
                         </Label.Text>
                     </Label>
                     <Button Grid.Column="1"
-                            Text="X"
+                            Text="✕"
                             BackgroundColor="Transparent"
                             TextColor="#888888"
                             FontSize="16"
@@ -46,25 +44,28 @@
 
                 <BoxView HeightRequest="1" BackgroundColor="#F0F0F0"/>
 
-                <!-- First + Last name -->
+                <!-- First + Last Name -->
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                     <VerticalStackLayout Grid.Column="0" Spacing="5">
                         <Label Text="First name" FontSize="12" TextColor="#888888"/>
                         <Entry Placeholder="First name"
                                Text="{Binding FirstName}"
                                HeightRequest="44"
-                               FontSize="13"/>
+                               FontSize="13"
+                               TextColor="#1A1A1A"/>
                     </VerticalStackLayout>
+
                     <VerticalStackLayout Grid.Column="1" Spacing="5">
                         <Label Text="Last name" FontSize="12" TextColor="#888888"/>
                         <Entry Placeholder="Last name"
                                Text="{Binding LastName}"
                                HeightRequest="44"
-                               FontSize="13"/>
+                               FontSize="13"
+                               TextColor="#1A1A1A"/>
                     </VerticalStackLayout>
                 </Grid>
 
-                <!-- Optional -->
+                <!-- Optional Divider -->
                 <Label Text="Optional" FontSize="12" TextColor="#AAAAAA" Margin="0,4,0,0"/>
                 <BoxView HeightRequest="1" BackgroundColor="#F0F0F0"/>
 
@@ -76,15 +77,18 @@
                                Text="{Binding Phone}"
                                Keyboard="Telephone"
                                HeightRequest="44"
-                               FontSize="13"/>
+                               FontSize="13"
+                               TextColor="#1A1A1A"/>
                     </VerticalStackLayout>
+
                     <VerticalStackLayout Grid.Column="1" Spacing="5">
                         <Label Text="Email" FontSize="12" TextColor="#888888"/>
                         <Entry Placeholder="Email"
                                Text="{Binding Email}"
                                Keyboard="Email"
                                HeightRequest="44"
-                               FontSize="13"/>
+                               FontSize="13"
+                               TextColor="#1A1A1A"/>
                     </VerticalStackLayout>
                 </Grid>
 
@@ -95,14 +99,17 @@
                         <Entry Placeholder="ID / Passport"
                                Text="{Binding IdNumber}"
                                HeightRequest="44"
-                               FontSize="13"/>
+                               FontSize="13"
+                               TextColor="#1A1A1A"/>
                     </VerticalStackLayout>
+
                     <VerticalStackLayout Grid.Column="1" Spacing="5">
                         <Label Text="Address" FontSize="12" TextColor="#888888"/>
                         <Entry Placeholder="Address"
                                Text="{Binding Address}"
                                HeightRequest="44"
-                               FontSize="13"/>
+                               FontSize="13"
+                               TextColor="#1A1A1A"/>
                     </VerticalStackLayout>
                 </Grid>
 
@@ -112,48 +119,50 @@
                     <Editor Placeholder="Notes..."
                             Text="{Binding Notes}"
                             HeightRequest="70"
-                            FontSize="13"/>
+                            FontSize="13"
+                            TextColor="#1A1A1A"/>
                 </VerticalStackLayout>
 
-                <!-- Reservations — edit mode only -->
+                <!-- Reservations List (Edit Mode Only) -->
                 <VerticalStackLayout IsVisible="{Binding IsEditing}" Spacing="8">
                     <BoxView HeightRequest="1" BackgroundColor="#F0F0F0"/>
                     <Label Text="Reservations" FontSize="12" TextColor="#888888"/>
 
-                    <!-- No reservations -->
+                    <!-- No Reservations Fallback -->
                     <Label Text="No reservations"
                            FontSize="12"
                            TextColor="#AAAAAA"
                            HorizontalOptions="Center"
                            IsVisible="{Binding HasNoReservations}"/>
 
-                    <!-- Has reservations — tappable list -->
+                    <!-- Tappable Reservation History -->
                     <VerticalStackLayout IsVisible="{Binding HasReservations}" Spacing="6">
-                        <CollectionView ItemsSource="{Binding Reservations}"
-                                        SelectionMode="None">
+                        <CollectionView ItemsSource="{Binding Reservations}" SelectionMode="None">
                             <CollectionView.ItemTemplate>
                                 <DataTemplate x:DataType="local:ReservationDTO">
                                     <Grid ColumnDefinitions="Auto,*,Auto" Padding="0,5">
                                         <Grid.GestureRecognizers>
-                                            <TapGestureRecognizer
-                                                Command="{Binding BindingContext.OpenReservationCommand,
-                                                    Source={RelativeSource AncestorType={x:Type toolkit:Popup}}}"
-                                                CommandParameter="{Binding .}"/>
+                                            <TapGestureRecognizer Command="{Binding BindingContext.OpenReservationCommand,
+                                                                          Source={RelativeSource AncestorType={x:Type toolkit:Popup}}}"
+                                                                  CommandParameter="{Binding .}"/>
                                         </Grid.GestureRecognizers>
+
                                         <BoxView Grid.Column="0"
                                                  WidthRequest="8" HeightRequest="8"
                                                  CornerRadius="4"
                                                  BackgroundColor="{Binding Color}"
                                                  VerticalOptions="Center"
                                                  Margin="0,0,8,0"/>
+
                                         <Label Grid.Column="1" FontSize="12" TextColor="#1A1A1A">
                                             <Label.Text>
-                                                <MultiBinding StringFormat="{}{0:MMM d} → {1:MMM d yyyy}">
+                                                <MultiBinding StringFormat="{}{0:MMM d} → {1:MMM d, yyyy}">
                                                     <Binding Path="CheckIn"/>
                                                     <Binding Path="CheckOut"/>
                                                 </MultiBinding>
                                             </Label.Text>
                                         </Label>
+
                                         <Label Grid.Column="2"
                                                Text="{Binding PaymentStatus}"
                                                FontSize="11"
@@ -162,41 +171,40 @@
                                 </DataTemplate>
                             </CollectionView.ItemTemplate>
                         </CollectionView>
+
                         <Label Text="Remove all reservations before deleting this guest."
                                FontSize="11"
                                TextColor="#AAAAAA"/>
                     </VerticalStackLayout>
                 </VerticalStackLayout>
 
-                <!-- Error -->
+                <!-- Error Display -->
                 <Label Text="{Binding ErrorMessage}"
                        TextColor="#E53935"
                        FontSize="12"
                        IsVisible="{Binding HasError}"/>
 
-                <!-- Save + Cancel -->
+                <!-- Save + Cancel Actions -->
                 <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                     <Button Grid.Column="0"
                             Text="Save"
-                            BackgroundColor="White"
-                            TextColor="#1A1A1A"
-                            BorderColor="#E0E0E0"
-                            BorderWidth="1"
+                            BackgroundColor="#4C4EE7"
+                            TextColor="White"
                             CornerRadius="20"
                             HeightRequest="44"
                             Command="{Binding SaveCommand}"/>
                     <Button Grid.Column="1"
                             Text="Cancel"
                             BackgroundColor="White"
-                            TextColor="#E53935"
-                            BorderColor="#E53935"
+                            TextColor="#888888"
+                            BorderColor="#E0E0E0"
                             BorderWidth="1"
                             CornerRadius="20"
                             HeightRequest="44"
                             Clicked="OnCloseClicked"/>
                 </Grid>
 
-                <!-- Delete — only when no reservations -->
+                <!-- Delete Guest Action (Only when guest has no reservations) -->
                 <Button Text="Delete guest"
                         BackgroundColor="Transparent"
                         TextColor="#E53935"
@@ -211,4 +219,5 @@
             </VerticalStackLayout>
         </ScrollView>
     </Border>
+
 </toolkit:Popup>

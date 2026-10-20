@@ -1,3 +1,4 @@
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
@@ -37,12 +38,11 @@
 
         </Grid>
 
-        <!-- Main Content Area: Left (Categories) vs Right (Financial Log) -->
+        <!-- Main Workspace Area -->
         <Grid Grid.Row="1" ColumnDefinitions="340,*" ColumnSpacing="16">
+
             <!-- Category Management Section -->
             <Border Grid.Column="0" BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="16">
-
-                <!-- Swapped VerticalStackLayout for a Grid to enable proper scrolling -->
                 <Grid RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto,Auto,Auto,*" RowSpacing="12">
 
                     <Label Grid.Row="0" Text="Manage Charge Categories" FontSize="16" FontAttributes="Bold" TextColor="#1A1A1A"/>
@@ -50,104 +50,97 @@
                     <!-- Category Name -->
                     <VerticalStackLayout Grid.Row="1" Spacing="4">
                         <Label Text="Category Name" FontSize="12" TextColor="#888888"/>
-                        <Entry Placeholder="e.g. Extra Bed Sheets" Text="{Binding NewCategoryName}" HeightRequest="40" FontSize="13"/>
+                        <Entry Placeholder="e.g. Extra Bed Sheets" Text="{Binding NewCategoryName}" HeightRequest="40" FontSize="13" TextColor="#1A1A1A"/>
                     </VerticalStackLayout>
 
                     <!-- Description -->
                     <VerticalStackLayout Grid.Row="2" Spacing="4">
                         <Label Text="Description (Optional)" FontSize="12" TextColor="#888888"/>
-                        <Entry Placeholder="e.g. One-time fee for extra linens" Text="{Binding NewCategoryDescription}" HeightRequest="40" FontSize="13"/>
+                        <Entry Placeholder="e.g. One-time fee for extra linens" Text="{Binding NewCategoryDescription}" HeightRequest="40" FontSize="13" TextColor="#1A1A1A"/>
                     </VerticalStackLayout>
 
                     <!-- Price + Type -->
                     <Grid Grid.Row="3" ColumnDefinitions="*,*" ColumnSpacing="8">
                         <VerticalStackLayout Grid.Column="0" Spacing="4">
                             <Label Text="Price" FontSize="12" TextColor="#888888"/>
-                            <Entry Placeholder="0.00" Text="{Binding NewCategoryPrice}" Keyboard="Numeric" HeightRequest="40" FontSize="13"/>
+                            <Entry Placeholder="0.00" Text="{Binding NewCategoryPrice}" Keyboard="Numeric" HeightRequest="40" FontSize="13" TextColor="#1A1A1A"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Column="1" Spacing="4">
                             <Label Text="Type" FontSize="12" TextColor="#888888"/>
-                            <Picker ItemsSource="{Binding ChargeTypes}" SelectedItem="{Binding NewCategoryType}" HeightRequest="40" FontSize="13"/>
+                            <Picker ItemsSource="{Binding ChargeTypes}" SelectedItem="{Binding NewCategoryType}" HeightRequest="40" FontSize="13" TextColor="#1A1A1A"/>
                         </VerticalStackLayout>
                     </Grid>
 
-                    <!-- Error message display -->
+                    <!-- Error Display -->
                     <Label Grid.Row="4" Text="{Binding ErrorMessage}"
-               TextColor="#E53935"
-               FontSize="12"
-               IsVisible="{Binding HasError}"
-               HorizontalOptions="Center" />
+                           TextColor="#E53935"
+                           FontSize="12"
+                           IsVisible="{Binding HasError}"
+                           HorizontalOptions="Center" />
 
                     <!-- Add Category Button -->
                     <Button Grid.Row="5" Text="+ Create Category"
-                Command="{Binding AddCategoryCommand}"
-                BackgroundColor="#4C4EE7"
-                TextColor="White"
-                CornerRadius="20"
-                HeightRequest="38"
-                FontSize="13"/>
+                            Command="{Binding AddCategoryCommand}"
+                            BackgroundColor="#4C4EE7"
+                            TextColor="White"
+                            CornerRadius="20"
+                            HeightRequest="38"
+                            FontSize="13"/>
 
                     <BoxView Grid.Row="6" HeightRequest="1" BackgroundColor="#F0F0F0" Margin="0,4"/>
 
                     <!-- Category List Header -->
                     <Label Grid.Row="7" Text="Active Categories" FontSize="13" FontAttributes="Bold" TextColor="#888888"/>
 
-                    <!-- Category List (Scrollable) -->
-                    <!-- Removed HeightRequest so it dynamically fills the remaining screen space (*) -->
+                    <!-- Category List -->
                     <CollectionView Grid.Row="8" ItemsSource="{Binding Categories}" SelectionMode="None">
                         <CollectionView.ItemTemplate>
                             <DataTemplate x:DataType="vm:ChargeCategoryItemViewModel">
                                 <Grid ColumnDefinitions="*,Auto,Auto,Auto" Padding="0,8" ColumnSpacing="8">
 
-                                    <!-- ================= VIEW MODE ================= -->
+                                    <!-- View Mode -->
                                     <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="2" 
-                                             IsVisible="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}">
+                                                         IsVisible="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}">
                                         <Label Text="{Binding EditName}" FontSize="13" FontAttributes="Bold" TextColor="#1A1A1A"/>
                                         <Label Text="{Binding EditDescription}" FontSize="11" TextColor="#666666" MaxLines="2" LineBreakMode="TailTruncation"/>
                                         <Label Text="{Binding EditType}" FontSize="11" TextColor="#888888"/>
                                     </VerticalStackLayout>
 
                                     <Label Grid.Column="1" Text="{Binding EditPrice, StringFormat='{0:C}'}" FontSize="13" FontAttributes="Bold" 
-                               VerticalOptions="Center" TextColor="#4C4EE7" 
-                               IsVisible="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}"/>
+                                           VerticalOptions="Center" TextColor="#4C4EE7" 
+                                           IsVisible="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}"/>
 
-
-                                    <!-- ================= EDIT MODE ================= -->
+                                    <!-- Edit Mode -->
                                     <VerticalStackLayout Grid.Column="0" VerticalOptions="Center" Spacing="4" 
-                                             IsVisible="{Binding IsEditing}">
-                                        <Entry Text="{Binding EditName}" FontSize="13" HeightRequest="36" BackgroundColor="#F5F5F5" Margin="0,0,8,0" />
-                                        <Entry Text="{Binding EditDescription}" FontSize="11" HeightRequest="36" Placeholder="Description..." BackgroundColor="#F5F5F5" Margin="0,0,8,0"/>
+                                                         IsVisible="{Binding IsEditing}">
+                                        <Entry Text="{Binding EditName}" FontSize="13" HeightRequest="36" BackgroundColor="#F5F5F5" TextColor="#1A1A1A" Margin="0,0,8,0" />
+                                        <Entry Text="{Binding EditDescription}" FontSize="11" HeightRequest="36" Placeholder="Description..." BackgroundColor="#F5F5F5" TextColor="#1A1A1A" Margin="0,0,8,0"/>
                                         <Picker ItemsSource="{Binding BindingContext.ChargeTypes, Source={RelativeSource AncestorType={x:Type ContentView}}}" 
-                                    SelectedItem="{Binding EditType}" FontSize="11" HeightRequest="36" BackgroundColor="#F5F5F5" Margin="0,0,8,0"/>
+                                                SelectedItem="{Binding EditType}" FontSize="11" HeightRequest="36" BackgroundColor="#F5F5F5" TextColor="#1A1A1A" Margin="0,0,8,0"/>
                                     </VerticalStackLayout>
 
                                     <Entry Grid.Column="1" Text="{Binding EditPrice}" Keyboard="Numeric" FontSize="13" VerticalOptions="Center" TextColor="#4C4EE7" 
-                               IsVisible="{Binding IsEditing}" HeightRequest="36" WidthRequest="60" BackgroundColor="#F5F5F5"/>
+                                           IsVisible="{Binding IsEditing}" HeightRequest="36" WidthRequest="60" BackgroundColor="#F5F5F5"/>
 
-
-                                    <!-- ================= ACTION BUTTONS ================= -->
-
-                                    <!-- Edit Button (Shows in View Mode) -->
+                                    <!-- Action Buttons -->
                                     <Button Grid.Column="2" Text="✎" 
                                             IsVisible="{Binding IsEditing, Converter={StaticResource InverseBoolConverter}}"
                                             Command="{Binding BindingContext.ToggleEditCategoryCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
                                             CommandParameter="{Binding .}"
                                             BackgroundColor="Transparent" TextColor="#888888" Padding="0" WidthRequest="28" HeightRequest="28"/>
 
-                                    <!-- Save Button (Shows in Edit Mode) -->
                                     <Button Grid.Column="2" Text="✓" 
-                                IsVisible="{Binding IsEditing}"
-                                Command="{Binding BindingContext.SaveEditedCategoryCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
-                                CommandParameter="{Binding .}"
-                                BackgroundColor="Transparent" TextColor="#43A047" FontAttributes="Bold" Padding="0" WidthRequest="28" HeightRequest="28"/>
+                                            IsVisible="{Binding IsEditing}"
+                                            Command="{Binding BindingContext.SaveEditedCategoryCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="Transparent" TextColor="#43A047" FontAttributes="Bold" Padding="0" WidthRequest="28" HeightRequest="28"/>
 
-                                    <!-- Delete Button (Always hidden for pre-created items) -->
                                     <Button Grid.Column="3" Text="✕" 
-                                IsVisible="{Binding IsPreCreated, Converter={StaticResource InverseBoolConverter}}"
-                                Command="{Binding BindingContext.DeleteCategoryCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
-                                CommandParameter="{Binding .}"
-                                BackgroundColor="Transparent" TextColor="#E53935" Padding="0" WidthRequest="28" HeightRequest="28"/>
+                                            IsVisible="{Binding IsPreCreated, Converter={StaticResource InverseBoolConverter}}"
+                                            Command="{Binding BindingContext.DeleteCategoryCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="Transparent" TextColor="#E53935" Padding="0" WidthRequest="28" HeightRequest="28"/>
                                 </Grid>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -155,9 +148,7 @@
                 </Grid>
             </Border>
 
-
-
-            <!-- Revenue Log / Financial Breakdown -->
+            <!-- Reservation Financial Breakdown -->
             <Border Grid.Column="1" BackgroundColor="White" Stroke="#E0E0E0" StrokeThickness="1" StrokeShape="RoundRectangle 12" Padding="16">
                 <VerticalStackLayout Spacing="12">
                     <Label Text="Reservation Financial History" FontSize="16" FontAttributes="Bold" TextColor="#1A1A1A"/>
@@ -171,7 +162,7 @@
                                 <Border Stroke="#F0F0F0" StrokeThickness="1" StrokeShape="RoundRectangle 8" Padding="12" Margin="0,0,0,8">
                                     <Grid ColumnDefinitions="*,Auto,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12">
 
-                                        <!-- Guest & Room details -->
+                                        <!-- Guest & Room Details -->
                                         <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="2">
                                             <Label Text="{Binding GuestName}" FontSize="14" FontAttributes="Bold" TextColor="#1A1A1A"/>
                                             <Label Text="{Binding RoomName, StringFormat='Room: {0}'}" FontSize="12" TextColor="#888888"/>
@@ -194,10 +185,9 @@
                                             <Label Text="{Binding PaymentStatus}" FontSize="11" FontAttributes="Bold"/>
                                         </Border>
 
-                                        <!-- Total computed price -->
+                                        <!-- Total Computed Price -->
                                         <VerticalStackLayout Grid.Row="0" Grid.RowSpan="2" Grid.Column="2" VerticalOptions="Center" HorizontalOptions="End">
                                             <Label Text="{Binding ComputedTotalPrice, StringFormat='{0:C}'}" FontSize="16" FontAttributes="Bold" TextColor="#1A1A1A" HorizontalTextAlignment="End"/>
-                                            <Label Text="{Binding TotalChargesPrice, StringFormat='Extras: {0:C}'}" FontSize="11" TextColor="#4C4EE7" HorizontalTextAlignment="End"/>
                                         </VerticalStackLayout>
 
                                     </Grid>
@@ -210,4 +200,5 @@
 
         </Grid>
     </Grid>
+
 </ContentView>

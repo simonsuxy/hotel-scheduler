@@ -1,4 +1,3 @@
-using DAL.Entities;
 using hotel_scheduler.Models.Entities;
 using hotel_scheduler.ViewModels;
 using Microsoft.Maui.Controls.Shapes;
@@ -14,13 +13,10 @@ namespace hotel_scheduler.Views
         private const double HeaderHeight = 48;
         private const double SubHeaderHeight = 28;
 
-        // Track structure changes including start date
         private int _lastDayCount = 0;
         private int _lastRoomCount = 0;
         private DateTime _lastStartDate = DateTime.MinValue;
         private readonly Dictionary<int, List<View>> _roomStaticElements = [];
-
-        private CancellationTokenSource? _rebuildDebounce;
 
         public CalendarView(CalendarViewModel viewModel)
         {
@@ -32,10 +28,13 @@ namespace hotel_scheduler.Views
             {
                 if (e.PropertyName == nameof(CalendarViewModel.StartDate) ||
                     e.PropertyName == nameof(CalendarViewModel.VisibleDates))
+                {
                     MainThread.BeginInvokeOnMainThread(BuildGrid);
-
+                }
                 else if (e.PropertyName == nameof(CalendarViewModel.Reservations))
+                {
                     MainThread.BeginInvokeOnMainThread(BuildReservationBars);
+                }
             };
 
             Loaded += async (s, e) =>
@@ -43,18 +42,6 @@ namespace hotel_scheduler.Views
                 await _viewModel.InitializeAsync();
                 BuildGrid();
             };
-        }
-
-        private async Task DebounceRebuildAsync()
-        {
-            _rebuildDebounce?.Cancel();
-            _rebuildDebounce = new CancellationTokenSource();
-            try
-            {
-                await Task.Delay(150, _rebuildDebounce.Token);
-                BuildGrid();
-            }
-            catch (TaskCanceledException) { }
         }
 
         private bool NeedsStructureRebuild(List<DateTime> dates, List<RoomDTO> rooms)
@@ -82,23 +69,22 @@ namespace hotel_scheduler.Views
                     CalendarGrid.ColumnDefinitions.Clear();
                     CalendarGrid.RowDefinitions.Clear();
 
-                    CalendarGrid.ColumnDefinitions.Add(
-                        new ColumnDefinition { Width = RoomColumnWidth });
+                    CalendarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = RoomColumnWidth });
 
                     for (int i = 0; i < dates.Count * 2; i++)
-                        CalendarGrid.ColumnDefinitions.Add(
-                            new ColumnDefinition { Width = GridLength.Star });
+                    {
+                        CalendarGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Star });
+                    }
 
-                    CalendarGrid.RowDefinitions.Add(
-                        new RowDefinition { Height = HeaderHeight });
-                    CalendarGrid.RowDefinitions.Add(
-                        new RowDefinition { Height = SubHeaderHeight });
+                    CalendarGrid.RowDefinitions.Add(new RowDefinition { Height = HeaderHeight });
+                    CalendarGrid.RowDefinitions.Add(new RowDefinition { Height = SubHeaderHeight });
+
                     foreach (var _ in rooms)
-                        CalendarGrid.RowDefinitions.Add(
-                            new RowDefinition { Height = RowHeight });
+                    {
+                        CalendarGrid.RowDefinitions.Add(new RowDefinition { Height = RowHeight });
+                    }
 
                     _roomStaticElements.Clear();
-
                     _lastDayCount = dates.Count;
                     _lastRoomCount = rooms.Count;
                     _lastStartDate = dates[0].Date;
@@ -116,9 +102,7 @@ namespace hotel_scheduler.Views
                         HorizontalTextAlignment = TextAlignment.Center,
                         VerticalTextAlignment = TextAlignment.Center,
                         FontSize = 12,
-                        TextColor = isToday
-                            ? Color.FromArgb("#4C4EE7")
-                            : Color.FromArgb("#888888"),
+                        TextColor = isToday ? Color.FromArgb("#4C4EE7") : Color.FromArgb("#888888"),
                         FontAttributes = isToday ? FontAttributes.Bold : FontAttributes.None
                     };
                     CalendarGrid.SetRow(dateLabel, 0);
@@ -228,6 +212,7 @@ namespace hotel_scheduler.Views
             {
                 CalendarGrid.BatchCommit();
             }
+
             BuildReservationBars();
         }
 
@@ -270,13 +255,11 @@ namespace hotel_scheduler.Views
 
                     foreach (var res in roomReservations)
                     {
-                        if (res.CheckOut.Date < dates[0].Date ||
-                            res.CheckIn.Date > dates[^1].Date) continue;
+                        if (res.CheckOut.Date < dates[0].Date || res.CheckIn.Date > dates[^1].Date)
+                            continue;
 
-                        var clampedStart = res.CheckIn.Date < dates[0].Date
-                            ? dates[0].Date : res.CheckIn.Date;
-                        var clampedEnd = res.CheckOut.Date > dates[^1].Date
-                            ? dates[^1].Date : res.CheckOut.Date;
+                        var clampedStart = res.CheckIn.Date < dates[0].Date ? dates[0].Date : res.CheckIn.Date;
+                        var clampedEnd = res.CheckOut.Date > dates[^1].Date ? dates[^1].Date : res.CheckOut.Date;
 
                         var startDayIndex = dates.FindIndex(d => d.Date == clampedStart.Date);
                         var endDayIndex = dates.FindIndex(d => d.Date == clampedEnd.Date);
@@ -288,14 +271,12 @@ namespace hotel_scheduler.Views
                             startHalfCol++;
 
                         int endHalfCol = endDayIndex * 2;
-                        // Use > 12 so 12:00 (AM CheckOut) stays in the AM half-column
                         if (res.CheckOut.Date <= dates[^1].Date && res.CheckOut.Hour > 12)
                             endHalfCol++;
                         else if (res.CheckOut.Date > dates[^1].Date)
                             endHalfCol = (dates.Count * 2) - 1;
 
                         var halfColSpan = Math.Max(1, (endHalfCol - startHalfCol) + 1);
-
                         var hexColor = !string.IsNullOrWhiteSpace(res.Color) ? res.Color : "#4C4EE7";
 
                         var bar = new Border

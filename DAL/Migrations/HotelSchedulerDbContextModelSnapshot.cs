@@ -43,35 +43,6 @@ namespace DAL.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("ChargeCategories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            DefaultPricePerNight = 20m,
-                            Description = "Charge per adult guest",
-                            IsPreCreated = true,
-                            Name = "Adults",
-                            Type = 0
-                        },
-                        new
-                        {
-                            Id = 2,
-                            DefaultPricePerNight = 10m,
-                            Description = "Charge per child guest",
-                            IsPreCreated = true,
-                            Name = "Kids",
-                            Type = 0
-                        },
-                        new
-                        {
-                            Id = 3,
-                            DefaultPricePerNight = 15m,
-                            Description = "Charge per pet",
-                            IsPreCreated = true,
-                            Name = "Pets",
-                            Type = 0
-                        });
                 });
 
             modelBuilder.Entity("DAL.Entities.Guest", b =>

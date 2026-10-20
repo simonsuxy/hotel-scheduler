@@ -1,6 +1,7 @@
 ﻿using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
+using DAL.Entities;
 using hotel_scheduler.Models.Entities;
 using hotel_scheduler.Models.Services.DatabaseServices;
 using System.Collections.ObjectModel;
@@ -19,13 +20,10 @@ namespace hotel_scheduler.ViewModels
 
         [ObservableProperty]
         public partial string SearchQuery { get; set; } = "";
-
         [ObservableProperty]
         public partial bool ShowCurrent { get; set; } = true;
-
         [ObservableProperty]
         public partial bool ShowFuture { get; set; } = true;
-
         [ObservableProperty]
         public partial bool ShowPast { get; set; } = true;
 
@@ -38,9 +36,12 @@ namespace hotel_scheduler.ViewModels
 
         public async Task LoadGuestsAsync()
         {
-            _allGuests.Clear();
-            _allGuests = await _guestService.GetAllGuestsAsync();
-            ApplyFilters();
+            var guests = await _guestService.GetAllGuestsAsync();
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                _allGuests = guests;
+                ApplyFilters();
+            });
         }
 
         partial void OnSearchQueryChanged(string value) => ApplyFilters();
@@ -111,23 +112,23 @@ namespace hotel_scheduler.ViewModels
             OnPropertyChanged(nameof(NoFiltersSelected));
         }
 
-        // Opens GuestPopup in create mode
         [RelayCommand]
         private async Task OpenNewGuestAsync()
         {
             _guestPopupViewModel.InitializeGuestPopup();
-            _guestPopupViewModel.OnGuestCreated = async (guest) =>
-                await LoadGuestsAsync();
+            _guestPopupViewModel.OnGuestCreated = async (guest) => await LoadGuestsAsync();
             var popup = new Views.GuestPopup(_guestPopupViewModel, _reservationViewModel, _serviceProvider);
             await Application.Current!.MainPage!.ShowPopupAsync(popup);
         }
 
-        // Opens GuestPopup in edit mode
         [RelayCommand]
         private async Task OpenEditGuestAsync(GuestDTO guest)
         {
+            if (guest == null) return;
+
             _guestPopupViewModel.InitializeEditGuestPopup(guest);
             _guestPopupViewModel.OnSaved = async () => await LoadGuestsAsync();
+
             var popup = new Views.GuestPopup(_guestPopupViewModel, _reservationViewModel, _serviceProvider);
             await Application.Current!.MainPage!.ShowPopupAsync(popup);
         }

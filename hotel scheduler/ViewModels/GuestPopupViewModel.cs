@@ -8,30 +8,27 @@ namespace hotel_scheduler.ViewModels
     public partial class GuestPopupViewModel(GuestService guestService): ObservableObject
     {
         private readonly GuestService _guestService = guestService;
-
         public Action<GuestDTO>? OnGuestCreated { get; set; }
         public Action? CloseAction { get; set; }
         public Action? OnSaved { get; set; }
+        public Action<ReservationDTO>? OnReservationTapped { get; set; }
 
         private int? _editingGuestId = null;
+        public int? EditingGuestId => _editingGuestId;
+
 
         [ObservableProperty]
         public partial bool IsEditing { get; set; } = false;
         [ObservableProperty]
         public partial string FirstName { get; set; } = "";
-
         [ObservableProperty]
         public partial string LastName { get; set; } = "";
-
         [ObservableProperty]
         public partial string Phone { get; set; } = "";
-
         [ObservableProperty]
         public partial string Email { get; set; } = "";
-
         [ObservableProperty]
         public partial string IdNumber { get; set; } = "";
-
         [ObservableProperty]
         public partial string Address { get; set; } = "";
 
@@ -45,10 +42,6 @@ namespace hotel_scheduler.ViewModels
 
         public bool HasNoReservations => IsEditing && !Reservations.Any();
         public bool HasReservations => IsEditing && Reservations.Any();
-
-        public Action<ReservationDTO>? OnReservationTapped { get; set; }
-        public int? EditingGuestId => _editingGuestId;
-
 
         public void InitializeGuestPopup(string prefilledName = "")
         {
@@ -76,6 +69,7 @@ namespace hotel_scheduler.ViewModels
             Address = guest.Address ?? "";
             Notes = guest.Notes;
             Reservations = guest.Reservations;
+
             OnPropertyChanged(nameof(HasNoReservations));
             OnPropertyChanged(nameof(HasReservations));
         }
@@ -86,12 +80,14 @@ namespace hotel_scheduler.ViewModels
         {
             HasError = false;
             ErrorMessage = "";
+
             if (string.IsNullOrWhiteSpace(FirstName))
             {
                 ErrorMessage = "First name is required";
                 HasError = true;
                 return;
             }
+
             if (string.IsNullOrWhiteSpace(LastName))
             {
                 ErrorMessage = "Last name is required";
@@ -104,12 +100,15 @@ namespace hotel_scheduler.ViewModels
                 if (IsEditing && _editingGuestId.HasValue)
                 {
                     await _guestService.UpdateAsync(
-                        _editingGuestId.Value, FirstName.Trim(), LastName.Trim(),
+                        _editingGuestId.Value,
+                        FirstName.Trim(), 
+                        LastName.Trim(),
                         string.IsNullOrWhiteSpace(Email) ? null : Email.Trim(),
                         string.IsNullOrWhiteSpace(Phone) ? null : Phone.Trim(),
                         string.IsNullOrWhiteSpace(IdNumber) ? null : IdNumber.Trim(),
                         string.IsNullOrWhiteSpace(Address) ? null : Address.Trim(),
                         Notes.Trim());
+
                     OnSaved?.Invoke();
                     CloseAction?.Invoke();
                 }
@@ -117,12 +116,14 @@ namespace hotel_scheduler.ViewModels
                 else
                 {
                     var guest = await _guestService.CreateAsync(
-                        FirstName.Trim(), LastName.Trim(),
+                        FirstName.Trim(), 
+                        LastName.Trim(),
                         string.IsNullOrWhiteSpace(Email) ? null : Email.Trim(),
                         string.IsNullOrWhiteSpace(Phone) ? null : Phone.Trim(),
                         string.IsNullOrWhiteSpace(IdNumber) ? null : IdNumber.Trim(),
                         string.IsNullOrWhiteSpace(Address) ? null : Address.Trim(),
                         Notes.Trim());
+
                     OnGuestCreated?.Invoke(guest);
                     CloseAction?.Invoke();
                 }
@@ -156,9 +157,19 @@ namespace hotel_scheduler.ViewModels
         [RelayCommand]
         private void Close()
         {
-            CloseAction?.Invoke();
+            InvokeClose();
         }
 
+        private void InvokeClose()
+        {
+            MainThread.BeginInvokeOnMainThread(() => CloseAction?.Invoke());
+        }
+
+        [RelayCommand]
+        private void OpenReservation(ReservationDTO reservation)
+        {
+            OnReservationTapped?.Invoke(reservation);
+        }
         private void ResetForm()
         {
             FirstName = "";
@@ -171,15 +182,9 @@ namespace hotel_scheduler.ViewModels
             ErrorMessage = "";
             Reservations = [];
             HasError = false;
+
             OnPropertyChanged(nameof(HasNoReservations));
             OnPropertyChanged(nameof(HasReservations));
         }
-
-        [RelayCommand]
-        private void OpenReservation(ReservationDTO reservation)
-        {
-            OnReservationTapped?.Invoke(reservation);
-        }
-
     }
 }

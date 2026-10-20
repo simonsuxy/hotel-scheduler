@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace DAL.Entities
+﻿namespace DAL.Entities
 {
     public class ReservationCharge
     {
@@ -13,11 +9,5 @@ namespace DAL.Entities
         public decimal PricePerNight { get; set; }
         public Reservation Reservation { get; set; } = null!;
         public ChargeCategory Category { get; set; } = null!;
-        public decimal TotalPrice(int nights) => Category?.Type switch
-        {
-            ChargeType.PerNight => PricePerNight * Quantity * (nights > 0 ? nights : 1),
-            ChargeType.Flat => PricePerNight * Quantity,
-            _ => 0
-        };
     }
 }

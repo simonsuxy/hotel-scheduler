@@ -1,8 +1,4 @@
 ﻿using DAL.Entities;
-using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-using System.Text;
 
 namespace hotel_scheduler.Models.Entities
 {
@@ -23,13 +19,9 @@ namespace hotel_scheduler.Models.Entities
         public int Nights => Math.Max(1, (CheckOut.Date - CheckIn.Date).Days);
         public decimal TotalPrice { get; set; }
         public string Color { get; set; } = "#4C9BE8";
-
         public List<ReservationChargeDTO> Charges { get; set; } = [];
-
         public decimal RoomBasePrice =>  RoomPricePerNight * Nights;
-
         public decimal TotalChargesPrice => Charges.Sum(c => c.CalculateTotal(Nights));
-
         public decimal ComputedTotalPrice => RoomBasePrice + TotalChargesPrice;
     }
 }

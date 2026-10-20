@@ -8,11 +8,10 @@ namespace hotel_scheduler.ViewModels
     {
         public ChargeCategoryDTO OriginalDTO { get; private set; }
         [ObservableProperty] public partial bool IsEditing { get; set; } = false;
-        [ObservableProperty] public partial string EditName { get; set; }
-        [ObservableProperty] public partial string EditDescription { get; set; }
+        [ObservableProperty] public partial string EditName { get; set; } = "";
+        [ObservableProperty] public partial string EditDescription { get; set; } = "";
         [ObservableProperty] public partial decimal EditPrice { get; set; }
         [ObservableProperty] public partial ChargeType EditType { get; set; }
-
         public bool IsPreCreated => OriginalDTO.IsPreCreated;
 
         public ChargeCategoryItemViewModel(ChargeCategoryDTO dto)

@@ -13,9 +13,8 @@ namespace hotel_scheduler.Views
             _viewModel = viewModel;
             BindingContext = viewModel;
 
-            viewModel.CloseAction = async () =>
+            _viewModel.CloseAction = async () =>
             {
-                // Ensure CloseAsync is run on the main thread and awaited
                 await MainThread.InvokeOnMainThreadAsync(async () => await CloseAsync());
             };
         }

@@ -4,6 +4,7 @@ using DAL.Entities;
 using hotel_scheduler.Models.Entities;
 using hotel_scheduler.Models.Services.DatabaseServices;
 using System.Collections.ObjectModel;
+using System.Globalization;
 namespace hotel_scheduler.ViewModels
 {
     public partial class FinanceViewModel(ReservationService reservationService, FinanceService financeService) : ObservableObject
@@ -19,72 +20,101 @@ namespace hotel_scheduler.ViewModels
         [ObservableProperty] public partial decimal CollectedIncome { get; set; }
         [ObservableProperty] public partial decimal PendingBalance { get; set; }
         [ObservableProperty] public partial decimal TotalExtrasRevenue { get; set; }
+
         [ObservableProperty] public partial string NewCategoryName { get; set; } = "";
         [ObservableProperty] public partial string NewCategoryPrice { get; set; } = "";
         [ObservableProperty] public partial string NewCategoryDescription { get; set; } = "";
         [ObservableProperty] public partial ChargeType NewCategoryType { get; set; } = ChargeType.PerNight;
+
         [ObservableProperty] public partial string ErrorMessage { get; set; } = "";
         [ObservableProperty] public partial bool HasError { get; set; } = false;
 
         public async Task InitializeAsync()
         {
-            await LoadCategoriesAsync();
-            await LoadFinancialsAsync();
+            try
+            {
+                HasError = false;
+                ErrorMessage = "";
 
-
+                await LoadCategoriesAsync();
+                await LoadFinancialsAsync();
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Failed to initialize finance data: {ex.Message}";
+                HasError = true;
+            }
         }
 
         public async Task LoadCategoriesAsync()
         {
             var categories = await _financeService.GetCategoriesAsync();
-            Categories.Clear();
-            foreach (var cat in categories)
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                Categories.Add(new ChargeCategoryItemViewModel(cat));
-            }
+                Categories.Clear();
+                foreach (var cat in categories)
+                {
+                    Categories.Add(new ChargeCategoryItemViewModel(cat));
+                }
+            });
         }
 
         public async Task LoadFinancialsAsync()
         {
+            var reservations = await _reservationService.GetReservationsAsync();
 
-            var reservations = await _reservationService.GetReservationsWithChargesAsync();
-
-
-            Reservations.Clear();
-            decimal total = 0m, paid = 0m, pending = 0m, extras = 0m;
-
-            foreach (var r in reservations)
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                Reservations.Add(r);
-                total += r.ComputedTotalPrice;
-                extras += r.TotalChargesPrice;
+                Reservations.Clear();
+                decimal total = 0m, paid = 0m, pending = 0m, extras = 0m;
 
-                if (r.PaymentStatus == DAL.Entities.PaymentStatus.Paid)
-                    paid += r.ComputedTotalPrice;
-                else if (r.PaymentStatus == DAL.Entities.PaymentStatus.Unpaid)
-                    pending += r.ComputedTotalPrice;
-                else if (r.PaymentStatus == DAL.Entities.PaymentStatus.PartiallyPaid)
+                foreach (var r in reservations)
                 {
-                    paid += r.ComputedTotalPrice / 2;
-                    pending += r.ComputedTotalPrice / 2;
+                    Reservations.Add(r);
+                    total += r.ComputedTotalPrice;
+                    extras += r.TotalChargesPrice;
+
+                    if (r.PaymentStatus == PaymentStatus.Paid)
+                    {
+                        paid += r.ComputedTotalPrice;
+                    }
+                    else if (r.PaymentStatus == PaymentStatus.Unpaid)
+                    {
+                        pending += r.ComputedTotalPrice;
+                    }
+                    else if (r.PaymentStatus == PaymentStatus.PartiallyPaid)
+                    {
+                        paid += r.ComputedTotalPrice / 2;
+                        pending += r.ComputedTotalPrice / 2;
+                    }
                 }
-            }
 
-            TotalRevenue = total;
-            CollectedIncome = paid;
-            PendingBalance = pending;
-            TotalExtrasRevenue = extras;
-
-
-
+                TotalRevenue = total;
+                CollectedIncome = paid;
+                PendingBalance = pending;
+                TotalExtrasRevenue = extras;
+            });
         }
 
         [RelayCommand]
         private async Task AddCategoryAsync()
         {
-            if (string.IsNullOrWhiteSpace(NewCategoryName) || !decimal.TryParse(NewCategoryPrice, out decimal price))
-                return;
+            HasError = false;
+            ErrorMessage = "";
 
+            if (string.IsNullOrWhiteSpace(NewCategoryName))
+            {
+                ErrorMessage = "Category name is required.";
+                HasError = true;
+                return;
+            }
+            string safePriceText = NewCategoryPrice?.Replace(',', '.') ?? "0";
+            if (!decimal.TryParse(safePriceText, NumberStyles.Any, CultureInfo.InvariantCulture, out decimal price) || price < 0)
+            {
+                ErrorMessage = "Please enter a valid price.";
+                HasError = true;
+                return;
+            }
             try
             {
                 await _financeService.CreateCategoryAsync(NewCategoryName, price, NewCategoryType, NewCategoryDescription);
@@ -92,13 +122,13 @@ namespace hotel_scheduler.ViewModels
                 NewCategoryName = "";
                 NewCategoryPrice = "";
                 NewCategoryDescription = "";
+                await LoadCategoriesAsync();
             }
             catch (Exception ex)
             {
                 ErrorMessage = $"Error saving category: {ex.Message}";
                 HasError = true;
             }
-            await LoadCategoriesAsync();
         }
 
         [RelayCommand]
@@ -114,8 +144,7 @@ namespace hotel_scheduler.ViewModels
             {
                 ErrorMessage = ex.Message;
                 HasError = true;
-            }
-            
+            }  
         }
 
         [RelayCommand]

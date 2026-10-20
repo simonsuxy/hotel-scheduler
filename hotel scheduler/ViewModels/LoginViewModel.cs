@@ -24,6 +24,7 @@ namespace hotel_scheduler.ViewModels
         {
             HasError = false;
             ErrorMessage = "";
+
             if (string.IsNullOrWhiteSpace(Username) || string.IsNullOrWhiteSpace(Password))
             {
                 ErrorMessage = "Please enter your username and password.";
@@ -33,20 +34,25 @@ namespace hotel_scheduler.ViewModels
             try
             {
                 await _authService.LoginAsync(Username, Password);
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Application.Current!.MainPage = _serviceProvider.GetRequiredService<MainView>();
+                });
             }
             catch (Exception ex)
             {
                 ErrorMessage = ex.Message;
                 HasError = true;
-                return;
             }
-            Application.Current!.MainPage = _serviceProvider.GetRequiredService<MainView>();
         }
 
         [RelayCommand]
         private async Task GoToRegister()
         {
-            Application.Current!.MainPage = _serviceProvider.GetRequiredService<RegisterView>();
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Application.Current!.MainPage = _serviceProvider.GetRequiredService<RegisterView>();
+            });
         }
     }
 }

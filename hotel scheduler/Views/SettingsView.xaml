@@ -20,22 +20,22 @@
                     <Grid ColumnDefinitions="*,*" RowDefinitions="Auto,Auto" ColumnSpacing="16" RowSpacing="16" HorizontalOptions="Fill">
                         <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="4">
                             <Label Text="Hotel Name" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding HotelName}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <Entry Text="{Binding HotelName}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA" TextColor="#1A1A1A"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="4">
                             <Label Text="Email" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding Email}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA" Keyboard="Email"/>
+                            <Entry Text="{Binding Email}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA" Keyboard="Email" TextColor="#1A1A1A"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="4">
                             <Label Text="Address" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding Address}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <Entry Text="{Binding Address}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA" TextColor="#1A1A1A"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="4">
                             <Label Text="Phone Number" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding Phone}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA" Keyboard="Telephone"/>
+                            <Entry Text="{Binding Phone}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA" Keyboard="Telephone" TextColor="#1A1A1A"/>
                         </VerticalStackLayout>
                     </Grid>
                 </VerticalStackLayout>
@@ -49,22 +49,22 @@
                     <Grid ColumnDefinitions="*,*,*,*" ColumnSpacing="16" HorizontalOptions="Fill">
                         <VerticalStackLayout Grid.Column="0" Spacing="4">
                             <Label Text="Default Check-In Time" FontSize="12" TextColor="#888888"/>
-                            <TimePicker Time="{Binding DefaultCheckInTime}" Format="h:mm tt" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <TimePicker Time="{Binding DefaultCheckInTime}" Format="h:mm tt" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA" TextColor="#1A1A1A"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Column="1" Spacing="4">
                             <Label Text="Default Check-Out Time" FontSize="12" TextColor="#888888"/>
-                            <TimePicker Time="{Binding DefaultCheckOutTime}" Format="h:mm tt" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <TimePicker Time="{Binding DefaultCheckOutTime}" Format="h:mm tt" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA" TextColor="#1A1A1A"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Column="2" Spacing="4">
                             <Label Text="Currency" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding Currency}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <Entry Text="{Binding Currency}" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA" TextColor="#1A1A1A"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Column="3" Spacing="4">
                             <Label Text="Default Calendar Days" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding DefaultCalendarDays}" Keyboard="Numeric" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA"/>
+                            <Entry Text="{Binding DefaultCalendarDays}" Keyboard="Numeric" FontSize="14" HeightRequest="40" BackgroundColor="#F8F9FA" TextColor="#1A1A1A"/>
                         </VerticalStackLayout>
                     </Grid>
                 </VerticalStackLayout>

@@ -7,16 +7,16 @@
 
     <Grid RowDefinitions="Auto,*">
 
-        <!-- Top bar -->
+        <!-- Top Navigation & Action Bar -->
         <Grid Grid.Row="0"
               ColumnDefinitions="Auto,*,Auto"
               Padding="16,12"
               BackgroundColor="White">
 
-            <!-- Left: date navigation -->
+            <!-- Date Navigation Controls -->
             <HorizontalStackLayout Grid.Column="0" Spacing="8" VerticalOptions="Center">
 
-                <!-- Left arrow -->
+                <!-- Backward Button -->
                 <Button Text="←"
                         BackgroundColor="White"
                         TextColor="#1A1A1A"
@@ -36,13 +36,13 @@
                     <Border.GestureRecognizers>
                         <TapGestureRecognizer Command="{Binding OpenDatePickerCommand}"/>
                     </Border.GestureRecognizers>
-                    <Label Text="{Binding DateRangleLabel}"
+                    <Label Text="{Binding DateRangeLabel}"
                            FontSize="14"
                            TextColor="#1A1A1A"
                            VerticalOptions="Center"/>
                 </Border>
 
-                <!-- Right arrow -->
+                <!-- Forward Button -->
                 <Button Text="→"
                         BackgroundColor="White"
                         TextColor="#1A1A1A"
@@ -54,7 +54,7 @@
                         Padding="0"
                         Command="{Binding ShiftForwardCommand}"/>
 
-                <!-- Day count selector -->
+                <!-- Day Count Selector -->
                 <HorizontalStackLayout Spacing="6" VerticalOptions="Center">
                     <Button Text="-"
                             BackgroundColor="White"
@@ -85,20 +85,18 @@
                 </HorizontalStackLayout>
             </HorizontalStackLayout>
 
-            <!-- Right: new reservation -->
+            <!-- Right Action: Create New Reservation -->
             <Button Grid.Column="2"
                     Text="New reservation"
-                    BackgroundColor="White"
-                    TextColor="#1A1A1A"
-                    BorderColor="#E0E0E0"
-                    BorderWidth="1"
+                    BackgroundColor="#4C4EE7"
+                    TextColor="White"
                     CornerRadius="20"
                     FontSize="14"
                     Padding="16,8"
                     Command="{Binding OpenNewReservationCommand}"/>
         </Grid>
 
-        <!-- Calendar grid — built dynamically in code-behind -->
+        <!-- Dynamic Calendar Grid Workspace -->
         <ScrollView Grid.Row="1" Orientation="Both">
             <Grid x:Name="CalendarGrid"
                   BackgroundColor="White"
@@ -108,4 +106,5 @@
         </ScrollView>
 
     </Grid>
+
 </ContentView>

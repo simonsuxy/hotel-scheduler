@@ -24,28 +24,26 @@ namespace hotel_scheduler.ViewModels
         private readonly SettingsService _settingsService = settingsService;
 
         public Action? OnSaved { get; set; }
+        public Action? CloseAction { get; set; }
         private int? _editingReservationId = null;
 
         [ObservableProperty]
         public partial bool IsEditing { get; set; } = false;
 
-        // Guest search
-
+        //guest search
         [ObservableProperty]
         public partial string GuestSearchQuery { get; set; } = "";
         [ObservableProperty]
         public partial GuestDTO? SelectedGuest { get; set; } = null;
-        [ObservableProperty]
-        public partial ObservableCollection<GuestDTO> GuestSearchResults { get; set; } = [];
+        public ObservableCollection<GuestDTO> GuestSearchResults { get; } = [];
 
         public bool HasGuestResults => GuestSearchResults.Count > 0 && SelectedGuest == null;
         public bool HasSelectedGuest => SelectedGuest != null;
 
         [ObservableProperty]
         public partial bool IsColorDropdownOpen { get; set; } = false;
-        public Action? CloseAction { get; set; }
 
-        // Form fields
+        // forms
         public ObservableCollection<RoomDTO> Rooms { get; } = [];
 
         [ObservableProperty]
@@ -73,27 +71,16 @@ namespace hotel_scheduler.ViewModels
         [ObservableProperty]
         public partial bool HasError { get; set; } = false;
 
+        //financial
         [ObservableProperty] public partial ChargeCategoryDTO? SelectedCategoryToAdd { get; set; }
         [ObservableProperty] public partial decimal RoomBasePrice { get; set; }
         [ObservableProperty] public partial decimal TotalExtrasPrice { get; set; }
         [ObservableProperty] public partial decimal ComputedTotalPrice { get; set; }
-
         public bool HasCharges => ReservationCharges.Count > 0;
-
         public ObservableCollection<ChargeCategoryDTO> AvailableCategories { get; } = [];
         public ObservableCollection<ReservationChargeDTO> ReservationCharges { get; } = [];
 
-        // Exposes OnPropertyChanged publicly so code-behind can trigger UI notifications
-        public void OnPropertyChangedPublic(string propertyName)
-            => OnPropertyChanged(propertyName);
-
-        partial void OnCheckInChanged(DateTime value) => RecalculateTotals();
-        partial void OnCheckOutChanged(DateTime value) => RecalculateTotals();
-        partial void OnSelectedRoomChanged(RoomDTO? value) => RecalculateTotals();
-
-
         public ObservableCollection<string> TimeOptions { get; } = ["AM", "PM"];
-
         public string PaymentStatusColor => PaymentStatus switch
         {
             PaymentStatus.Unpaid => "#E53935",
@@ -120,21 +107,21 @@ namespace hotel_scheduler.ViewModels
                 new ReservationColor("Sky",    "#38BDF8"),
                 new ReservationColor("Amber",  "#FBBF24")
             ];
+        partial void OnCheckInChanged(DateTime value) => RecalculateTotals();
+        partial void OnCheckOutChanged(DateTime value) => RecalculateTotals();
+        partial void OnSelectedRoomChanged(RoomDTO? value) => RecalculateTotals();
 
-        [RelayCommand]
-        private void SelectColor(ReservationColor color)
+        public void SetRooms(IEnumerable<RoomDTO> rooms)
         {
-            SelectedColorOption = color;
-            SelectedColor = color.Hex;
-            IsColorDropdownOpen = false;
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Rooms.Clear();
+                foreach (var room in rooms)
+                {
+                    Rooms.Add(room);
+                }
+            });
         }
-
-        [RelayCommand]
-        private void ToggleColorDropdown()
-        {
-            IsColorDropdownOpen = !IsColorDropdownOpen;
-        }
-
         public async Task InitializeNewReservationPopup(RoomDTO? chosenRoom = null, DateTime? chosenTime = null)
         {
             ResetPopup();
@@ -142,33 +129,35 @@ namespace hotel_scheduler.ViewModels
             _editingReservationId = null;
 
             if (chosenRoom != null)
-                SelectedRoom = Rooms.FirstOrDefault(r => r.Id == chosenRoom.Id);
+                SelectedRoom = Rooms.FirstOrDefault(r => r.Id == chosenRoom.Id) ?? chosenRoom;
 
             var settings = await _settingsService.GetSettingsAsync();
 
-            if (chosenTime != null)
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                CheckIn = chosenTime.Value.Date;
-                // If chosen from the calendar, use the clicked hour, else use Settings
-                CheckInTime = chosenTime.Value.Hour == 0
-                    ? (settings.DefaultCheckInTime.Hours >= 12 ? "PM" : "AM")
-                    : (chosenTime.Value.Hour >= 12 ? "PM" : "AM");
+                if (chosenTime != null)
+                {
+                    CheckIn = chosenTime.Value.Date;
+                    CheckInTime = chosenTime.Value.Hour == 0
+                        ? (settings.DefaultCheckInTime.Hours >= 12 ? "PM" : "AM")
+                        : (chosenTime.Value.Hour >= 12 ? "PM" : "AM");
 
-                CheckOut = chosenTime.Value.Date.AddDays(2);
-                CheckOutTime = settings.DefaultCheckOutTime.Hours >= 12 ? "PM" : "AM";
-            }
-            else
-            {
-                // Default new reservation (e.g., clicked from top menu button)
-                CheckIn = DateTime.Today;
-                CheckInTime = settings.DefaultCheckInTime.Hours >= 12 ? "PM" : "AM";
+                    CheckOut = chosenTime.Value.Date.AddDays(1);
+                    CheckOutTime = settings.DefaultCheckOutTime.Hours >= 12 ? "PM" : "AM";
+                }
+                else
+                {
+                    CheckIn = DateTime.Today;
+                    CheckInTime = settings.DefaultCheckInTime.Hours >= 12 ? "PM" : "AM";
 
-                CheckOut = DateTime.Today.AddDays(2);
-                CheckOutTime = settings.DefaultCheckOutTime.Hours >= 12 ? "PM" : "AM";
-            }
-            ReservationCharges.Clear();
-            RecalculateTotals();
-            _ = LoadCategoriesAsync();
+                    CheckOut = DateTime.Today.AddDays(1);
+                    CheckOutTime = settings.DefaultCheckOutTime.Hours >= 12 ? "PM" : "AM";
+                }
+
+                ReservationCharges.Clear();
+                RecalculateTotals();
+            });
+            await LoadCategoriesAsync();
         }
 
         public async Task InitializeEditReservationPopup(ReservationDTO reservation)
@@ -176,7 +165,13 @@ namespace hotel_scheduler.ViewModels
             ResetPopup();
             IsEditing = true;
             _editingReservationId = reservation.Id;
-            SelectedRoom = Rooms.FirstOrDefault(r => r.Id == reservation.RoomId);
+
+            SelectedRoom = Rooms.FirstOrDefault(r => r.Id == reservation.RoomId) ?? new RoomDTO
+            {
+                Id = reservation.RoomId,
+                Name = reservation.RoomName,
+                PricePerNight = reservation.RoomPricePerNight
+            };
             GuestCount = reservation.GuestCount;
             SelectedColor = string.IsNullOrWhiteSpace(reservation.Color) ? "#4C9BE8" : reservation.Color;
             SelectedColorOption = ReservationColorsOptions
@@ -187,10 +182,8 @@ namespace hotel_scheduler.ViewModels
             CheckInTime = reservation.CheckIn.Hour >= 14 ? "PM" : "AM";
             CheckOutTime = reservation.CheckOut.Hour >= 18 ? "PM" : "AM";
 
-            // Force DatePicker to update on main thread after a brief delay
-            await MainThread.InvokeOnMainThreadAsync(async () =>
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                await Task.Delay(50);
                 CheckIn = reservation.CheckIn.Date;
                 CheckOut = reservation.CheckOut.Date;
             });
@@ -198,31 +191,32 @@ namespace hotel_scheduler.ViewModels
             var guest = await _guestService.GetGuestByIdAsync(reservation.GuestId);
             if (guest != null)
             {
-                SelectedGuest = guest;
-                GuestSearchQuery = "";
-                GuestSearchResults.Clear();
-                OnPropertyChanged(nameof(HasSelectedGuest));
-                OnPropertyChanged(nameof(HasGuestResults));
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    SelectedGuest = guest;
+                    GuestSearchQuery = "";
+                    GuestSearchResults.Clear();
+                    OnPropertyChanged(nameof(HasSelectedGuest));
+                    OnPropertyChanged(nameof(HasGuestResults));
+                });
             }
 
             OnPropertyChanged(nameof(PaymentStatusColor));
             OnPropertyChanged(nameof(PaymentStatusLabel));
 
             await LoadCategoriesAsync();
-            ReservationCharges.Clear();
+
             var charges = await _financeService.GetChargesForReservationAsync(reservation.Id);
-            foreach(var charge in charges)
-                ReservationCharges.Add(charge);
-            RecalculateTotals();
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                ReservationCharges.Clear();
+                foreach (var charge in charges)
+                {
+                    ReservationCharges.Add(charge);
+                }
+                RecalculateTotals();
+            });
         }
-
-        public void SetRooms(IEnumerable<RoomDTO> rooms)
-        {
-            Rooms.Clear();
-            foreach(var room in rooms)
-                Rooms.Add(room);
-        }
-
         partial void OnGuestSearchQueryChanged(string value)
         {
             _ = SearchGuestAsync(value);
@@ -237,10 +231,15 @@ namespace hotel_scheduler.ViewModels
                 return;
             }
             var guests = await _guestService.SearchAsync(query);
-            GuestSearchResults.Clear();
-            foreach(var guest in guests)
-                GuestSearchResults.Add(guest);
-            OnPropertyChanged(nameof(HasGuestResults));
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                GuestSearchResults.Clear();
+                foreach (var guest in guests)
+                {
+                    GuestSearchResults.Add(guest);
+                }
+                OnPropertyChanged(nameof(HasGuestResults));
+            });
         }
 
         [RelayCommand]
@@ -258,6 +257,20 @@ namespace hotel_scheduler.ViewModels
         {
             SelectedGuest = null;
             OnPropertyChanged(nameof(HasSelectedGuest));
+        }
+
+        [RelayCommand]
+        private void SelectColor(ReservationColor color)
+        {
+            SelectedColorOption = color;
+            SelectedColor = color.Hex;
+            IsColorDropdownOpen = false;
+        }
+
+        [RelayCommand]
+        private void ToggleColorDropdown()
+        {
+            IsColorDropdownOpen = !IsColorDropdownOpen;
         }
 
         [RelayCommand]
@@ -279,6 +292,7 @@ namespace hotel_scheduler.ViewModels
         {
             HasError = false;
             ErrorMessage = "";
+
             if (SelectedGuest == null)
             {
                 ErrorMessage = "Select a guest.";
@@ -359,26 +373,30 @@ namespace hotel_scheduler.ViewModels
 
         private void ResetPopup()
         {
-            SelectedGuest = null;
-            SelectedRoom = null;
-            GuestSearchQuery = "";
-            GuestSearchResults.Clear();
-            CheckIn = DateTime.Today;
-            CheckOut = DateTime.Today.AddDays(1);
-            CheckInTime = "PM";
-            CheckOutTime = "AM";
-            GuestCount = 1;
-            SelectedColor = "#4C9BE8";
-            SelectedColorOption = ReservationColorsOptions.FirstOrDefault(c => c.Hex == "#4C9BE8");
-            PaymentStatus = PaymentStatus.Unpaid;
-            Notes = "";
-            ErrorMessage = "";
-            HasError = false;
-            _editingReservationId = null;
-            OnPropertyChanged(nameof(HasGuestResults));
-            OnPropertyChanged(nameof(HasSelectedGuest));
-            OnPropertyChanged(nameof(PaymentStatusColor));
-            OnPropertyChanged(nameof(PaymentStatusLabel));
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                SelectedGuest = null;
+                SelectedRoom = null;
+                GuestSearchQuery = "";
+                GuestSearchResults.Clear();
+                CheckIn = DateTime.Today;
+                CheckOut = DateTime.Today.AddDays(1);
+                CheckInTime = "PM";
+                CheckOutTime = "AM";
+                GuestCount = 1;
+                SelectedColor = "#4C9BE8";
+                SelectedColorOption = ReservationColorsOptions.FirstOrDefault(c => c.Hex == "#4C9BE8");
+                PaymentStatus = PaymentStatus.Unpaid;
+                Notes = "";
+                ErrorMessage = "";
+                HasError = false;
+                _editingReservationId = null;
+
+                OnPropertyChanged(nameof(HasGuestResults));
+                OnPropertyChanged(nameof(HasSelectedGuest));
+                OnPropertyChanged(nameof(PaymentStatusColor));
+                OnPropertyChanged(nameof(PaymentStatusLabel));
+            });
         }
 
         [RelayCommand]
@@ -393,7 +411,7 @@ namespace hotel_scheduler.ViewModels
                 GuestSearchResults.Clear();
             };
             var popup = new GuestPopup(_guestPopupViewModel, null, null);
-            await Application.Current!.MainPage.ShowPopupAsync(popup);
+            await Application.Current!.MainPage!.ShowPopupAsync(popup);
         }
 
         private void RecalculateTotals()
@@ -431,7 +449,6 @@ namespace hotel_scheduler.ViewModels
 
             RecalculateTotals();
 
-            // Reset picker visually back to placeholder
             MainThread.BeginInvokeOnMainThread(() =>
                 SelectedCategoryToAdd = AvailableCategories.FirstOrDefault(c => c.Id == -1));
         }
@@ -448,32 +465,35 @@ namespace hotel_scheduler.ViewModels
 
         private async Task LoadCategoriesAsync()
         {
-            AvailableCategories.Clear();
+            var categories = await _financeService.GetCategoriesAsync();
 
-            // 1. Insert the dummy placeholder item first for the xaml
-            AvailableCategories.Add(new ChargeCategoryDTO
+            MainThread.BeginInvokeOnMainThread(() =>
             {
-                Id = -1,
-                Name = "Add new category..."
-            });
+                AvailableCategories.Clear();
+                AvailableCategories.Add(new ChargeCategoryDTO
+                {
+                    Id = -1,
+                    Name = "Add new category..."
+                });
 
-            var cats = await _financeService.GetCategoriesAsync();
-            foreach (var c in cats) AvailableCategories.Add(c);
-            SelectedCategoryToAdd = AvailableCategories.First();
+                foreach (var c in categories)
+                {
+                    AvailableCategories.Add(c);
+                }
+
+                SelectedCategoryToAdd = AvailableCategories.First();
+            });
         }
 
         [RelayCommand]
         private void UpdateChargeQuantity(ReservationChargeDTO charge)
         {
             if (charge == null) return;
-            // Force re-assignment to trigget boundary 
             charge.Quantity = charge.Quantity;
 
             RecalculateTotals();
             OnPropertyChanged(nameof(ReservationCharges));
         }
-
-
 
         [RelayCommand]
         private void Close()

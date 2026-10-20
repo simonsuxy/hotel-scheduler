@@ -1,26 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using DAL;
+﻿using DAL;
 using DAL.Entities;
 using hotel_scheduler.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace hotel_scheduler.Models.Services.DatabaseServices
 {
-    public class ReservationService
+    public class ReservationService(HotelSchedulerDbContext db)
     {
-        private readonly HotelSchedulerDbContext _db;
-
-        public ReservationService(HotelSchedulerDbContext db)
-        {
-            _db = db ?? throw new ArgumentNullException(nameof(db));
-        }
-
+        private readonly HotelSchedulerDbContext _db = db;
         private static ReservationDTO MapToDTO(Reservation reservation)
         {
-            int nights = reservation.Nights;
+            int nights = Math.Max(1, reservation.Nights);
             decimal roomPrice = reservation.Room?.PricePerNight ?? 0m;
 
             var chargeDTOs = reservation.Charges?.Select(c => new ReservationChargeDTO
@@ -57,29 +47,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         public async Task<List<ReservationDTO>> GetReservationsAsync()
         {
             var reservations = await _db.Reservations
-                .Include(r => r.Room)
-                .Include(r => r.Guest)
-                .OrderBy(r => r.CheckIn)
-                .ToListAsync();
-
-            return reservations.Select(MapToDTO).ToList();
-        }
-
-        public async Task<List<ReservationDTO>> GetReservationsByDateAsync(DateTime startDate, DateTime endDate)
-        {
-            var overlappingReservations = await _db.Reservations
-                .Include(r => r.Room)
-                .Include(r => r.Guest)
-                .Where(r => r.CheckIn < endDate && r.CheckOut > startDate)
-                .OrderBy(r => r.CheckIn)
-                .ToListAsync();
-
-            return overlappingReservations.Select(MapToDTO).ToList();
-        }
-
-        public async Task<List<ReservationDTO>> GetReservationsWithChargesAsync()
-        {
-            var reservations = await _db.Reservations
+                .AsNoTracking()
                 .Include(r => r.Room)
                 .Include(r => r.Guest)
                 .Include(r => r.Charges)
@@ -87,18 +55,22 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
                 .OrderBy(r => r.CheckIn)
                 .ToListAsync();
 
-            return reservations.Select(MapToDTO).ToList();
+            return [.. reservations.Select(MapToDTO)];
         }
 
-        private async Task<bool> IsRoomAvailable(int roomId, DateTime checkIn, DateTime checkOut, int? excludeReservationId = null)
+        public async Task<List<ReservationDTO>> GetReservationsByDateAsync(DateTime startDate, DateTime endDate)
         {
-            return !await _db.Reservations
-                .Where(r => r.RoomId == roomId
-                     && r.CheckIn < checkOut
-                     && r.CheckOut > checkIn
-                     // Exclude the current reservation being edited
-                     && (excludeReservationId == null || r.Id != excludeReservationId))
-                .AnyAsync();
+            var overlappingReservations = await _db.Reservations
+                .AsNoTracking()
+                .Include(r => r.Room)
+                .Include(r => r.Guest)
+                .Include(r => r.Charges)
+                    .ThenInclude(c => c.Category)
+                .Where(r => r.CheckIn < endDate && r.CheckOut > startDate)
+                .OrderBy(r => r.CheckIn)
+                .ToListAsync();
+
+            return [.. overlappingReservations.Select(MapToDTO)];
         }
 
         public async Task<int> CreateReservationAsync(int roomId, int guestId, DateTime checkIn, DateTime checkOut,
@@ -112,11 +84,12 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
                 GuestId = guestId,
                 CheckIn = checkIn,
                 CheckOut = checkOut,
-                GuestCount = guestCount,
-                Notes = notes,
-                Color = color,
+                GuestCount = Math.Max(1, guestCount),
+                Notes = notes.Trim(),
+                Color = string.IsNullOrWhiteSpace(color) ? "#4C9BE8" : color,
                 CreatedByUserId = createdById,
-                PaymentStatus = PaymentStatus.Unpaid
+                PaymentStatus = PaymentStatus.Unpaid,
+                CreatedAt = DateTime.UtcNow
             };
 
             _db.Reservations.Add(reservation);
@@ -136,10 +109,9 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             reservation.GuestId = guestId;
             reservation.CheckIn = checkIn;
             reservation.CheckOut = checkOut;
-            reservation.GuestCount = guestCount;
+            reservation.GuestCount = Math.Max(1, guestCount);
             reservation.Notes = notes;
-            reservation.Color = color;
-
+            reservation.Color = string.IsNullOrWhiteSpace(color) ? "#4C9BE8" : color;
             await _db.SaveChangesAsync();
         }
 
@@ -172,6 +144,5 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             reservation.PaymentStatus = paymentStatus;
             await _db.SaveChangesAsync();
         }
-
     }
 }

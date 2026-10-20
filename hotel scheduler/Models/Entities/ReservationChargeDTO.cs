@@ -20,7 +20,6 @@ namespace hotel_scheduler.Models.Entities
             set => _quantity = value < 1 ? 1 : value;
         }
         public decimal PricePerNight { get; set; }
-
         public decimal CalculateTotal(int nights)
         {
             return ChargeType == ChargeType.Flat

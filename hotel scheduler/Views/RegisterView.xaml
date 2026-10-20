@@ -7,10 +7,10 @@
 
     <Grid VerticalOptions="Center" HorizontalOptions="Center">
         <Border WidthRequest="400"
-               Padding="40"
-               StrokeShape="RoundRectangle 12"
-               BackgroundColor="White"
-               Stroke="Transparent">
+                Padding="40"
+                StrokeShape="RoundRectangle 12"
+                BackgroundColor="White"
+                Stroke="Transparent">
             <Border.Shadow>
                 <Shadow Brush="#000000" Opacity="0.08" Radius="8" Offset="0,2" />
             </Border.Shadow>
@@ -27,36 +27,42 @@
                            TextColor="#888888"/>
                 </VerticalStackLayout>
 
-                <!-- Error message -->
+                <!-- Error Message -->
                 <Label Text="{Binding ErrorMessage}"
                        TextColor="#E53935"
                        FontSize="13"
                        IsVisible="{Binding HasError}"/>
 
                 <!-- Username -->
-                <Entry  Placeholder="Username"
-                        PlaceholderColor="Gray"
-                        Text="{Binding Username}"
-                        HeightRequest="48"
-                        VerticalOptions="Center" />
+                <Entry Placeholder="Username"
+                       PlaceholderColor="#888888"
+                       TextColor="#1A1A1A"
+                       BackgroundColor="#F8F9FA"
+                       Text="{Binding Username}"
+                       HeightRequest="48"
+                       VerticalOptions="Center" />
 
                 <!-- Password -->
-                <Entry  Placeholder="Password"
-                        PlaceholderColor="Gray"
-                        Text="{Binding Password}"
-                        IsPassword="True"                      
-                        HeightRequest="48"
-                        VerticalOptions="Center" />
+                <Entry Placeholder="Password"
+                       PlaceholderColor="#888888"
+                       TextColor="#1A1A1A"
+                       BackgroundColor="#F8F9FA"
+                       Text="{Binding Password}"
+                       IsPassword="True"                      
+                       HeightRequest="48"
+                       VerticalOptions="Center" />
 
-                <!-- Verify password -->
-                <Entry  Placeholder="Confirm password"
-                        PlaceholderColor="Gray"
-                        Text="{Binding ConfirmPassword}"
-                        IsPassword="True"                      
-                        HeightRequest="48"
-                        VerticalOptions="Center" />
+                <!-- Verify Password -->
+                <Entry Placeholder="Confirm password"
+                       PlaceholderColor="#888888"
+                       TextColor="#1A1A1A"
+                       BackgroundColor="#F8F9FA"
+                       Text="{Binding ConfirmPassword}"
+                       IsPassword="True"                      
+                       HeightRequest="48"
+                       VerticalOptions="Center" />
 
-                <!-- Register button -->
+                <!-- Register Button -->
                 <Button Text="Continue"
                         Command="{Binding RegisterCommand}"
                         BackgroundColor="#4C4EE7"
@@ -65,7 +71,7 @@
                         HeightRequest="48"
                         FontAttributes="Bold"/>
 
-                <!-- Login link -->
+                <!-- Login Link -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
                     <Label Text="Already a user?"
                            TextColor="#888888"

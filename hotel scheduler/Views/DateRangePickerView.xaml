@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<toolkit:Popup
-    xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-    xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-    xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-    x:Class="hotel_scheduler.Views.DateRangePickerPopup"
-    CanBeDismissedByTappingOutsideOfPopup="True"
-    HorizontalOptions="Center"
-    VerticalOptions="Center">
+<toolkit:Popup xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+               xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+               xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
+               x:Class="hotel_scheduler.Views.DateRangePickerPopup"
+               CanBeDismissedByTappingOutsideOfPopup="True"
+               HorizontalOptions="Center"
+               VerticalOptions="Center">
 
     <Border WidthRequest="340"
             BackgroundColor="White"
@@ -24,7 +23,7 @@
                        TextColor="#1A1A1A"
                        VerticalOptions="Center"/>
                 <Button Grid.Column="1"
-                        Text="X"
+                        Text="✕"
                         BackgroundColor="Transparent"
                         TextColor="#888888"
                         FontSize="16"
@@ -36,27 +35,29 @@
 
             <BoxView HeightRequest="1" BackgroundColor="#F0F0F0"/>
 
-            <!-- Start date -->
+            <!-- Start Date -->
             <VerticalStackLayout Spacing="5">
                 <Label Text="Start date"
                        FontSize="12"
                        TextColor="#888888"/>
                 <DatePicker Date="{Binding SelectedStartDate, Mode=TwoWay}"
                             HeightRequest="44"
-                            FontSize="13"/>
+                            FontSize="13"
+                            TextColor="#1A1A1A"/>
             </VerticalStackLayout>
 
-            <!-- End date -->
+            <!-- End Date -->
             <VerticalStackLayout Spacing="5">
                 <Label Text="End date"
                        FontSize="12"
                        TextColor="#888888"/>
                 <DatePicker Date="{Binding SelectedEndDate, Mode=TwoWay}"
                             HeightRequest="44"
-                            FontSize="13"/>
+                            FontSize="13"
+                            TextColor="#1A1A1A"/>
             </VerticalStackLayout>
 
-            <!-- Day count indicator -->
+            <!-- Day Count Indicator -->
             <Border BackgroundColor="#F5F5F5"
                     StrokeThickness="0"
                     StrokeShape="RoundRectangle 8"
@@ -67,14 +68,8 @@
                            FontSize="13"
                            TextColor="#1A1A1A"
                            VerticalOptions="Center"/>
-                    <Label Grid.Column="1"
-                           Text="{Binding DayCountLabel}"
-                           FontSize="12"
-                           TextColor="{Binding DayCountColor}"
-                           FontAttributes="Bold"
-                           VerticalOptions="Center"
-                           IsVisible="False"/>
-                    <!-- Range indicator bar -->
+
+                    <!-- Range Indicator Bar -->
                     <BoxView Grid.Column="1"
                              WidthRequest="10"
                              HeightRequest="10"
@@ -84,19 +79,19 @@
                 </Grid>
             </Border>
 
-            <!-- Error -->
+            <!-- Error Display -->
             <Label Text="{Binding ErrorMessage}"
                    TextColor="#E53935"
                    FontSize="12"
                    IsVisible="{Binding HasError}"/>
 
-            <!-- Hint -->
+            <!-- Helper Hint -->
             <Label Text="Minimum 5 days · Maximum 28 days"
                    FontSize="11"
                    TextColor="#AAAAAA"
                    HorizontalTextAlignment="Center"/>
 
-            <!-- Confirm + Cancel -->
+            <!-- Action Buttons -->
             <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
                 <Button Grid.Column="0"
                         Text="Cancel"
@@ -118,4 +113,5 @@
 
         </VerticalStackLayout>
     </Border>
+
 </toolkit:Popup>

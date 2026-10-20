@@ -43,8 +43,5 @@ namespace hotel_scheduler.ViewModels
             OnPropertyChanged(nameof(ToggleStatusActionText));
             OnPropertyChanged(nameof(ToggleStatusActionColor));
         }
-
-
-
     }
 }

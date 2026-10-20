@@ -11,26 +11,20 @@ namespace hotel_scheduler.Views
         private readonly GuestPopupViewModel _guestPopupViewModel;
         private readonly IServiceProvider _serviceProvider;
 
-        // Provide a local Close() helper so the ViewModel can request the
-        // popup to close. Some CommunityToolkit versions expose a Close/Dismiss
-        // implementation on the base Popup type differently; using a small
-        // reflection-backed shim here makes the call robust across versions.
-
-        public ReservationPopup(ReservationViewModel viewModel, GuestPopupViewModel guestPopupViewmodel, IServiceProvider serviceProvider)
+        public ReservationPopup(ReservationViewModel viewModel, GuestPopupViewModel guestPopupViewModel, IServiceProvider serviceProvider)
         {
             InitializeComponent();
             _viewModel = viewModel;
-            _guestPopupViewModel = guestPopupViewmodel;
+            _guestPopupViewModel = guestPopupViewModel;
             _serviceProvider = serviceProvider;
             BindingContext = viewModel;
 
-            // Close command wired here since Popup.Close() lives in code-behind
-            viewModel.CloseAction = () => MainThread.BeginInvokeOnMainThread(() => CloseAsync());
+            viewModel.CloseAction = () => MainThread.BeginInvokeOnMainThread(() => _ = CloseAsync());
         }
 
         private void OnCloseClicked(object sender, EventArgs e)
         {
-            CloseAsync();
+            _ = CloseAsync();
         }
 
         private async void OnAddGuestClicked(object sender, EventArgs e)
@@ -41,9 +35,11 @@ namespace hotel_scheduler.Views
                 _viewModel.SelectGuestCommand.Execute(guest);
             };
 
-            var popup = new GuestPopup(_guestPopupViewModel,
+            var popup = new GuestPopup(
+                _guestPopupViewModel,
                 _serviceProvider.GetRequiredService<ReservationViewModel>(),
                 _serviceProvider);
+
             await Application.Current!.MainPage!.ShowPopupAsync(popup);
         }
 
@@ -54,8 +50,5 @@ namespace hotel_scheduler.Views
                 _viewModel.UpdateChargeQuantityCommand.Execute(charge);
             }
         }
-
-
-
     }
 }

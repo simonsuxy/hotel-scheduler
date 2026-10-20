@@ -74,17 +74,11 @@ namespace hotel_scheduler
                 var db = scope.ServiceProvider.GetRequiredService<HotelSchedulerDbContext>();
 
                 // Automatically applies pending migrations and creates the DB if missing
-                //db.Database.EnsureDeleted();
                 db.Database.Migrate();
-
-                if (!db.Rooms.Any())
+                var settings = db.Settings.FirstOrDefault();
+                if (settings == null)
                 {
-                    db.Rooms.AddRange(
-                        new Room { Name = "101", Description = "Standard single", Type = "Single", Capacity = 1, PricePerNight = 60m, Status = RoomStatus.Active },
-                        new Room { Name = "102", Description = "Standard double", Type = "Double", Capacity = 2, PricePerNight = 90m, Status = RoomStatus.Active },
-                        new Room { Name = "201", Description = "Suite", Type = "Suite", Capacity = 3, PricePerNight = 150m, Status = RoomStatus.Active },
-                        new Room { Name = "202", Description = "Standard double", Type = "Double", Capacity = 2, PricePerNight = 90m, Status = RoomStatus.Active }
-                    );
+                    db.Settings.Add(new Settings { Id = 1, HotelName = "Hotel", Currency = "EUR", DefaultCalendarDays = 14 });
                     db.SaveChanges();
                 }
             }

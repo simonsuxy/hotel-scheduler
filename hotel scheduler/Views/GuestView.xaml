@@ -2,12 +2,13 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:local="clr-namespace:hotel_scheduler.Models.Entities"
-             x:Class="hotel_scheduler.Views.GuestsView">
+             x:Class="hotel_scheduler.Views.GuestsView"
+             BackgroundColor="#F5F5F5">
 
     <Grid RowDefinitions="Auto,Auto,Auto,*"
           BackgroundColor="#F5F5F5">
-
-        <!-- Top bar — search + new guest button -->
+        
+        <!-- Top bar — Search + New Guest Button -->
         <Grid Grid.Row="0"
               ColumnDefinitions="*,Auto"
               Padding="16,12"
@@ -16,6 +17,8 @@
             <Entry Placeholder="Search by name..."
                    Text="{Binding SearchQuery}"
                    FontSize="13"
+                   TextColor="#1A1A1A"
+                   PlaceholderColor="#888888"
                    VerticalOptions="Center"
                    HorizontalOptions="Fill"/>
 
@@ -32,12 +35,13 @@
                     Command="{Binding OpenNewGuestCommand}"/>
         </Grid>
 
-        <!-- Filter toggles -->
+        <!-- Filter Toggles -->
         <HorizontalStackLayout Grid.Row="1"
-                       Padding="16,8"
-                       Spacing="8"
-                       BackgroundColor="White">
-            <!-- Current -->
+                               Padding="16,8"
+                               Spacing="8"
+                               BackgroundColor="White">
+
+            <!-- Current Filter -->
             <Border Padding="10,6"
                     StrokeShape="RoundRectangle 20"
                     StrokeThickness="1.5"
@@ -54,7 +58,6 @@
                     <Label Text="Current" FontSize="12"
                            TextColor="{Binding ShowCurrent, Converter={StaticResource BoolToAccentColorConverter}}"
                            VerticalOptions="Center"/>
-                    <!-- Checkmark when active -->
                     <Label Text="✓"
                            FontSize="11"
                            TextColor="#4C4EE7"
@@ -63,7 +66,7 @@
                 </HorizontalStackLayout>
             </Border>
 
-            <!-- Future -->
+            <!-- Future Filter -->
             <Border Padding="10,6"
                     StrokeShape="RoundRectangle 20"
                     StrokeThickness="1.5"
@@ -74,9 +77,9 @@
                 </Border.GestureRecognizers>
                 <HorizontalStackLayout Spacing="6">
                     <BoxView WidthRequest="8" HeightRequest="8"
-                     CornerRadius="4"
-                     BackgroundColor="#4C4EE7"
-                     VerticalOptions="Center"/>
+                             CornerRadius="4"
+                             BackgroundColor="#4C4EE7"
+                             VerticalOptions="Center"/>
                     <Label Text="Future" FontSize="12"
                            TextColor="{Binding ShowFuture, Converter={StaticResource BoolToAccentColorConverter}}"
                            VerticalOptions="Center"/>
@@ -88,7 +91,7 @@
                 </HorizontalStackLayout>
             </Border>
 
-            <!-- Past -->
+            <!-- Past Filter -->
             <Border Padding="10,6"
                     StrokeShape="RoundRectangle 20"
                     StrokeThickness="1.5"
@@ -114,7 +117,7 @@
             </Border>
         </HorizontalStackLayout>
 
-        <!-- No filters warning -->
+        <!-- No Filters Selected Warning -->
         <Border Grid.Row="2"
                 IsVisible="{Binding NoFiltersSelected}"
                 BackgroundColor="#FFF8E1"
@@ -129,7 +132,7 @@
                    HorizontalTextAlignment="Center"/>
         </Border>
 
-        <!-- Guest list -->
+        <!-- Guest List -->
         <CollectionView Grid.Row="3"
                         ItemsSource="{Binding FilteredGuests}"
                         SelectionMode="None"
@@ -153,16 +156,14 @@
                             StrokeShape="RoundRectangle 12"
                             Padding="16,12">
                         <Border.GestureRecognizers>
-                            <TapGestureRecognizer
-                                Command="{Binding BindingContext.OpenEditGuestCommand,
-                                    Source={RelativeSource AncestorType={x:Type ContentView}}}"
-                                CommandParameter="{Binding .}"/>
+                            <TapGestureRecognizer Command="{Binding BindingContext.OpenEditGuestCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
+                                                  CommandParameter="{Binding .}"/>
                         </Border.GestureRecognizers>
 
                         <Grid ColumnDefinitions="Auto,*,Auto"
                               RowDefinitions="Auto,Auto">
 
-                            <!-- Status dot -->
+                            <!-- Status Dot -->
                             <BoxView Grid.Row="0" Grid.Column="0"
                                      WidthRequest="10"
                                      HeightRequest="10"
@@ -171,7 +172,7 @@
                                      VerticalOptions="Center"
                                      Margin="0,0,10,0"/>
 
-                            <!-- Guest name -->
+                            <!-- Guest Name -->
                             <Label Grid.Row="0" Grid.Column="1"
                                    Text="{Binding FullName}"
                                    FontSize="15"
@@ -179,14 +180,14 @@
                                    TextColor="#1A1A1A"
                                    VerticalOptions="Center"/>
 
-                            <!-- Status label -->
+                            <!-- Status Label -->
                             <Label Grid.Row="0" Grid.Column="2"
                                    Text="{Binding StatusLabel}"
                                    FontSize="11"
                                    TextColor="{Binding StatusDotColor}"
                                    VerticalOptions="Center"/>
 
-                            <!-- Reservations list — dates + room, stacked -->
+                            <!-- Reservations List -->
                             <VerticalStackLayout Grid.Row="1"
                                                  Grid.Column="1"
                                                  Grid.ColumnSpan="2"
@@ -198,16 +199,14 @@
                                 <BindableLayout.ItemTemplate>
                                     <DataTemplate x:DataType="local:ReservationDTO">
                                         <HorizontalStackLayout Spacing="8">
-                                            <!-- Room name -->
                                             <Label Text="{Binding RoomName}"
                                                    FontSize="11"
                                                    FontAttributes="Bold"
                                                    TextColor="#555555"/>
-                                            <!-- Dates -->
                                             <Label FontSize="11"
                                                    TextColor="#888888">
                                                 <Label.Text>
-                                                    <MultiBinding StringFormat="{}{0:MMM d} → {1:MMM d yyyy}">
+                                                    <MultiBinding StringFormat="{}{0:MMM d} → {1:MMM d, yyyy}">
                                                         <Binding Path="CheckIn"/>
                                                         <Binding Path="CheckOut"/>
                                                     </MultiBinding>
@@ -217,12 +216,10 @@
                                     </DataTemplate>
                                 </BindableLayout.ItemTemplate>
                             </VerticalStackLayout>
-
                         </Grid>
                     </Border>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
     </Grid>
 </ContentView>

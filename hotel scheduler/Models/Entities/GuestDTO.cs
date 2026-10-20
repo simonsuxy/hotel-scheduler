@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace hotel_scheduler.Models.Entities
+﻿namespace hotel_scheduler.Models.Entities
 {
     public class GuestDTO
     {
@@ -16,7 +12,6 @@ namespace hotel_scheduler.Models.Entities
         public string Notes { get; set; } = "";
         public string FullName => $"{FirstName} {LastName}";
         public List<ReservationDTO> Reservations { get; set; } = [];
-
         public string StatusLabel
         {
             get

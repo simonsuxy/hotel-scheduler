@@ -64,12 +64,6 @@ namespace DAL
             modelBuilder.Entity<ReservationCharge>()
                 .Property(rc => rc.PricePerNight)
                 .HasColumnType("decimal(10,2)");
-
-            modelBuilder.Entity<ChargeCategory>().HasData(
-                new ChargeCategory { Id = 1, Name = "Adults", Description = "Charge per adult guest", DefaultPricePerNight = 20m, Type = ChargeType.PerNight, IsPreCreated = true },
-                new ChargeCategory { Id = 2, Name = "Kids", Description = "Charge per child guest", DefaultPricePerNight = 10m, Type = ChargeType.PerNight, IsPreCreated = true },
-                new ChargeCategory { Id = 3, Name = "Pets", Description = "Charge per pet", DefaultPricePerNight = 15m, Type = ChargeType.PerNight, IsPreCreated = true }
-            );
         } 
     }
 }

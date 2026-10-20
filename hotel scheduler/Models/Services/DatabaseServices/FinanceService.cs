@@ -27,12 +27,13 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             CategoryName = charge.Category?.Name ?? "",
             CategoryDescription = charge.Category?.Description ?? "",
             ChargeType = charge.Category?.Type ?? ChargeType.PerNight,
-            Quantity = charge.Quantity,
+            Quantity = Math.Max(1, charge.Quantity),
             PricePerNight = charge.PricePerNight
         };
         public async Task<List<ChargeCategoryDTO>> GetCategoriesAsync()
         {
             var categories = await _db.ChargeCategories
+                .AsNoTracking()
                 .OrderBy(c => c.Name)
                 .ToListAsync();
 
@@ -52,7 +53,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             var category = new ChargeCategory
             {
                 Name = trimmedName,
-                Description = description.Trim(),
+                Description = description.Trim() ?? "",
                 DefaultPricePerNight = defaultPricePerNight,
                 Type = type,
                 IsPreCreated = false
@@ -81,7 +82,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             category.Name = trimmedName;
             category.DefaultPricePerNight = defaultPricePerNight;
             category.Type = type;
-            category.Description = description.Trim();
+            category.Description = description.Trim() ?? "";
 
             await _db.SaveChangesAsync();
         }
@@ -105,6 +106,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         public async Task<List<ReservationChargeDTO>> GetChargesForReservationAsync(int reservationId)
         {
             var charges = await _db.ReservationCharges
+                .AsNoTracking()
                 .Include(rc => rc.Category)
                 .Where(rc => rc.ReservationId == reservationId)
                 .ToListAsync();

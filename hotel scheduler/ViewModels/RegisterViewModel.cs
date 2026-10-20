@@ -34,22 +34,27 @@ namespace hotel_scheduler.ViewModels
             }
             try
             {
-                await _authService.RegisterAsync(Username, Password, ConfirmPassword);
+                await _authService.RegisterAsync(Username.Trim(), Password, ConfirmPassword);
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Application.Current!.MainPage = _serviceProvider.GetRequiredService<MainView>();
+                });
             }
             catch (Exception ex) 
             {
                 ErrorMessage = ex.Message;
                 HasError = true;
-                return;
             }
-            Application.Current!.MainPage = _serviceProvider.GetRequiredService<MainView>();
 
         }
 
         [RelayCommand]
         private async Task GoToLogin()
         {
-            Application.Current!.MainPage = _serviceProvider.GetRequiredService<LoginView>();
+            MainThread.BeginInvokeOnMainThread(() =>
+            {
+                Application.Current!.MainPage = _serviceProvider.GetRequiredService<LoginView>();
+            });
         }
     }
 }

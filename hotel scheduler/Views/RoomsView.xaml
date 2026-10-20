@@ -1,7 +1,6 @@
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
-             xmlns:dal="clr-namespace:DAL.Entities;assembly=DAL"
              xmlns:vm="clr-namespace:hotel_scheduler.ViewModels"
              x:Class="hotel_scheduler.Views.RoomsView"
              BackgroundColor="#F5F5F5">
@@ -18,13 +17,22 @@
                     <!-- Room Name -->
                     <VerticalStackLayout Spacing="4">
                         <Label Text="Room Name / Number" FontSize="12" TextColor="#888888"/>
-                        <Entry Placeholder="e.g. 101 or Suite A" Text="{Binding NewRoomName}" HeightRequest="40" FontSize="13"/>
+                        <Entry Placeholder="e.g. 101 or Suite A" 
+                               Text="{Binding NewRoomName}" 
+                               HeightRequest="40" 
+                               FontSize="13" 
+                               TextColor="#1A1A1A" 
+                               PlaceholderColor="#888888"/>
                     </VerticalStackLayout>
 
                     <!-- Room Type Picker -->
                     <VerticalStackLayout Spacing="4">
                         <Label Text="Room Type" FontSize="12" TextColor="#888888"/>
-                        <Picker ItemsSource="{Binding RoomTypes}" SelectedItem="{Binding NewRoomType}" HeightRequest="40" FontSize="13"/>
+                        <Picker ItemsSource="{Binding RoomTypes}" 
+                                SelectedItem="{Binding NewRoomType}" 
+                                HeightRequest="40" 
+                                FontSize="13" 
+                                TextColor="#1A1A1A"/>
                     </VerticalStackLayout>
 
                     <!-- Inline Create New RoomType Field -->
@@ -32,9 +40,22 @@
                         <VerticalStackLayout Spacing="6">
                             <Label Text="Create Custom Room Type" FontSize="11" FontAttributes="Bold" TextColor="#888888"/>
                             <Grid ColumnDefinitions="*,Auto" ColumnSpacing="6">
-                                <Entry Grid.Column="0" Placeholder="e.g. Deluxe Suite" Text="{Binding CustomRoomTypeName}" HeightRequest="36" FontSize="12"/>
-                                <Button Grid.Column="1" Text="+ Add Type" Command="{Binding AddRoomTypeCommand}"
-                                        BackgroundColor="#4C4EE7" TextColor="White" CornerRadius="6" HeightRequest="36" Padding="10,0" FontSize="11"/>
+                                <Entry Grid.Column="0" 
+                                       Placeholder="e.g. Deluxe Suite" 
+                                       Text="{Binding CustomRoomTypeName}" 
+                                       HeightRequest="36" 
+                                       FontSize="12" 
+                                       TextColor="#1A1A1A" 
+                                       PlaceholderColor="#888888"/>
+                                <Button Grid.Column="1" 
+                                        Text="+ Add Type" 
+                                        Command="{Binding AddRoomTypeCommand}"
+                                        BackgroundColor="#4C4EE7" 
+                                        TextColor="White" 
+                                        CornerRadius="6" 
+                                        HeightRequest="36" 
+                                        Padding="10,0" 
+                                        FontSize="11"/>
                             </Grid>
                         </VerticalStackLayout>
                     </Border>
@@ -43,33 +64,58 @@
                     <Grid ColumnDefinitions="*,*" ColumnSpacing="8">
                         <VerticalStackLayout Grid.Column="0" Spacing="4">
                             <Label Text="Price / Night" FontSize="12" TextColor="#888888"/>
-                            <Entry Placeholder="0.00" Text="{Binding NewRoomPrice}" Keyboard="Numeric" HeightRequest="40" FontSize="13"/>
+                            <Entry Placeholder="0.00" 
+                                   Text="{Binding NewRoomPrice}" 
+                                   Keyboard="Numeric" 
+                                   HeightRequest="40" 
+                                   FontSize="13" 
+                                   TextColor="#1A1A1A" 
+                                   PlaceholderColor="#888888"/>
                         </VerticalStackLayout>
 
                         <VerticalStackLayout Grid.Column="1" Spacing="4">
                             <Label Text="Capacity" FontSize="12" TextColor="#888888"/>
-                            <Entry Text="{Binding NewRoomCapacity}" Keyboard="Numeric" HeightRequest="40" FontSize="13"/>
+                            <Entry Text="{Binding NewRoomCapacity}" 
+                                   Keyboard="Numeric" 
+                                   HeightRequest="40" 
+                                   FontSize="13" 
+                                   TextColor="#1A1A1A"/>
                         </VerticalStackLayout>
                     </Grid>
 
                     <!-- Room Status -->
                     <VerticalStackLayout Spacing="4">
                         <Label Text="Status" FontSize="12" TextColor="#888888"/>
-                        <Picker ItemsSource="{Binding RoomStatuses}" SelectedItem="{Binding NewRoomStatus}" HeightRequest="40" FontSize="13"/>
+                        <Picker ItemsSource="{Binding RoomStatuses}" 
+                                SelectedItem="{Binding NewRoomStatus}" 
+                                HeightRequest="40" 
+                                FontSize="13" 
+                                TextColor="#1A1A1A"/>
                     </VerticalStackLayout>
 
                     <!-- Notes -->
                     <VerticalStackLayout Spacing="4">
                         <Label Text="Notes" FontSize="12" TextColor="#888888"/>
-                        <Editor Placeholder="Optional notes..." Text="{Binding NewRoomNotes}" HeightRequest="60" FontSize="13"/>
+                        <Editor Placeholder="Optional notes..." 
+                                Text="{Binding NewRoomNotes}" 
+                                HeightRequest="60" 
+                                FontSize="13" 
+                                TextColor="#1A1A1A" 
+                                PlaceholderColor="#888888"/>
                     </VerticalStackLayout>
 
                     <!-- Error Display -->
                     <Label Text="{Binding ErrorMessage}" TextColor="#E53935" FontSize="12" IsVisible="{Binding HasError}" HorizontalOptions="Center"/>
 
                     <!-- Add Room Button -->
-                    <Button Text="+ Create Room" Command="{Binding CreateRoomCommand}"
-                            BackgroundColor="#4C4EE7" TextColor="White" CornerRadius="20" HeightRequest="40" FontSize="13" Margin="0,4,0,0"/>
+                    <Button Text="+ Create Room" 
+                            Command="{Binding CreateRoomCommand}"
+                            BackgroundColor="#4C4EE7" 
+                            TextColor="White" 
+                            CornerRadius="20" 
+                            HeightRequest="40" 
+                            FontSize="13" 
+                            Margin="0,4,0,0"/>
                 </VerticalStackLayout>
             </ScrollView>
         </Border>
@@ -105,7 +151,6 @@
                                         <Label Text="{Binding Notes}" FontSize="12" TextColor="#888888"/>
                                     </VerticalStackLayout>
 
-
                                     <!-- ================= EDIT MODE (SPACIOUS MULTI-ROW GRID) ================= -->
                                     <Grid Grid.Column="0" 
                                           RowDefinitions="Auto,Auto,Auto" ColumnDefinitions="*,*,*" 
@@ -115,39 +160,38 @@
                                         <!-- Row 0: Name, Type, Status -->
                                         <VerticalStackLayout Grid.Row="0" Grid.Column="0" Spacing="2">
                                             <Label Text="Name" FontSize="11" FontAttributes="Bold" TextColor="#888888"/>
-                                            <Entry Text="{Binding EditName}" Placeholder="Name" FontSize="13" HeightRequest="38"/>
+                                            <Entry Text="{Binding EditName}" Placeholder="Name" FontSize="13" HeightRequest="38" TextColor="#1A1A1A"/>
                                         </VerticalStackLayout>
 
                                         <VerticalStackLayout Grid.Row="0" Grid.Column="1" Spacing="2">
                                             <Label Text="Type" FontSize="11" FontAttributes="Bold" TextColor="#888888"/>
                                             <Picker ItemsSource="{Binding BindingContext.RoomTypes, Source={RelativeSource AncestorType={x:Type ContentView}}}" 
-                                                    SelectedItem="{Binding EditType}" FontSize="12" HeightRequest="38"/>
+                                                    SelectedItem="{Binding EditType}" FontSize="12" HeightRequest="38" TextColor="#1A1A1A"/>
                                         </VerticalStackLayout>
 
                                         <VerticalStackLayout Grid.Row="0" Grid.Column="2" Spacing="2">
                                             <Label Text="Status" FontSize="11" FontAttributes="Bold" TextColor="#888888"/>
                                             <Picker ItemsSource="{Binding BindingContext.RoomStatuses, Source={RelativeSource AncestorType={x:Type ContentView}}}" 
-                                                    SelectedItem="{Binding EditStatus}" FontSize="12" HeightRequest="38"/>
+                                                    SelectedItem="{Binding EditStatus}" FontSize="12" HeightRequest="38" TextColor="#1A1A1A"/>
                                         </VerticalStackLayout>
 
                                         <!-- Row 1: Price / Night, Capacity -->
                                         <VerticalStackLayout Grid.Row="1" Grid.Column="0" Spacing="2">
                                             <Label Text="Price / Night" FontSize="11" FontAttributes="Bold" TextColor="#888888"/>
-                                            <Entry Text="{Binding EditPriceText}" Keyboard="Numeric" Placeholder="0.00" FontSize="13" HeightRequest="38"/>
+                                            <Entry Text="{Binding EditPriceText}" Keyboard="Numeric" Placeholder="0.00" FontSize="13" HeightRequest="38" TextColor="#1A1A1A"/>
                                         </VerticalStackLayout>
 
                                         <VerticalStackLayout Grid.Row="1" Grid.Column="1" Spacing="2">
                                             <Label Text="Capacity" FontSize="11" FontAttributes="Bold" TextColor="#888888"/>
-                                            <Entry Text="{Binding EditCapacity}" Keyboard="Numeric" Placeholder="1" FontSize="13" HeightRequest="38"/>
+                                            <Entry Text="{Binding EditCapacity}" Keyboard="Numeric" Placeholder="1" FontSize="13" HeightRequest="38" TextColor="#1A1A1A"/>
                                         </VerticalStackLayout>
 
-                                        <!-- Row 2: Notes (Full Width across all 3 columns) -->
+                                        <!-- Row 2: Notes (Full Width) -->
                                         <VerticalStackLayout Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="3" Spacing="2">
                                             <Label Text="Notes" FontSize="11" FontAttributes="Bold" TextColor="#888888"/>
-                                            <Entry Text="{Binding EditNotes}" Placeholder="Optional notes..." FontSize="13" HeightRequest="38"/>
+                                            <Entry Text="{Binding EditNotes}" Placeholder="Optional notes..." FontSize="13" HeightRequest="38" TextColor="#1A1A1A"/>
                                         </VerticalStackLayout>
                                     </Grid>
-
 
                                     <!-- ================= ACTION BUTTONS ================= -->
                                     <HorizontalStackLayout Grid.Column="1" Spacing="4" 
@@ -159,7 +203,7 @@
                                                 CommandParameter="{Binding .}"
                                                 BackgroundColor="Transparent" TextColor="#888888" WidthRequest="32" HeightRequest="32" Padding="0"/>
 
-                                        <!-- Delete Button (Visible only when room has no reservations) -->
+                                        <!-- Delete Button -->
                                         <Button Text="🗑"
                                                 IsVisible="{Binding CanDelete}"
                                                 Command="{Binding BindingContext.DeleteRoomCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
@@ -168,17 +212,18 @@
                                     </HorizontalStackLayout>
 
                                     <HorizontalStackLayout Grid.Column="1" Spacing="4" IsVisible="{Binding IsEditing}" VerticalOptions="Start">
+                                        <!-- Save Button -->
                                         <Button Text="✓"
                                                 Command="{Binding BindingContext.SaveEditedRoomCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
                                                 CommandParameter="{Binding .}"
                                                 BackgroundColor="Transparent" TextColor="#43A047" FontAttributes="Bold" WidthRequest="32" HeightRequest="32" Padding="0"/>
 
+                                        <!-- Cancel Button -->
                                         <Button Text="✕"
                                                 Command="{Binding BindingContext.ToggleEditRoomCommand, Source={RelativeSource AncestorType={x:Type ContentView}}}"
                                                 CommandParameter="{Binding .}"
                                                 BackgroundColor="Transparent" TextColor="#E53935" WidthRequest="32" HeightRequest="32" Padding="0"/>
                                     </HorizontalStackLayout>
-
                                 </Grid>
                             </Border>
                         </DataTemplate>

@@ -30,9 +30,14 @@ namespace hotel_scheduler.ViewModels
 
                 var users = await _userService.GetAllUsersAsync();
 
-                Users.Clear();
-                foreach (var u in users)
-                    Users.Add(new UserItemViewModel(u));
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Users.Clear();
+                    foreach (var u in users)
+                    {
+                        Users.Add(new UserItemViewModel(u));
+                    }
+                });
             }
             catch (Exception ex)
             {

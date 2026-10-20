@@ -8,7 +8,6 @@ namespace hotel_scheduler.ViewModels
     public partial class RoomItemViewModel : ObservableObject
     {
         public RoomDTO OriginalDTO { get; }
-
         public int Id => OriginalDTO.Id;
 
         // View mode display properties
@@ -18,10 +17,12 @@ namespace hotel_scheduler.ViewModels
         public decimal PricePerNight => OriginalDTO.PricePerNight;
         public int Capacity => OriginalDTO.Capacity;
         public string Notes => OriginalDTO.Notes;
-
-        [ObservableProperty] public partial bool IsEditing { get; set; } = false;
         public bool HasReservations => OriginalDTO.HasReservations;
         public bool HasNoReservations => !OriginalDTO.HasReservations;
+
+        [ObservableProperty]
+        [NotifyPropertyChangedFor(nameof(CanDelete))]
+        public partial bool IsEditing { get; set; } = false;
         public bool CanDelete => !IsEditing && HasNoReservations;
 
         // Draft properties for on-page editing

@@ -2,7 +2,6 @@
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using DAL.Entities;
-using hotel_scheduler.Models.Entities;
 using hotel_scheduler.Models.Services.DatabaseServices;
 
 namespace hotel_scheduler.ViewModels
@@ -15,18 +14,15 @@ namespace hotel_scheduler.ViewModels
         public ObservableCollection<string> RoomTypes { get; } = ["Single", "Double", "Suite"];
         public ObservableCollection<string> RoomStatuses { get; } = ["Active", "Maintenance", "Inactive"];
 
-        // Form fields for creating a new room
+        // form fields
         [ObservableProperty] public partial string NewRoomName { get; set; } = "";
         [ObservableProperty] public partial string NewRoomType { get; set; } = "Single";
         [ObservableProperty] public partial string NewRoomPrice { get; set; } = "";
         [ObservableProperty] public partial int NewRoomCapacity { get; set; } = 1;
         [ObservableProperty] public partial string NewRoomStatus { get; set; } = "Active";
         [ObservableProperty] public partial string NewRoomNotes { get; set; } = "";
-
-        // Field for adding a new RoomType
         [ObservableProperty] public partial string CustomRoomTypeName { get; set; } = "";
 
-        // Error handling
         [ObservableProperty] public partial string ErrorMessage { get; set; } = "";
         [ObservableProperty] public partial bool HasError { get; set; } = false;
 
@@ -34,18 +30,33 @@ namespace hotel_scheduler.ViewModels
         {
             await LoadRoomsAsync();
         }
-
         public async Task LoadRoomsAsync()
         {
-            var roomDtos = await _roomService.GetRoomsAsync();
-            Rooms.Clear();
-
-            foreach (var dto in roomDtos)
+            try
             {
-                if (!RoomTypes.Contains(dto.Type) && !string.IsNullOrWhiteSpace(dto.Type))
-                    RoomTypes.Add(dto.Type);
+                HasError = false;
+                ErrorMessage = "";
 
-                Rooms.Add(new RoomItemViewModel(dto));
+                var roomDtos = await _roomService.GetRoomsAsync();
+
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    Rooms.Clear();
+                    foreach (var dto in roomDtos)
+                    {
+                        if (!string.IsNullOrWhiteSpace(dto.Type) && !RoomTypes.Contains(dto.Type))
+                        {
+                            RoomTypes.Add(dto.Type);
+                        }
+
+                        Rooms.Add(new RoomItemViewModel(dto));
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                ErrorMessage = $"Failed to load rooms: {ex.Message}";
+                HasError = true;
             }
         }
 

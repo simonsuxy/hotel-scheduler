@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace hotel_scheduler.Models.Services.DatabaseServices
 {
-    // Handles all database operations for Guests.
     public class GuestService(HotelSchedulerDbContext db)
     {
         private readonly HotelSchedulerDbContext _db = db;
@@ -18,6 +17,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             Phone = guest.Phone,
             Address = guest.Address,
             Notes = guest.Notes,
+            IdNumber = guest.IdNumber,
             Reservations = guest.Reservations.Select(r => new ReservationDTO
             {
                 Id = r.Id,
@@ -35,8 +35,9 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         public async Task<List<GuestDTO>> GetAllGuestsAsync()
         {
             var guests = await _db.Guests
+                .AsNoTracking()
                 .Include(g => g.Reservations)
-                .ThenInclude(r => r.Room)
+                    .ThenInclude(r => r.Room)
                 .OrderBy(g => g.LastName)
                 .ThenBy(g => g.FirstName)
                 .ToListAsync();
@@ -46,19 +47,22 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         public async Task<GuestDTO?> GetGuestByIdAsync(int id)
         {
             var g = await _db.Guests
+                .AsNoTracking()
                 .Include(g => g.Reservations)
-                .ThenInclude(r => r.Room)
+                    .ThenInclude(r => r.Room)
                 .FirstOrDefaultAsync(g => g.Id == id);
 
-            if (g == null) return null;
-            return MapToDTO(g);
+            return g == null ? null : MapToDTO(g);
         }
-        // Searches guests by name, email, or phone
         public async Task<List<GuestDTO>> SearchAsync(string query)
         {
+            if (string.IsNullOrWhiteSpace(query))
+                return await GetAllGuestsAsync();
+
             var q = query.Trim().ToLower();
 
             var guests = await _db.Guests
+                .AsNoTracking()
                 .Where(g => g.FirstName.ToLower().Contains(q)
                          || g.LastName.ToLower().Contains(q)
                          || (g.Email != null && g.Email.ToLower().Contains(q))
@@ -82,7 +86,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
                 Phone = phone?.Trim(),
                 IdNumber = idNumber?.Trim(),
                 Address = address?.Trim(),
-                Notes = notes.Trim()
+                Notes = notes.Trim() 
             };
 
             _db.Guests.Add(guest);
@@ -108,8 +112,7 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
             await _db.SaveChangesAsync();
         }
 
-        // Deletes a guest — only possible if they have no reservations attached
-        // If they do, throws error InvalidOperationException
+        // Deletes a guest only if they have no reservations attached
         public async Task DeleteAsync(int id)
         {
             var guest = await _db.Guests

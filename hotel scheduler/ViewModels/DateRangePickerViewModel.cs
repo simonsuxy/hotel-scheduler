@@ -5,9 +5,7 @@ namespace hotel_scheduler.ViewModels
 {
     public partial class DateRangePickerViewModel : ObservableObject
     {
-        // Called when valid range is confirmed
         public Action<DateTime, DateTime>? OnRangeSelected { get; set; }
-        // Use an async CloseAction so callers can await popup closure
         public Func<Task>? CloseAction { get; set; }
 
         [ObservableProperty]
@@ -22,12 +20,11 @@ namespace hotel_scheduler.ViewModels
         [ObservableProperty]
         public partial bool HasError { get; set; } = false;
 
-        // Shows how many days are currently selected
         public int SelectedDayCount => (SelectedEndDate - SelectedStartDate).Days + 1;
         public string DayCountLabel => $"{SelectedDayCount} days selected";
         public string DayCountColor => SelectedDayCount is >= 5 and <= 28
-            ? "#43A047"  // green — valid
-            : "#E53935"; // red — out of range
+            ? "#43A047"  // Green — valid
+            : "#E53935"; // Red — out of range
 
         public void Initialize(DateTime currentStart, DateTime currentEnd)
         {
@@ -49,7 +46,7 @@ namespace hotel_scheduler.ViewModels
         }
 
         [RelayCommand]
-        private async Task Confirm()
+        private async Task ConfirmAsync()
         {
             HasError = false;
             ErrorMessage = "";
@@ -81,7 +78,7 @@ namespace hotel_scheduler.ViewModels
         }
 
         [RelayCommand]
-        private async Task Close()
+        private async Task CloseAsync()
         {
             if (CloseAction != null)
                 await CloseAction.Invoke();

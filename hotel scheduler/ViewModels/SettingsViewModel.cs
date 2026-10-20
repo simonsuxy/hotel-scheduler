@@ -1,18 +1,17 @@
 ﻿using CommunityToolkit.Maui.Extensions;
 using CommunityToolkit.Maui.Storage;
+using CommunityToolkit.Maui.Views;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using hotel_scheduler.Models.Entities;
 using hotel_scheduler.Models.Services.DatabaseServices;
-using System.Text;
 using hotel_scheduler.Views;
-
-
+using System.Text;
 
 namespace hotel_scheduler.ViewModels
 {
-    public partial class SettingsViewModel(SettingsService settingsService,
-        ReservationService reservationService, DateRangePickerViewModel dateRangePickerViewModel) : ObservableObject
+    public partial class SettingsViewModel(SettingsService settingsService, ReservationService reservationService,
+        DateRangePickerViewModel dateRangePickerViewModel) : ObservableObject
     {
         private readonly SettingsService _settingsService = settingsService;
         private readonly ReservationService _reservationService = reservationService;
@@ -26,8 +25,6 @@ namespace hotel_scheduler.ViewModels
         [ObservableProperty] public partial int DefaultCalendarDays { get; set; } = 14;
         [ObservableProperty] public partial TimeSpan DefaultCheckInTime { get; set; } = new TimeSpan(14, 0, 0);
         [ObservableProperty] public partial TimeSpan DefaultCheckOutTime { get; set; } = new TimeSpan(10, 0, 0);
-
-        [ObservableProperty] public partial SettingsDTO CurrentSettings { get; set; } = new();
         [ObservableProperty] public partial string StatusMessage { get; set; } = "";
         [ObservableProperty] public partial bool ShowStatus { get; set; } = false;
         [ObservableProperty] public partial string StatusColor { get; set; } = "#43A047";
@@ -37,16 +34,20 @@ namespace hotel_scheduler.ViewModels
             try
             {
                 var settings = await _settingsService.GetSettingsAsync();
-                HotelName = settings.HotelName;
-                Email = settings.Email ?? "";
-                Address = settings.Address ?? "";
-                Phone = settings.Phone ?? "";
-                Currency = settings.Currency;
-                DefaultCalendarDays = settings.DefaultCalendarDays;
-                DefaultCheckInTime = settings.DefaultCheckInTime;
-                DefaultCheckOutTime = settings.DefaultCheckOutTime;
 
-                ShowStatus = false;
+                MainThread.BeginInvokeOnMainThread(() =>
+                {
+                    HotelName = settings.HotelName ?? "Hotel";
+                    Email = settings.Email ?? "";
+                    Address = settings.Address ?? "";
+                    Phone = settings.Phone ?? "";
+                    Currency = string.IsNullOrWhiteSpace(settings.Currency) ? "EUR" : settings.Currency;
+                    DefaultCalendarDays = settings.DefaultCalendarDays < 1 ? 14 : settings.DefaultCalendarDays;
+                    DefaultCheckInTime = settings.DefaultCheckInTime;
+                    DefaultCheckOutTime = settings.DefaultCheckOutTime;
+
+                    ShowStatus = false;
+                });
             }
             catch (Exception ex)
             {
@@ -61,12 +62,12 @@ namespace hotel_scheduler.ViewModels
             {
                 var dto = new SettingsDTO
                 {
-                    HotelName = HotelName,
-                    Email = Email,
-                    Address = Address,
-                    Phone = Phone,
-                    Currency = Currency,
-                    DefaultCalendarDays = DefaultCalendarDays,
+                    HotelName = HotelName.Trim(),
+                    Email = Email.Trim(),
+                    Address = Address.Trim(),
+                    Phone = Phone.Trim(),
+                    Currency = string.IsNullOrWhiteSpace(Currency) ? "EUR" : Currency.Trim(),
+                    DefaultCalendarDays = DefaultCalendarDays < 1 ? 14 : DefaultCalendarDays,
                     DefaultCheckInTime = DefaultCheckInTime,
                     DefaultCheckOutTime = DefaultCheckOutTime
                 };
@@ -83,20 +84,44 @@ namespace hotel_scheduler.ViewModels
         [RelayCommand]
         private async Task ExportCsvAsync()
         {
-            _dateRangePickerViewModel.Initialize(DateTime.Today.AddDays(-14), DateTime.Today.AddDays(14));
-            _dateRangePickerViewModel.OnRangeSelected = async (start, end) =>
+            try
             {
-                var reservations = await _reservationService.GetReservationsByDateAsync(start, end.AddDays(1));
-                var csvBuilder = new StringBuilder();
-                csvBuilder.AppendLine("Reservation ID,Room,Guest,Check-In,Check-Out,Nights,Total Price,Payment Status,Notes");
-                foreach (var r in reservations)
+                _dateRangePickerViewModel.Initialize(DateTime.Today.AddDays(-14), DateTime.Today.AddDays(14));
+                _dateRangePickerViewModel.OnRangeSelected = async (start, end) =>
                 {
-                    csvBuilder.AppendLine($"{r.Id},\"{r.RoomName}\",\"{r.GuestName}\",{r.CheckIn:yyyy-MM-dd},{r.CheckOut:yyyy-MM-dd},{r.Nights},{r.ComputedTotalPrice},{r.PaymentStatus},\"{r.Notes?.Replace("\"", "\"\"")}\"");
-                }
-                using var stream = new MemoryStream(Encoding.UTF8.GetBytes(csvBuilder.ToString()));
-                await FileSaver.Default.SaveAsync($"Reservations_{start:yyyyMMdd}-{end:yyyyMMdd}.csv", stream);
-            };
-            await Application.Current!.MainPage!.ShowPopupAsync(new DateRangePickerPopup(_dateRangePickerViewModel));
+                    try
+                    {
+                        var reservations = await _reservationService.GetReservationsByDateAsync(start, end.AddDays(1));
+                        var csvBuilder = new StringBuilder();
+                        csvBuilder.AppendLine("Reservation ID,Room,Guest,Check-In,Check-Out,Nights,Total Price,Payment Status,Notes");
+
+                        foreach (var r in reservations)
+                        {
+                            csvBuilder.AppendLine($"{r.Id},\"{r.RoomName}\",\"{r.GuestName}\",{r.CheckIn:yyyy-MM-dd},{r.CheckOut:yyyy-MM-dd},{r.Nights},{r.ComputedTotalPrice},{r.PaymentStatus},\"{r.Notes?.Replace("\"", "\"\"")}\"");
+                        }
+
+                        using var stream = new MemoryStream(Encoding.UTF8.GetBytes(csvBuilder.ToString()));
+                        await FileSaver.Default.SaveAsync($"Reservations_{start:yyyyMMdd}-{end:yyyyMMdd}.csv", stream);
+                        ShowMessage("Export downloaded successfully.", "#43A047");
+                    }
+                    catch (Exception ex)
+                    {
+                        ShowMessage($"Export failed: {ex.Message}", "#E53935");
+                    }
+                };
+
+                MainThread.BeginInvokeOnMainThread(async () =>
+                {
+                    if (Application.Current?.MainPage != null)
+                    {
+                        await Application.Current.MainPage.ShowPopupAsync(new DateRangePickerPopup(_dateRangePickerViewModel));
+                    }
+                });
+            }
+            catch (Exception ex)
+            {
+                ShowMessage($"Export failed: {ex.Message}", "#E53935");
+            }
         }
 
         [RelayCommand]
@@ -109,7 +134,11 @@ namespace hotel_scheduler.ViewModels
                 {
                     using var stream = new FileStream(dbPath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite);
                     await FileSaver.Default.SaveAsync($"Backup_HotelData_{DateTime.Now:yyyyMMdd}.sqlite", stream);
-                    ShowMessage("Database backup saved to desktop.", "#43A047");
+                    ShowMessage("Database backup saved successfully.", "#43A047");
+                }
+                else
+                {
+                    ShowMessage("Database file 'data.sqlite' not found.", "#E53935");
                 }
             }
             catch (Exception ex)
@@ -140,15 +169,16 @@ namespace hotel_scheduler.ViewModels
             }
         }
 
-        private async void ShowMessage(string msg, string colorhex)
+        private void ShowMessage(string msg, string colorHex)
         {
-            StatusMessage = msg;
-            StatusColor = colorhex;
-            ShowStatus = true;
-            await Task.Delay(4000);
-            ShowStatus = false;
+            MainThread.BeginInvokeOnMainThread(async () =>
+            {
+                StatusMessage = msg;
+                StatusColor = colorHex;
+                ShowStatus = true;
+                await Task.Delay(4000);
+                ShowStatus = false;
+            });
         }
-
-
     }
 }

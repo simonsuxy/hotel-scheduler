@@ -7,10 +7,10 @@
 
     <Grid VerticalOptions="Center" HorizontalOptions="Center">
         <Border WidthRequest="400"
-               Padding="40"
-               StrokeShape="RoundRectangle 12"
-               BackgroundColor="White"
-               Stroke="Transparent">
+                Padding="40"
+                StrokeShape="RoundRectangle 12"
+                BackgroundColor="White"
+                Stroke="Transparent">
             <Border.Shadow>
                 <Shadow Brush="#000000" Opacity="0.08" Radius="8" Offset="0,2" />
             </Border.Shadow>
@@ -27,28 +27,32 @@
                            TextColor="#888888"/>
                 </VerticalStackLayout>
 
-                <!-- Error message -->
+                <!-- Error Message -->
                 <Label Text="{Binding ErrorMessage}"
                        TextColor="#E53935"
                        FontSize="13"
                        IsVisible="{Binding HasError}"/>
 
                 <!-- Username -->
-                <Entry  Placeholder="Username"
-                        PlaceholderColor="Gray"
-                        Text="{Binding Username}"
-                        HeightRequest="48"
-                        VerticalOptions="Center" />
+                <Entry Placeholder="Username"
+                       PlaceholderColor="#888888"
+                       TextColor="#1A1A1A"
+                       BackgroundColor="#F8F9FA"
+                       Text="{Binding Username}"
+                       HeightRequest="48"
+                       VerticalOptions="Center" />
 
                 <!-- Password -->
-                <Entry  Placeholder="Password"
-                        PlaceholderColor="Gray"
-                        Text="{Binding Password}"
-                        IsPassword="True"                      
-                        HeightRequest="48"
-                        VerticalOptions="Center" />
+                <Entry Placeholder="Password"
+                       PlaceholderColor="#888888"
+                       TextColor="#1A1A1A"
+                       BackgroundColor="#F8F9FA"
+                       Text="{Binding Password}"
+                       IsPassword="True"                      
+                       HeightRequest="48"
+                       VerticalOptions="Center" />
 
-                <!-- Login button -->
+                <!-- Login Button -->
                 <Button Text="Continue"
                         Command="{Binding LoginCommand}"
                         BackgroundColor="#4C4EE7"
@@ -57,7 +61,7 @@
                         HeightRequest="48"
                         FontAttributes="Bold"/>
 
-                <!-- Register link -->
+                <!-- Register Link -->
                 <HorizontalStackLayout HorizontalOptions="Center" Spacing="4">
                     <Label Text="New user?"
                            TextColor="#888888"

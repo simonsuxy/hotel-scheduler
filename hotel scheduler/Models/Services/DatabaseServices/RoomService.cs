@@ -26,6 +26,8 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         public async Task<List<RoomDTO>> GetRoomsAsync()
         {
             var rooms = await _db.Rooms
+                .AsNoTracking()
+                .Include(r => r.Reservations)
                 .OrderBy(r => r.Name)
                 .ToListAsync();
             return [.. rooms.Select(MapToDTO)];
@@ -34,6 +36,8 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         public async Task<List<RoomDTO>> GetAllActiveRoomAsync()
         {
             var rooms = await _db.Rooms
+                .AsNoTracking()
+                .Include(r => r.Reservations)
                 .Where(r => r.Status == RoomStatus.Active)
                 .OrderBy(r => r.Name)
                 .ToListAsync();
@@ -42,24 +46,31 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
 
         public async Task<RoomDTO?> GetRoomByIdAsync(int id)
         {
-            var room = await _db.Rooms.FindAsync(id);
-            if (room == null) return null;
-            return MapToDTO(room);
+            var room = await _db.Rooms
+                .AsNoTracking()
+                .Include(r => r.Reservations)
+                .FirstOrDefaultAsync(r => r.Id == id);
+
+            return room == null ? null : MapToDTO(room);
         }
 
         public async Task<RoomDTO> CreateRoomAsync(string name, string description,
                                                     string type, int capacity, RoomStatus status,
                                                     decimal pricePerNight, string notes)
         {
-            if (await _db.Rooms.AnyAsync(r => r.Name.ToLower() == name.Trim().ToLower()))
-                throw new InvalidOperationException($"A room named {name} already exists");
+            var trimmedName = name.Trim();
+            if (await _db.Rooms.AnyAsync(r => r.Name.ToLower() == trimmedName.ToLower()))
+            {
+                throw new InvalidOperationException($"A room named '{trimmedName}' already exists.");
+            }
+
             var room = new Room
             {
-                Name = name,
+                Name = trimmedName,
                 Description = description,
                 Type = string.IsNullOrWhiteSpace(type) ? "Single" : type.Trim(),
                 Status = status,
-                Capacity = capacity,
+                Capacity = Math.Max(1, capacity),
                 PricePerNight = pricePerNight,
                 Notes = notes
             };
@@ -74,13 +85,13 @@ namespace hotel_scheduler.Models.Services.DatabaseServices
         {
             var room = await _db.Rooms.FindAsync(id)
                 ?? throw new InvalidOperationException("Room not found");
-            if (await _db.Rooms.AnyAsync(r => r.Name.ToLower() == name.Trim().ToLower()
-                                           && r.Id != id))
-                throw new InvalidOperationException($"A room named '{name}' already exists.");
-            room.Name = name;
+            var trimmedName = name.Trim();
+            if (await _db.Rooms.AnyAsync(r => r.Name.ToLower() == trimmedName.ToLower() && r.Id != id))
+                throw new InvalidOperationException($"A room named '{trimmedName}' already exists.");
+            room.Name = trimmedName;
             room.Description = description;
             room.Type = string.IsNullOrWhiteSpace(type) ? "Single" : type.Trim();
-            room.Capacity = capacity;
+            room.Capacity = Math.Max(1, capacity);
             room.PricePerNight = pricePerNight;
             room.Status = status;
             room.Notes = notes;

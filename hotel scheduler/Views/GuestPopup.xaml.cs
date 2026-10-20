@@ -30,7 +30,6 @@ namespace hotel_scheduler.Views
                 var guestService = _serviceProvider.GetRequiredService<GuestService>();
                 var allRooms = await roomService.GetAllActiveRoomAsync();
 
-                // Fallback: assign GuestId from the currently open guest if missing
                 if (reservation.GuestId == 0 && viewModel.EditingGuestId.HasValue)
                 {
                     reservation.GuestId = viewModel.EditingGuestId.Value;
@@ -45,7 +44,9 @@ namespace hotel_scheduler.Views
                     var updatedGuests = await guestService.GetAllGuestsAsync();
                     var updatedGuest = updatedGuests.FirstOrDefault(g => g.Id == viewModel.EditingGuestId);
                     if (updatedGuest != null)
+                    {
                         viewModel.InitializeEditGuestPopup(updatedGuest);
+                    }
                 };
 
                 var guestPopupViewModel = _serviceProvider.GetRequiredService<GuestPopupViewModel>();
